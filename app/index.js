@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from "./home";
 import SignUp from "./signUp";
+import ProgressPage from "./progresPage";
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
       }}>
         <Stack.Screen name="home" component={Home} />
         <Stack.Screen name="signup" component={SignUp} />
+        <Stack.Screen name="progressPage"  component={ProgressPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

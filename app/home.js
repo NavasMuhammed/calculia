@@ -1,8 +1,22 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React from 'react'
+import React, { useState } from 'react'
+import { auth } from "../firebase2";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Home = ({ navigation }) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleLogIn =  () => {
+        
+            signInWithEmailAndPassword(auth,email, password)
+            .then(userCredentials => {
+                const user = userCredentials.user;
+                console.log('Logged in with ', user.email)
+            })
+            .catch(error => aler(error))
+    }
     return (
         <SafeAreaView style={styles.container}>
             <View>
@@ -12,20 +26,27 @@ const Home = ({ navigation }) => {
                 <TextInput
                     style={[styles.input, styles.shadowProp]}
                     placeholder="Email"
+                    value={email}
+                    onChangeText={text => { setEmail(text) }}
                     placeholderTextColor="#646577"
                 />
                 <TextInput
                     style={[styles.input, styles.shadowProp]}
                     placeholder="Password"
+                    value={password}
+                    onChangeText={text => { setPassword(text) }}
                     placeholderTextColor="#646577"
                 />
-                <TouchableOpacity style={styles.buttonWrapper}>
+                <TouchableOpacity onPress={() => handleLogIn()} style={styles.buttonWrapper}>
                     <Text style={styles.buttonTitle}>Log In</Text>
                 </TouchableOpacity>
                 <View style={styles.subTitleWrapper}>
                     <Text style={styles.logSubTitle}>Forgot your password?</Text>
                     <TouchableOpacity onPress={() => navigation.navigate("signup")}>
                         <Text style={styles.logSubTitle}> Sign Up</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("progressPage")}>
+                        <Text style={styles.logSubTitle}> Test</Text>
                     </TouchableOpacity>
                 </View>
             </View>
