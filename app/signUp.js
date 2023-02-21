@@ -3,16 +3,26 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
 import { auth } from "../firebase2";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { db } from "../firebase2";
+import { collection, addDoc } from "firebase/firestore"; 
+
 const SignUp = ({ navigation }) => {
     const [name, setName] = useState()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    
+
 
     const handleSignUp = async () => {
 
         await createUserWithEmailAndPassword(auth, email, password)
             .then(userCredentials => {
                 const user = userCredentials.user;
+                const docRef =  addDoc(collection(db, "calculia DB"), {
+                    name: name,
+                    email: email
+                  });
+                console.log("Document written with ID: ", docRef);
                 console.log('registered in with', user.email)
             })
             .catch(error => console.log(error))

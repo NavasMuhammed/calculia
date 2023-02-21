@@ -3,19 +3,33 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from 'react'
 import { auth } from "../firebase2";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { setColor } from "../store/colorSlice";
+
+
 
 const Home = ({ navigation }) => {
+    const color = useSelector((state) => state.color.value);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    // const [isValidUser,setIsValidUser] = useState(false);
+    const dispatch = useDispatch();
+
+    function addColor({id}) {
+        dispatch(setColor({payload:id}));
+    }
 
     const handleLogIn =  () => {
-        
-            signInWithEmailAndPassword(auth,email, password)
-            .then(userCredentials => {
-                const user = userCredentials.user;
-                console.log('Logged in with ', user.email)
-            })
-            .catch(error => aler(error))
+        console.log(color.payload);
+        signInWithEmailAndPassword(auth,email, password)
+        .then(userCredentials => {
+            const user = userCredentials.user;
+            addColor({id: user.email})
+            console.log('Logged in with ', user.email)
+            // setIsValidUser(true);
+            navigation.navigate("progressPage");
+        })
+        .catch(error => alert(error))
     }
     return (
         <SafeAreaView style={styles.container}>
