@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 
-
 const ProgressPage = ({ navigation }) => {
     const [username, setusername] = useState("")
     const [progress, setprogress] = useState(0)

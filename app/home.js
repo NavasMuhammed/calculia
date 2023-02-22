@@ -15,21 +15,21 @@ const Home = ({ navigation }) => {
     // const [isValidUser,setIsValidUser] = useState(false);
     const dispatch = useDispatch();
 
-    function addColor({id}) {
-        dispatch(setColor({payload:id}));
+    function addColor({ id }) {
+        dispatch(setColor({ payload: id }));
     }
 
-    const handleLogIn =  () => {
+    const handleLogIn = () => {
         console.log(color.payload);
-        signInWithEmailAndPassword(auth,email, password)
-        .then(userCredentials => {
-            const user = userCredentials.user;
-            addColor({id: user.email})
-            console.log('Logged in with ', user.email)
-            // setIsValidUser(true);
-            navigation.navigate("progressPage");
-        })
-        .catch(error => alert(error))
+        signInWithEmailAndPassword(auth, email, password)
+            .then(userCredentials => {
+                const user = userCredentials.user;
+                addColor({ id: user.email })
+                console.log('Logged in with ', user.email)
+                // setIsValidUser(true);
+                navigation.navigate("progressPage");
+            })
+            .catch(error => alert(error))
     }
     return (
         <SafeAreaView style={styles.container}>
@@ -59,9 +59,6 @@ const Home = ({ navigation }) => {
                     <TouchableOpacity onPress={() => navigation.navigate("signup")}>
                         <Text style={styles.logSubTitle}> Sign Up</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("progressPage")}>
-                        <Text style={styles.logSubTitle}> Test</Text>
-                    </TouchableOpacity>
                 </View>
             </View>
         </SafeAreaView>
@@ -80,6 +77,8 @@ const styles = StyleSheet.create({
     mainTitle: {
         color: "#FC6746",
         fontSize: 48,
+        alignItems: "center",
+        justifyContent: "center",
         fontWeight: "900",
     },
     formWrapper: {
