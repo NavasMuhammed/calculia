@@ -7,15 +7,21 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 const Home = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [authTest, setAuthTest] = useState(false);
 
-    const handleLogIn =  () => {
-        
-            signInWithEmailAndPassword(auth,email, password)
+    const handleLogIn = () => {
+
+        signInWithEmailAndPassword(auth, email, password)
             .then(userCredentials => {
                 const user = userCredentials.user;
                 console.log('Logged in with ', user.email)
+                alert("login succesfull")
+                setAuthTest(true)
             })
-            .catch(error => aler(error))
+            .catch(error => alert(error))
+    }
+    if (authTest == true) {
+        navigation.navigate("progressPage")
     }
     return (
         <SafeAreaView style={styles.container}>
@@ -45,9 +51,6 @@ const Home = ({ navigation }) => {
                     <TouchableOpacity onPress={() => navigation.navigate("signup")}>
                         <Text style={styles.logSubTitle}> Sign Up</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("progressPage")}>
-                        <Text style={styles.logSubTitle}> Test</Text>
-                    </TouchableOpacity>
                 </View>
             </View>
         </SafeAreaView>
@@ -66,6 +69,8 @@ const styles = StyleSheet.create({
     mainTitle: {
         color: "#FC6746",
         fontSize: 48,
+        alignItems: "center",
+        justifyContent: "center",
         fontWeight: "900",
     },
     formWrapper: {
