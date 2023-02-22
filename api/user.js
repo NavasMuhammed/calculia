@@ -15,7 +15,7 @@ const port = 3000
 
 app.use(cors())
 
-app.get('/', async(req, res) => {
+app.get('/', async (req, res) => {
     let email = req.query.email;
     let name;
     console.log(req.query.email)
@@ -33,8 +33,51 @@ app.get('/', async(req, res) => {
         .catch(err => {
             console.log('Error getting documents', err);
         });
-console.log(name)
-  res.json(name)
+    console.log(name)
+    res.json(name)
+})
+
+app.get('/test',async (req, res) => { 
+    let name = req.query.name;
+    let returndata;
+    console.log(req.query.email)
+    var detailsfound = false;
+    var citiesRef = db.collection('studentDetails');
+    var query = await citiesRef
+        .where('name', '==', name)
+        .get()
+        .then(snapshot => {
+            // console.log(snapshot)
+            snapshot.forEach(doc => {
+                detailsfound = true;
+                console.log(doc.id, '=>', doc.data());
+                returndata = doc.data();
+            });
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+    if(!detailsfound){
+        db.collection("studentDetails").add({
+            name: name,
+            level: 0,
+            progress:0,
+            score:0
+        })
+        .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        });
+    }
+    if(detailsfound){
+        console.log("details found")
+        res.json(returndata);
+    }
+    else{
+        res.json({name:name,level:0,progress:0,score:0})
+    }
 })
 
 app.listen(port, () => {
