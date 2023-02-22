@@ -1,11 +1,37 @@
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { useDispatch, useSelector } from "react-redux";
 
 
-const ProgressPage = ({navigation}) => {
+
+
+const ProgressPage = ({ navigation }) => {
+    const [username, setusername] = useState("")
+    const email = useSelector((state) => state.color.value);
+    const getName = () => {
+        axios.get('http://10.0.2.2:3000/', {
+            params: {
+                email: email.payload
+            },
+            headers: { 'Content-Type': 'application/json' }
+            ,
+        })
+            .then(res => {
+                console.log(res.data)
+                setusername(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    useEffect(() => {
+        getName();
+    }, [])
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.mainTitle}>Hi &apos;$user&apos;</Text>
+            <Text style={styles.mainTitle}>Hi {username}</Text>
             <View style={styles.progressContainer}>
                 <View style={styles.circleProgress}>
                     <View style={styles.circleProgressInner}>
@@ -76,7 +102,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     buttonWrapper: {
-        width:"70%",
+        width: "70%",
         borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center',

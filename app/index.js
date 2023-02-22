@@ -6,12 +6,14 @@ import Home from "./home";
 import SignUp from "./signUp";
 import ProgressPage from "./progresPage";
 import TestPage from "./testPage";
+import { store } from '../store/store'
+import { Provider } from 'react-redux'
 
-
-export default function App() {
+function App() {
   const Stack = createNativeStackNavigator();
 
   return (
+
     <NavigationContainer independent={true} >
       <Stack.Navigator screenOptions={{
         headerShown: false
@@ -24,6 +26,12 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
+export default () => {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+};
 
 
