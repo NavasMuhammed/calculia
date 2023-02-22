@@ -6,48 +6,68 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 
-const ProgressPage = () => {
+
+const ProgressPage = ({ navigation }) => {
     const [username, setusername] = useState("")
+    const [progress, setprogress] = useState(0)
     const email = useSelector((state) => state.color.value);
     const getName = () => {
-        axios.get('http://10.0.2.2:3000/',{
+        axios.get('http://10.0.2.2:3000/', {
             params: {
                 email: email.payload
             },
-            headers: {'Content-Type': 'application/json'}
-              ,
+            headers: { 'Content-Type': 'application/json' }
+            ,
         })
             .then(res => {
                 console.log(res.data)
                 setusername(res.data)
+                getDetails(res.data)
             })
             .catch(err => {
                 console.log(err)
             })
     }
+    const getDetails = (name) => {
+        axios.get('http://10.0.2.2:3000/test', {
+            params: {
+                name: name
+            },
+            headers: { 'Content-Type': 'application/json' }
+            ,
+        })
+            .then(res => {
+                console.log(res.data.progress)
+                setprogress(res.data.progress)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+    
 
     useEffect(() => {
         getName();
-      }, [])
+    }, [])
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.mainTitle}>Hi {username}</Text>
             <View style={styles.progressContainer}>
                 <View style={styles.circleProgress}>
                     <View style={styles.circleProgressInner}>
-                        <Text style={styles.progressText}>X%</Text>
+                        <Text style={styles.progressText}>{progress}</Text>
                     </View>
                 </View>
             </View>
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.buttonWrapper}>
+                <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate("testPage")}>
                     <Text style={styles.buttonTitle}>Dyscalculia Test</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrapper}>
-                    <Text style={styles.buttonTitle}>Dyscalculia Test</Text>
+                    <Text style={styles.buttonTitle}>Complete Lesson</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrapper}>
-                    <Text style={styles.buttonTitle}>Dyscalculia Test</Text>
+                    <Text style={styles.buttonTitle}>View Progress</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -102,13 +122,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     buttonWrapper: {
+        width: "70%",
         borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: "#1E1F3B",
         padding: 20,
-        paddingRight: 90,
-        paddingLeft: 90,
+        // paddingRight: 90,
+        // paddingLeft: 90,
         marginTop: 30,
     },
     buttonTitle: {
