@@ -80,6 +80,25 @@ app.get('/test',async (req, res) => {
     }
 })
 
+app.get('/question',async (req, res) => {
+    let level = req.query.level;
+    let questData = [];
+    var citiesRef = db.collection('questionsDB').doc(level).collection('Q');
+    var query = await citiesRef
+        .get()
+        .then(snapshot => {
+            // console.log(snapshot)
+            snapshot.forEach(doc => {
+                console.log(doc.id, '=>', doc.data());
+                questData.push(doc.data());
+            });
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+    res.json(questData)
+})
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

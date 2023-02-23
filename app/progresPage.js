@@ -2,14 +2,20 @@ import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-na
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from "react-redux";
-
-
+import { setDetails } from '../store/detailsSlice';
 
 
 const ProgressPage = ({ navigation }) => {
     const [username, setusername] = useState("")
     const [progress, setprogress] = useState(0)
     const email = useSelector((state) => state.color.value);
+    const details = useSelector((state) => state.details.value);
+    const dispatch = useDispatch();
+
+    function addDetails({ id }){
+        dispatch(setDetails({ payload: id }));
+    }
+
     const getName = () => {
         axios.get('http://10.0.2.2:3000/', {
             params: {
@@ -26,18 +32,21 @@ const ProgressPage = ({ navigation }) => {
             .catch(err => {
                 console.log(err)
             })
-    }
-    const getDetails = (name) => {
-        axios.get('http://10.0.2.2:3000/test', {
-            params: {
-                name: name
-            },
-            headers: { 'Content-Type': 'application/json' }
-            ,
-        })
+        }
+        
+        const getDetails = async(name) => {
+            axios.get('http://10.0.2.2:3000/test', {
+                params: {
+                    name: name
+                },
+                headers: { 'Content-Type': 'application/json' }
+                ,
+            })
             .then(res => {
                 console.log(res.data.progress)
                 setprogress(res.data.progress)
+                addDetails({id:res.data})
+                console.log(details.payload)
             })
             .catch(err => {
                 console.log(err)

@@ -1,9 +1,34 @@
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from "react-redux";
+import { setDetails } from '../store/detailsSlice';
+import axios from 'axios';
 
 
 const TestPage = () => {
 
+    const details = useSelector((state) => state.details.value);
+    const getDetails = async() => {
+        axios.get('http://10.0.2.2:3000/question', {
+            params: {
+                level: details.payload.level
+            },
+            headers: { 'Content-Type': 'application/json' }
+            ,
+        })
+        .then(res => {
+            res.data.forEach(element => {
+                console.log(element);
+            });
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}   
+    useEffect(() => {
+        getDetails();
+    }, [])
+    
 
     const [isOptionDisabled, setIsOptionDisabled] = useState(false)
     const [response, setResponse] = useState(Number)
