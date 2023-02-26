@@ -17,7 +17,7 @@ const ProgressPage = ({ navigation }) => {
     }
 
     const getName = () => {
-        axios.get('http://10.0.2.2:3000/', {
+        axios.get('http://10.0.2.2:5000/', {
             params: {
                 email: email.payload
             },
@@ -35,7 +35,7 @@ const ProgressPage = ({ navigation }) => {
         }
         
         const getDetails = async(name) => {
-            axios.get('http://10.0.2.2:3000/test', {
+            axios.get('http://10.0.2.2:5000/test', {
                 params: {
                     name: name
                 },
