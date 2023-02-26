@@ -9,7 +9,7 @@ const TestPage = () => {
 
     const details = useSelector((state) => state.details.value);
     const getDetails = async() => {
-        axios.get('http://10.0.2.2:3000/question', {
+        axios.get('http://10.0.2.2:5000/question', {
             params: {
                 level: details.payload.level
             },
