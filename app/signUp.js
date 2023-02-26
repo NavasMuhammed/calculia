@@ -1,7 +1,33 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useState } from "react";
+import { auth } from "../firebase2";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { db } from "../firebase2";
+import { collection, addDoc } from "firebase/firestore"; 
 
-const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
+    const [name, setName] = useState()
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
+    
+
+
+    const handleSignUp = async () => {
+
+        await createUserWithEmailAndPassword(auth, email, password)
+            .then(userCredentials => {
+                const user = userCredentials.user;
+                const docRef =  addDoc(collection(db, "calculia DB"), {
+                    name: name,
+                    email: email
+                  });
+                console.log("Document written with ID: ", docRef);
+                console.log('registered in with', user.email)
+            })
+            .catch(error => console.log(error))
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View>
@@ -11,19 +37,25 @@ const SignUp = ({navigation}) => {
                 <TextInput
                     style={[styles.input, styles.shadowProp]}
                     placeholder="Name"
+                    value={name}
+                    onChangeText={text => { setName(text) }}
                     placeholderTextColor="#646577"
                 />
                 <TextInput
                     style={[styles.input, styles.shadowProp]}
                     placeholder="Email"
+                    value={email}
+                    onChangeText={text => { setEmail(text) }}
                     placeholderTextColor="#646577"
                 />
                 <TextInput
                     style={[styles.input, styles.shadowProp]}
                     placeholder="Password"
+                    value={password}
+                    onChangeText={text => { setPassword(text) }}
                     placeholderTextColor="#646577"
                 />
-                <TouchableOpacity style={styles.buttonWrapper}>
+                <TouchableOpacity onPress={() => handleSignUp()} style={styles.buttonWrapper}>
                     <Text style={styles.buttonTitle}>Sign Up</Text>
                 </TouchableOpacity>
                 <View style={styles.subTitleWrapper}>

@@ -1,8 +1,36 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React from 'react'
+import React, { useState } from 'react'
+import { auth } from "../firebase2";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { setColor } from "../store/colorSlice";
+
+
 
 const Home = ({ navigation }) => {
+    const color = useSelector((state) => state.color.value);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    // const [isValidUser,setIsValidUser] = useState(false);
+    const dispatch = useDispatch();
+
+    function addColor({ id }) {
+        dispatch(setColor({ payload: id }));
+    }
+
+    const handleLogIn = () => {
+        console.log(color.payload);
+        signInWithEmailAndPassword(auth, email, password)
+            .then(userCredentials => {
+                const user = userCredentials.user;
+                addColor({ id: user.email })
+                console.log('Logged in with ', user.email)
+                // setIsValidUser(true);
+                navigation.navigate("progressPage");
+            })
+            .catch(error => alert(error))
+    }
     return (
         <SafeAreaView style={styles.container}>
             <View>
@@ -12,14 +40,18 @@ const Home = ({ navigation }) => {
                 <TextInput
                     style={[styles.input, styles.shadowProp]}
                     placeholder="Email"
+                    value={email}
+                    onChangeText={text => { setEmail(text) }}
                     placeholderTextColor="#646577"
                 />
                 <TextInput
                     style={[styles.input, styles.shadowProp]}
                     placeholder="Password"
+                    value={password}
+                    onChangeText={text => { setPassword(text) }}
                     placeholderTextColor="#646577"
                 />
-                <TouchableOpacity style={styles.buttonWrapper}>
+                <TouchableOpacity onPress={() => handleLogIn()} style={styles.buttonWrapper}>
                     <Text style={styles.buttonTitle}>Log In</Text>
                 </TouchableOpacity>
                 <View style={styles.subTitleWrapper}>
@@ -45,6 +77,8 @@ const styles = StyleSheet.create({
     mainTitle: {
         color: "#FC6746",
         fontSize: 48,
+        alignItems: "center",
+        justifyContent: "center",
         fontWeight: "900",
     },
     formWrapper: {
