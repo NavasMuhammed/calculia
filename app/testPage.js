@@ -6,9 +6,10 @@ import axios from 'axios';
 
 
 const TestPage = () => {
+    const [data, setData] = useState([])
 
     const details = useSelector((state) => state.details.value);
-    const getDetails = async() => {
+    const getDetails = async () => {
         axios.get('http://10.0.2.2:5000/question', {
             params: {
                 level: details.payload.level
@@ -16,36 +17,40 @@ const TestPage = () => {
             headers: { 'Content-Type': 'application/json' }
             ,
         })
-        .then(res => {
-            res.data.forEach(element => {
-                console.log(element);
-            });
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}   
+            .then(res => {
+                res.data.forEach(element => {
+                    setData(element)
+                });
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     useEffect(() => {
         getDetails();
     }, [])
-    
+
 
     const [isOptionDisabled, setIsOptionDisabled] = useState(false)
-    const [response, setResponse] = useState(Number)
+    const [response, setResponse] = useState(null)
     const [ans, setAns] = useState(false)
     const answers = [20, 25, 30, 35];
     // const correctAnswer = 25;
 
+    const answersArr = []
+    answersArr[0] = data.opt1
+    answersArr[1] = data.opt2
+    answersArr[2] = data.opt3
+    answersArr[3] = data.opt4
+    // console.log(data.question)
+    const question = data.question
     const validateAns = (response) => {
-        let correctAnswer = answers[1];
+        let correctAnswer = data.answer;
         setResponse(response);
         setAns(correctAnswer);
         setIsOptionDisabled(true)
-        if (response == ans) {
-            () => null
-        }
-    }
 
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -58,10 +63,10 @@ const TestPage = () => {
                 </View>
             </View>
             <View style={styles.questionContainer}>
-                <Text style={styles.question}>FIND 10+5</Text>
+                <Text style={styles.question}>FIND {question}</Text>
             </View>
             <View style={styles.buttonsContainer}>
-                {answers.map(option => (
+                {answersArr.map(option => (
                     <TouchableOpacity
                         style={
                             {
@@ -84,9 +89,9 @@ const TestPage = () => {
                 ))
 
                 }
-                <TouchableOpacity style={styles.submitWrapper}>
-                    <Text style={styles.submitTitle}>CONTINUE</Text>
-                </TouchableOpacity>
+                {isOptionDisabled && <TouchableOpacity style={styles.submitWrapper}>
+                    <Text style={styles.submitTitle}>Next</Text>
+                </TouchableOpacity>}
             </View>
         </SafeAreaView >
 
