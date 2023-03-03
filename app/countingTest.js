@@ -39,31 +39,31 @@ const CountingTest = () => {
         if (qnNum == 0) {
             setAns(3)
         }
-        if (qnNum == 1) {
+        else if (qnNum == 1) {
             setAns(1)
         }
-        if (qnNum == 2) {
+        else if (qnNum == 2) {
             setAns(5)
         }
-        if (qnNum == 3) {
+        else if (qnNum == 3) {
             setAns(7)
         }
-        if (qnNum == 4) {
+        else if (qnNum == 4) {
             setAns(2)
         }
-        if (qnNum == 5) {
+        else if (qnNum == 5) {
             setAns(8)
         }
-        if (qnNum == 6) {
+        else if (qnNum == 6) {
             setAns(6)
         }
-        if (qnNum == 7) {
+        else if (qnNum == 7) {
             setAns(9)
         }
-        if (qnNum == 8) {
+        else if (qnNum == 8) {
             setAns(4)
         }
-        if (qnNum == 9) {
+        else if (qnNum == 9) {
             setAns(10)
         }
 
@@ -146,7 +146,7 @@ const CountingTest = () => {
                 </TouchableOpacity>
                 } */}
             </View>
-            {isOptionDisabled  && <TouchableOpacity onPress={() => handlePress()
+            {isOptionDisabled && <TouchableOpacity onPress={() => handlePress()
             } style={styles.submitWrapper}>
                 <Text style={styles.submitTitle}>Next</Text>
             </TouchableOpacity>
