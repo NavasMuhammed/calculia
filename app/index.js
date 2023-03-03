@@ -8,6 +8,8 @@ import ProgressPage from "./progresPage";
 import TestPage from "./testPage";
 import { store } from '../store/store'
 import { Provider } from 'react-redux'
+import TestSelectionPage from "./testSelectionPage";
+import CountingTest from "./countingTest";
 
 function App() {
   const Stack = createNativeStackNavigator();
@@ -22,6 +24,8 @@ function App() {
         <Stack.Screen name="signup" component={SignUp} />
         <Stack.Screen name="progressPage" component={ProgressPage}></Stack.Screen>
         <Stack.Screen name="testPage" component={TestPage} />
+        <Stack.Screen name="testSelectionPage" component={TestSelectionPage} />
+        <Stack.Screen name="countingTest" component={CountingTest} />
       </Stack.Navigator>
     </NavigationContainer>
   );

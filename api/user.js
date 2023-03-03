@@ -3,7 +3,7 @@ const express = require('express')
 const cors = require('cors')
 var admin = require("firebase-admin");
 
-var serviceAccount = require("C:/Users/hilal/Downloads/fir-auth-279eb-firebase-adminsdk-3os3j-2630e2ce66.json");
+var serviceAccount = require("C:/Users/91920/Downloads/fir-auth-279eb-firebase-adminsdk-3os3j-dcb225b6d5.json");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -11,7 +11,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const app = express()
-const port = 3000
+const port = 5000
 
 app.use(cors())
 

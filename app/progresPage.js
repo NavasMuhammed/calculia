@@ -17,7 +17,7 @@ const ProgressPage = ({ navigation }) => {
     }
 
     const getName = () => {
-        axios.get('http://10.0.2.2:3000/', {
+        axios.get('http://10.0.2.2:5000/', {
             params: {
                 email: email.payload
             },
@@ -35,7 +35,7 @@ const ProgressPage = ({ navigation }) => {
         }
         
         const getDetails = async(name) => {
-            axios.get('http://10.0.2.2:3000/test', {
+            axios.get('http://10.0.2.2:5000/test', {
                 params: {
                     name: name
                 },
@@ -68,7 +68,7 @@ const ProgressPage = ({ navigation }) => {
                 </View>
             </View>
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate("testPage")}>
+                <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate("testSelectionPage")}>
                     <Text style={styles.buttonTitle}>Dyscalculia Test</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrapper}>
