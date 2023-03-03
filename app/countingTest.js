@@ -25,14 +25,47 @@ const CountingTest = () => {
     const resetToDefault = () => {
         setResponse(null);
         setAns(null);
+        setIsOptionDisabled(false)
     }
 
-    const images = ['./3.png', './1.png']
+
+
+
 
     const validateAns = (response) => {
         setResponse(response);
-        setAns(correctAnswer);
-
+        // setAns(correctAnswer);
+        setIsOptionDisabled(true)
+        if (qnNum == 0) {
+            setAns(3)
+        }
+        if (qnNum == 1) {
+            setAns(1)
+        }
+        if (qnNum == 2) {
+            setAns(5)
+        }
+        if (qnNum == 3) {
+            setAns(7)
+        }
+        if (qnNum == 4) {
+            setAns(2)
+        }
+        if (qnNum == 5) {
+            setAns(8)
+        }
+        if (qnNum == 6) {
+            setAns(6)
+        }
+        if (qnNum == 7) {
+            setAns(9)
+        }
+        if (qnNum == 8) {
+            setAns(4)
+        }
+        if (qnNum == 9) {
+            setAns(10)
+        }
 
     }
 
@@ -48,12 +81,27 @@ const CountingTest = () => {
             </View>
 
             <View style={styles.questionContainer}>
-                <Text style={styles.question}>COUNT THE BALLS</Text>
+                <Text style={styles.question}>{
+                    qnNum < 9 ? <Text>COUNT THE BALLS</Text> : <Text>ADD THE BALLS</Text>
+                }</Text>
             </View>
             <View style={styles.ballContainer} >
                 {qnNum == 0 ? <Image source={require('./3.png')} /> :
-                    qnNum == 1 ? <Image source={require('./1.png')} /> :
-                        <></>}
+                    qnNum == 1 ? <Image style={styles.ballImage1} source={require('./1.png')} /> :
+                        qnNum == 2 ? <Image style={styles.ballImage5} source={require('./5.png')} /> :
+                            qnNum == 3 ? <Image style={styles.ballImage7} source={require('./7.png')} /> :
+                                qnNum == 4 ? <Image style={styles.ballImage2} source={require('./2.png')} /> :
+                                    qnNum == 5 ? <Image style={styles.ballImage8} source={require('./8.png')} /> :
+                                        qnNum == 6 ? <Image style={styles.ballImage6} source={require('./6.png')} /> :
+                                            qnNum == 7 ? <Image style={styles.ballImage9} source={require('./9.png')} /> :
+                                                qnNum == 8 ? <Image source={require('./4.png')} /> :
+                                                    qnNum == 9 ? <View style={styles.addContainer}>
+                                                        <Image style={styles.addImageLeft} source={require('./4.png')} />
+                                                        <Image style={styles.addIcon} source={require('./add.png')} />
+                                                        <Image style={styles.addImageRight} source={require('./6.png')} />
+                                                    </View> :
+
+                                                        <></>}
             </View>
             {/* <View style={styles.optionContainerBalls}>
                 <TouchableOpacity style={styles.ballOption}>
@@ -92,13 +140,13 @@ const CountingTest = () => {
                 ))
 
                 }
-                {isOptionDisabled && <TouchableOpacity onPress={() => handlePress()
+                {/* {isOptionDisabled && <TouchableOpacity onPress={() => handlePress()
                 } style={styles.submitWrapper1}>
                     <Text style={styles.submitTitle1}>Next</Text>
                 </TouchableOpacity>
-                }
+                } */}
             </View>
-            {!isOptionDisabled && <TouchableOpacity onPress={() => handlePress()
+            {isOptionDisabled  && <TouchableOpacity onPress={() => handlePress()
             } style={styles.submitWrapper}>
                 <Text style={styles.submitTitle}>Next</Text>
             </TouchableOpacity>
@@ -119,6 +167,51 @@ const styles = StyleSheet.create({
         backgroundColor: "#141527",
 
     },
+    addContainer: {
+        flexDirection: "row",
+    },
+    addIcon: {
+        margin: 5,
+        marginTop: 30,
+        width: 58,
+        height: 60,
+    },
+    addImageRight: {
+        width: 105,
+        height: 150,
+    },
+    addImageLeft: {
+        width: 102,
+        height: 105,
+    },
+    ballImage9: {
+        width: 185,
+        height: 203,
+    },
+    ballImage8: {
+        width: 189,
+        height: 203,
+    },
+    ballImage6: {
+        width: 140,
+        height: 200,
+    },
+    ballImage1: {
+        width: 180,
+        height: 180,
+    },
+    ballImage5: {
+        width: 145,
+        height: 200,
+    },
+    ballImage7: {
+        width: 182,
+        height: 200,
+    },
+    ballImage2: {
+        width: 282,
+        height: 130,
+    },
     ballContainer: {
         alignSelf: "center",
         width: "auto",
@@ -137,7 +230,7 @@ const styles = StyleSheet.create({
         // padding: 80,
         alignItems: "center",
         justifyContent: "center",
-        top: 40
+        top: 55
         // backgroundColor: "#000"
     },
     ballOption: {
@@ -196,7 +289,7 @@ const styles = StyleSheet.create({
     },
 
     submitWrapper: {
-        top: -40,
+        top: -30,
         borderRadius: 15,
         alignItems: 'center',
         alignSelf: 'center',
