@@ -18,7 +18,7 @@ const TestPage = () => {
         })
         .then(res => {
             res.data.forEach(element => {
-                console.log(element);
+                console.log(element+"hilal");
             });
         })
         .catch(err => {
