@@ -7,6 +7,7 @@ import { setDetails } from '../store/detailsSlice';
 
 const ProgressPage = ({ navigation }) => {
     const [username, setusername] = useState("")
+    
     const [progress, setprogress] = useState(0)
     const email = useSelector((state) => state.color.value);
     const details = useSelector((state) => state.details.value);
