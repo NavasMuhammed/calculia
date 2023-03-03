@@ -6,14 +6,39 @@ import axios from 'axios';
 
 
 const TestPage = () => {
-    const [data, setData] = useState([])
-    const [singleData, setSingleData] = useState([]);
-    const [qnNum, setQnNum] = useState(1)
+    let data = []
+    let singleData = []
+    var questionArr = []
+    let ansarray = []
+    const [qnNum, setQnNum] = useState(0)
     const [isOptionDisabled, setIsOptionDisabled] = useState(false)
     const [response, setResponse] = useState(null)
     const [ans, setAns] = useState(false)
+    const [question, setquestion] = useState()
+    const [correctAnswer, setcorrectAnswer] = useState()
+    const [options, setOptions] = useState([]);
+    let timeouttime = false
 
     const details = useSelector((state) => state.details.value);
+
+    let time = 2000
+    const getquestion = async () => {
+        if (!timeouttime) {
+            setTimeout(() => {
+                setquestion(singleData[qnNum])
+                setOptions(data[qnNum])
+                setcorrectAnswer(ansarray[qnNum]);
+                console.log(ansarray);
+                timeouttime = true
+            }, time);
+        }
+        else {
+            setquestion(singleData[qnNum])
+            setOptions(data[qnNum])
+            setcorrectAnswer(ansarray[qnNum]);
+            console.log(ansarray);
+        }
+    }
     const getDetails = async (n) => {
         await axios.get('http://10.0.2.2:5000/question', {
             params: {
@@ -23,23 +48,30 @@ const TestPage = () => {
             ,
         })
             .then(res => {
-                // setSingleData(res.data)
-                // console.log(singleData)
-                // console.log(singleData)
+                console.log(res.data)
+                console.log("//")
                 res.data.forEach(element => {
-                    setData(element)
-                    // console.log(singleData)
-                    console.log("/////")
+                    let answersArr = []
+
+                    answersArr[0] = element.opt1
+                    answersArr[1] = element.opt2
+                    answersArr[2] = element.opt3
+                    answersArr[3] = element.opt4
+                    questionArr[0] = element.question
+                    data.push(answersArr)
+                    ansarray.push(element.answer)
+                    singleData.push(element.question)
                     console.log(data)
                 });
             })
             .catch(err => {
-                // console.log(err)
+                console.log(err)
             })
     }
     useEffect(() => {
         getDetails();
-    }, [])
+        getquestion();
+    }, [qnNum])
 
 
 
@@ -49,35 +81,17 @@ const TestPage = () => {
 
     const handlePress = () => {
         incrementQnNum();
-
+        resetToDefault();
     };
 
+    const resetToDefault = () => {
+        setResponse(null);
+        setAns(null);
+    }
 
-    // const answers = [20, 25, 30, 35];
-    // const correctAnswer = 25;
 
-    // for (let i = 0; i < data.length; i++) {
-    //     const questionSet =
-    //     {
-    //         "answer": singleData[i].answer,
-    //         "opt1": singleData[i].opt1,
-    //         "opt2": singleData[i].opt2,
-    //         "opt3": singleData[i].opt3,
-    //         "opt4": singleData[i].opt4,
-    //         "question": singleData[i].question,
-    //     }
 
-    // }
-
-    const answersArr = []
-    answersArr[0] = data.opt1
-    answersArr[1] = data.opt2
-    answersArr[2] = data.opt3
-    answersArr[3] = data.opt4
-    // console.log(singleData[0].question)
-    const question = data.question
     const validateAns = (response) => {
-        let correctAnswer = data.answer;
         setResponse(response);
         setAns(correctAnswer);
         setIsOptionDisabled(true)
@@ -94,13 +108,13 @@ const TestPage = () => {
                     <View style={styles.progressBarInner}></View>
                 </View>
             </View>
-            {qnNum != 1 ?
+            {true ?
                 <>
                     <View style={styles.questionContainer}>
                         <Text style={styles.question}>FIND {question}</Text>
                     </View>
                     <View style={styles.buttonsContainer}>
-                        {answersArr.map(option => (
+                        {options.map(option => (
                             <TouchableOpacity
                                 style={
                                     {
@@ -150,7 +164,7 @@ const TestPage = () => {
                             <Text style={styles.buttonTitle1}>6</Text>
                         </TouchableOpacity>
                     </View>
-                    {!isOptionDisabled && <TouchableOpacity onPress={() => handlePress()
+                    {isOptionDisabled && <TouchableOpacity onPress={() => handlePress()
                     } style={styles.submitWrapper}>
                         <Text style={styles.submitTitle}>Next</Text>
                     </TouchableOpacity>
