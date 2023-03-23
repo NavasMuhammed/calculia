@@ -1,9 +1,14 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
-import { useRef } from "react";
+import { useRef,useEffect } from "react";
 const DsirectionTest = ({ navigation }) => {
   const [qN, setQN] = useState(0);
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    setQN(Math.floor(Math.random() * 4));
+  }, [])
+  
   const options = ["UP", "LEFT", "RIGHT", "DOWN"];
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
   const [ans, setAns] = useState("");
@@ -22,7 +27,9 @@ const DsirectionTest = ({ navigation }) => {
     }
   };
   const handlePress = () => {
-    setQN(qN + 1);
+    // setQN(qN + 1);
+    setQN(Math.floor(Math.random() * 4));
+    setCount(count + 1);
     resetToDefault();
   };
 
@@ -33,7 +40,7 @@ const DsirectionTest = ({ navigation }) => {
   };
   return (
     <>
-      {qN <= 3 ? (
+      {count <= 3 ? (
         <SafeAreaView style={styles.container}>
           <Text style={styles.mainTitle}>GUESS THE DIRECTION</Text>
           <View style={styles.questionBox}>

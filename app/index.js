@@ -27,7 +27,7 @@ function App() {
         <Stack.Screen name="progressPage" component={ProgressPage}></Stack.Screen>
         <Stack.Screen name="testPage" component={TestPage} />
         <Stack.Screen name="testSelectionPage" component={TestSelectionPage} />
-        <Stack.Screen name="countingTest" component={DsirectionTest} />
+        <Stack.Screen name="countingTest" component={CountingTest} />
         <Stack.Screen name="directionTest" component={DsirectionTest} />
         <Stack.Screen name="colorTest" component={ColorTest} />
       </Stack.Navigator>
