@@ -1,9 +1,15 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useRef } from "react";
 const DsirectionTest = ({ navigation }) => {
   const [qN, setQN] = useState(0);
+  const [qNarray, setQNarray] = useState([]);
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    setQN(Math.floor(Math.random() *6));
+    setQNarray([...qNarray, qN]);
+  }, [])
   const options = ["RED", "BLUE", "BLACK", "GREEN", "WHITE", "YELLOW"];
   const [isOptionDisabled, setIsOptionDisabled] = useState(true);
   const [ans, setAns] = useState("");
@@ -26,7 +32,15 @@ const DsirectionTest = ({ navigation }) => {
     }
   };
   const handlePress = () => {
-    setQN(qN + 1);
+    setQN(Math.floor(Math.random() * 6));
+    if(qNarray.includes(qN)){
+      setQN(Math.floor(Math.random() * 6));
+    }
+    if(qNarray.includes(qN)){
+      setQN(Math.floor(Math.random() * 6));
+    }
+    setQNarray([...qNarray, qN]);
+    setCount(count + 1);
     resetToDefault();
   };
 
@@ -37,7 +51,7 @@ const DsirectionTest = ({ navigation }) => {
   };
   return (
     <>
-      {qN <= 5 ? (
+      {count <= 5 ? (
         <SafeAreaView style={styles.container}>
           <Text style={styles.mainTitle}>GUESS THE COLOUR</Text>
           <View style={styles.questionBox}>
@@ -103,6 +117,7 @@ const DsirectionTest = ({ navigation }) => {
           <Text style={styles.mainTitle}>GAME OVER</Text>
           <TouchableOpacity
             onPress={() => {
+              setCount(0);
               navigation.navigate("testSelectionPage");
             }}
             style={styles.submitWrapperL}
