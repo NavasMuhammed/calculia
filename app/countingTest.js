@@ -14,39 +14,48 @@ const data = [
   {
     id: 1,
     Image: require("./1.png"),
+    style: "styles.ballImage1",
   },
   {
     id: 2,
     Image: require("./2.png"),
+    style: "styles.ballImage2",
   },
   {
     id: 3,
     Image: require("./3.png"),
+    style: "styles.ballImage5",
   },
   {
     id: 4,
     Image: require("./4.png"),
+    style: "styles.ballImage5",
   },
   {
     id: 5,
     Image: require("./5.png"),
+    style: "styles.ballImage5",
   },
   {
     id: 6,
     Image: require("./6.png"),
+    style: "styles.ballImage5",
   },
   {
     id: 7,
     Image: require("./7.png"),
+    style: "styles.ballImage5",
   },
   {
     id: 8,
     Image: require("./8.png"),
+    style: "styles.ballImage7",
   },
   {
     id: 9,
     Image: require("./9.png"),
-  }
+    style: "styles.ballImage8",
+  },
 ];
 
 const CountingTest = () => {
@@ -57,25 +66,25 @@ const CountingTest = () => {
   const [ans, setAns] = useState(Number);
   const [correctAnswer, setCorrectAnswer] = useState(Number);
   const [qnNum, setQnNum] = useState(0);
-  const [selectedqn, setselectedqn] = useState(Number)
+  const [selectedqn, setselectedqn] = useState(Number);
   const [response, setResponse] = useState(0);
   const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const alreadyselected = [];
-  let random =1;
-  const questions = [1,2,3,4,5,6,7,8,9]
+  let random = 1;
+  const questions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const incrementQnNum = () => {
     setQnNum(qnNum + 1);
     selectpic();
   };
   const selectpic = () => {
     random = Math.floor(Math.random() * questions.length);
-    while(alreadyselected.includes(random)){
+    while (alreadyselected.includes(random)) {
       random = Math.floor(Math.random() * questions.length);
       console.log(random);
     }
-    setselectedqn(random)
-    alreadyselected.push(random)
-  }
+    setselectedqn(random);
+    alreadyselected.push(random);
+  };
 
   const handlePress = () => {
     incrementQnNum();
@@ -92,28 +101,7 @@ const CountingTest = () => {
     setResponse(response);
     // setAns(correctAnswer);
     setIsOptionDisabled(true);
-    setAns(selectedqn+1)
-    // if (qnNum == 0) {
-    //   setAns(3);
-    // } else if (qnNum == 1) {
-    //   setAns(1);
-    // } else if (qnNum == 2) {
-    //   setAns(5);
-    // } else if (qnNum == 3) {
-    //   setAns(7);
-    // } else if (qnNum == 4) {
-    //   setAns(2);
-    // } else if (qnNum == 5) {
-    //   setAns(8);
-    // } else if (qnNum == 6) {
-    //   setAns(6);
-    // } else if (qnNum == 7) {
-    //   setAns(9);
-    // } else if (qnNum == 8) {
-    //   setAns(4);
-    // } else if (qnNum == 9) {
-    //   setAns(10);
-    // }
+    setAns(selectedqn + 1);
   };
 
   return (
@@ -136,52 +124,9 @@ const CountingTest = () => {
           )}
         </Text>
       </View>
-      {/* <View style={styles.ballContainer}>
-        {qnNum == 0 ? (
-          <Image source={require("./3.png")} />
-        ) : qnNum == 1 ? (
-          <Image style={styles.ballImage1} source={require("./1.png")} />
-        ) : qnNum == 2 ? (
-          <Image style={styles.ballImage5} source={require("./5.png")} />
-        ) : qnNum == 3 ? (
-          <Image style={styles.ballImage7} source={require("./7.png")} />
-        ) : qnNum == 4 ? (
-          <Image style={styles.ballImage2} source={require("./2.png")} />
-        ) : qnNum == 5 ? (
-          <Image style={styles.ballImage8} source={require("./8.png")} />
-        ) : qnNum == 6 ? (
-          <Image style={styles.ballImage6} source={require("./6.png")} />
-        ) : qnNum == 7 ? (
-          <Image style={styles.ballImage9} source={require("./9.png")} />
-        ) : qnNum == 8 ? (
-          <Image source={require("./4.png")} />
-        // ) : qnNum == 9 ? (
-        //   <View style={styles.addContainer}>
-        //     <Image style={styles.addImageLeft} source={require("./4.png")} />
-        //     <Image style={styles.addIcon} source={require("./add.png")} />
-        //     <Image style={styles.addImageRight} source={require("./6.png")} />
-        //   </View>
-        ) : (
-          <></>
-        )}
-      </View> */}
       <View style={styles.ballContainer}>
-        <Image style={styles.ballImage+{selectedqn}} source={data[selectedqn].Image} />
-        </View> 
-      {/* <View style={styles.optionContainerBalls}>
-                <TouchableOpacity style={styles.ballOption}>
-                    <Text style={styles.buttonTitle1}>7</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.ballOption}>
-                    <Text style={styles.buttonTitle1}>2</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.ballOption}>
-                    <Text style={styles.buttonTitle1}>3</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.ballOption}>
-                    <Text style={styles.buttonTitle1}>6</Text>
-                </TouchableOpacity>
-            </View> */}
+        <Image source={data[selectedqn].Image} />
+      </View>
       <View style={styles.optionContainerBalls}>
         {options.map((option) => (
           <TouchableOpacity

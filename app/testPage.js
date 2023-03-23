@@ -17,9 +17,11 @@ const TestPage = () => {
     const [question, setquestion] = useState()
     const [correctAnswer, setcorrectAnswer] = useState()
     const [options, setOptions] = useState([]);
+    const [score,setScore] = useState(0)
     let timeouttime = false
 
     const details = useSelector((state) => state.details.value);
+    // const score = useSelector((state) => state.score.value);
 
     let time = 2000
     const getquestion = async () => {
@@ -85,6 +87,7 @@ const TestPage = () => {
     const resetToDefault = () => {
         setResponse(null);
         setAns(null);
+        setIsOptionDisabled(false)
     }
 
 
@@ -93,7 +96,14 @@ const TestPage = () => {
         setResponse(response);
         setAns(correctAnswer);
         setIsOptionDisabled(true)
+        addScore(response);
 
+    }
+    const addScore = (response) => {
+        if (response == correctAnswer) {
+            setScore(score + 1)
+            console.log(score);
+        }   
     }
 
     return (
@@ -113,7 +123,7 @@ const TestPage = () => {
                     </View>
                     <View style={styles.buttonsContainer}>
                         {options.map(option => (
-                            <TouchableOpacity
+                        <TouchableOpacity
                                 style={
                                     {
                                         flexDirection: "row",
@@ -128,7 +138,10 @@ const TestPage = () => {
                                         marginTop: 30,
                                     }}
                                 key={option}
-                                onPress={() => validateAns(option)}
+                                onPress={() =>{
+                                    if(!isOptionDisabled)
+                                    validateAns(option)}
+                                } 
                             >
                                 <Text style={styles.buttonTitle}>{option}</Text>
                             </TouchableOpacity>
