@@ -1,49 +1,84 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useRef } from "react";
-import { TextInput } from "react-native-gesture-handler";
+const DsirectionTest = ({ navigation }) => {
+  const [qN, setQN] = useState(0);
+  const options = ["UP", "LEFT", "RIGHT", "DOWN"];
+  const [isOptionDisabled, setIsOptionDisabled] = useState(false);
+  const [ans, setAns] = useState("");
+  const [response, setResponse] = useState(0);
+  const validateAns = (response) => {
+    setResponse(response);
+    // setAns(correctAnswer);
+    setIsOptionDisabled(true);
+    if (qN == 0) {
+      setAns("DOWN");
+    } else if (qN == 1) {
+      setAns("LEFT");
+    } else if (qN == 2) {
+      setAns("UP");
+    } else if (qN == 3) {
+      setAns("RIGHT");
+    }
+  };
+  const handlePress = () => {
+    setQN(qN + 1);
+    resetToDefault();
+  };
 
-const DsirectionTest = () => {
-  const first = useRef();
-  const newname = first.current;
-  console.log(newname);
-  const num = 4;
-  const name1 = false;
-  const name2 = false;
-  const name3 = false;
-  const name4 = false;
-
-  useEffect(() => {
-    const randonNumber = 3;
-    // {[`name${randonNumber}`]}=true;
-  }, []);
-
+  const resetToDefault = () => {
+    setResponse(null);
+    setAns(null);
+    setIsOptionDisabled(false);
+  };
+  // const first = useRef();
+  // const newname = first.current;
+  // console.log(newname);
+  // const num = 4;
+  // const name1 = false;
+  // const name2 = false;
+  // const name3 = false;
+  // const name4 = false;
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.mainTitle}>GUESS THE DIRECTION</Text>
-      <View style={styles.questionBox}>
-        <View style={styles.row1}>
-          {name1 ? (
-            <View style={styles.box1}></View>
-          ) : (
-            <View style={styles.box}></View>
-          )}
-        </View>
+    <>
+      {qN <= 3 ? (
+        <SafeAreaView style={styles.container}>
+          <Text style={styles.mainTitle}>GUESS THE DIRECTION</Text>
+          <View style={styles.questionBox}>
+            <View style={styles.row1}>
+              {qN == 2 ? (
+                <View style={styles.boxU}></View>
+              ) : (
+                <View style={styles.box}></View>
+              )}
+            </View>
 
-        <View style={styles.row2}>
-          <View style={styles.box}></View>
-          <View style={styles.boy}>
-            <Image source={require("./child.png")} />
+            <View style={styles.row2}>
+              {qN == 1 ? (
+                <View style={styles.boxU}></View>
+              ) : (
+                <View style={styles.box}></View>
+              )}
+              <View style={styles.boy}>
+                <Image source={require("./child.png")} />
+              </View>
+              {qN == 3 ? (
+                <View style={styles.boxU}></View>
+              ) : (
+                <View style={styles.box}></View>
+              )}
+            </View>
+            <View style={styles.row3}>
+              {qN == 0 ? (
+                <View style={styles.boxU}></View>
+              ) : (
+                <View style={styles.box}></View>
+              )}
+            </View>
           </View>
-          <View style={styles.box}></View>
-        </View>
-        <View style={styles.row3}>
-          <View style={styles.box}></View>
-        </View>
-      </View>
-      <View style={styles.optionsBox}>
-        <View style={styles.row2}>
+          <View style={styles.optionsBox}>
+            {/* <View style={styles.row2}>
           <TouchableOpacity style={styles.boxO}>
             <Text style={styles.optionsText}>UP</Text>
           </TouchableOpacity>
@@ -58,12 +93,54 @@ const DsirectionTest = () => {
           <TouchableOpacity style={styles.boxO}>
             <Text style={styles.optionsText}>RIGHT</Text>
           </TouchableOpacity>
-        </View>
-      </View>
-      <TouchableOpacity  style={styles.submitWrapper}>
-                <Text style={styles.submitTitle}>Next</Text>
-            </TouchableOpacity>
-    </SafeAreaView>
+        </View> */}
+            {options.map((option) => (
+              <TouchableOpacity
+                style={{
+                  width: 80,
+                  height: 80,
+                  backgroundColor: "#1E1F3B",
+                  margin: 10,
+                  borderRadius: 10,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor:
+                    option == ans
+                      ? "#00FF19"
+                      : option == response
+                      ? "#FF0330"
+                      : "#1E1F3B",
+                }}
+                key={option}
+                onPress={() => validateAns(option)}
+              >
+                <Text style={styles.optionsText}>{option}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          {isOptionDisabled&&<TouchableOpacity
+            onPress={() => {
+              handlePress();
+            }}
+            style={styles.submitWrapper}
+          >
+            <Text style={styles.submitTitle}>Next</Text>
+          </TouchableOpacity>}
+        </SafeAreaView>
+      ) : (
+        <SafeAreaView style={styles.containerL}>
+          <Text style={styles.mainTitle}>GAME OVER</Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("testSelectionPage");
+            }}
+            style={styles.submitWrapperL}
+          >
+            <Text style={styles.submitTitle}>Back to Menu</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      )}
+    </>
   );
 };
 
@@ -73,6 +150,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
+    backgroundColor: "#141527",
+  },
+  submitWrapperL: {
+    top:100,
+    borderRadius: 15,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    backgroundColor: "#FC6746",
+    padding: 20,
+    width: "70%",
+    paddingRight: 90,
+    paddingLeft: 90,
+  },
+  containerL: {
+    flex: 1,
+    gap: 100,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "#141527",
   },
   mainTitle: {
@@ -96,6 +193,34 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 14,
+    backgroundColor: "#141527",
+    margin: 20,
+  },
+  boxU: {
+    width: 80,
+    height: 80,
+    borderRadius: 14,
+    backgroundColor: "#FC6746",
+    margin: 20,
+  },
+  boxL: {
+    width: 80,
+    height: 80,
+    borderRadius: 14,
+    backgroundColor: "#1E1F3B",
+    margin: 20,
+  },
+  boxR: {
+    width: 80,
+    height: 80,
+    borderRadius: 14,
+    backgroundColor: "#1E1F3B",
+    margin: 20,
+  },
+  boxD: {
+    width: 80,
+    height: 80,
+    borderRadius: 14,
     backgroundColor: "#1E1F3B",
     margin: 20,
   },
@@ -108,7 +233,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  boy: {},
+  boy: {
+    padding: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   row1: {
     alignItems: "center",
   },
@@ -122,10 +251,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   optionsBox: {
-    display: "flex",
+    alignSelf: "center",
+    width: "50%",
+    marginBottom: 30,
+    // containContent: true,
+    // overflow: "hidden",
+    // // flex: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    // padding: 80,
     alignItems: "center",
     justifyContent: "center",
-    top: 30,
+    // top: 55,
   },
   optionsText: {
     color: "#fff",
@@ -133,24 +270,21 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
   submitWrapper: {
-    top: 15,
+    // top: 15,
     borderRadius: 15,
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
     backgroundColor: "#FC6746",
     padding: 20,
     width: "70%",
     paddingRight: 90,
     paddingLeft: 90,
-    marginTop: 30,
-},
-submitTitle: {
-    color: '#ffffff',
+    // marginTop: 30,
+  },
+  submitTitle: {
+    color: "#ffffff",
     fontSize: 16,
-    fontWeight: '900',
-},
+    fontWeight: "900",
+  },
 });
-
-
-
