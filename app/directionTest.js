@@ -10,7 +10,6 @@ const DsirectionTest = ({ navigation }) => {
   const [response, setResponse] = useState(0);
   const validateAns = (response) => {
     setResponse(response);
-    // setAns(correctAnswer);
     setIsOptionDisabled(true);
     if (qN == 0) {
       setAns("DOWN");
@@ -32,14 +31,6 @@ const DsirectionTest = ({ navigation }) => {
     setAns(null);
     setIsOptionDisabled(false);
   };
-  // const first = useRef();
-  // const newname = first.current;
-  // console.log(newname);
-  // const num = 4;
-  // const name1 = false;
-  // const name2 = false;
-  // const name3 = false;
-  // const name4 = false;
   return (
     <>
       {qN <= 3 ? (
@@ -78,22 +69,6 @@ const DsirectionTest = ({ navigation }) => {
             </View>
           </View>
           <View style={styles.optionsBox}>
-            {/* <View style={styles.row2}>
-          <TouchableOpacity style={styles.boxO}>
-            <Text style={styles.optionsText}>UP</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.boxO}>
-            <Text style={styles.optionsText}>DOWN</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.row2}>
-          <TouchableOpacity style={styles.boxO}>
-            <Text style={styles.optionsText}>LEFT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.boxO}>
-            <Text style={styles.optionsText}>RIGHT</Text>
-          </TouchableOpacity>
-        </View> */}
             {options.map((option) => (
               <TouchableOpacity
                 style={{
@@ -118,14 +93,16 @@ const DsirectionTest = ({ navigation }) => {
               </TouchableOpacity>
             ))}
           </View>
-          {isOptionDisabled&&<TouchableOpacity
-            onPress={() => {
-              handlePress();
-            }}
-            style={styles.submitWrapper}
-          >
-            <Text style={styles.submitTitle}>Next</Text>
-          </TouchableOpacity>}
+          {isOptionDisabled && (
+            <TouchableOpacity
+              onPress={() => {
+                handlePress();
+              }}
+              style={styles.submitWrapper}
+            >
+              <Text style={styles.submitTitle}>Next</Text>
+            </TouchableOpacity>
+          )}
         </SafeAreaView>
       ) : (
         <SafeAreaView style={styles.containerL}>
@@ -153,7 +130,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#141527",
   },
   submitWrapperL: {
-    top:100,
+    top: 100,
     borderRadius: 15,
     alignItems: "center",
     alignSelf: "center",
@@ -244,7 +221,6 @@ const styles = StyleSheet.create({
   row2: {
     width: "100%",
     flexDirection: "row",
-    // justifyContent: "space-around",
     alignItems: "center",
   },
   row3: {
@@ -254,15 +230,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "50%",
     marginBottom: 30,
-    // containContent: true,
-    // overflow: "hidden",
-    // // flex: 10,
     flexDirection: "row",
     flexWrap: "wrap",
-    // padding: 80,
     alignItems: "center",
     justifyContent: "center",
-    // top: 55,
   },
   optionsText: {
     color: "#fff",
@@ -270,7 +241,6 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
   submitWrapper: {
-    // top: 15,
     borderRadius: 15,
     alignItems: "center",
     alignSelf: "center",
@@ -280,7 +250,6 @@ const styles = StyleSheet.create({
     width: "70%",
     paddingRight: 90,
     paddingLeft: 90,
-    // marginTop: 30,
   },
   submitTitle: {
     color: "#ffffff",
