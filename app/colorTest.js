@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState,useEffect } from "react";
 import { useRef } from "react";
 const DsirectionTest = ({ navigation }) => {
+  const [newqn, setNewqn] = useState([]);
   const [qN, setQN] = useState(0);
   const [qNarray, setQNarray] = useState([]);
   const [count, setCount] = useState(0);
@@ -34,14 +35,13 @@ const DsirectionTest = ({ navigation }) => {
   const handlePress = () => {
     setQN(Math.floor(Math.random() * 6));
     if(qNarray.includes(qN)){
-      setQN(Math.floor(Math.random() * 6));
-    }
-    if(qNarray.includes(qN)){
-      setQN(Math.floor(Math.random() * 6));
+      setNewqn([0,1,2,3,4,5].filter((item) => !qNarray.includes(item)));
+      setQN(newqn[0]);
+      // console.log(newqn);
     }
     setQNarray([...qNarray, qN]);
     setCount(count + 1);
-    resetToDefault();
+    resetToDefault();     
   };
 
   const resetToDefault = () => {

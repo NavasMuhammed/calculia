@@ -28,7 +28,7 @@ const DsirectionTest = ({ navigation }) => {
   };
   const handlePress = () => {
     // setQN(qN + 1);
-    setQN(Math.floor(Math.random() * 4));
+    setQN([0,1,2,3].filter((item) => item != qN)[Math.floor(Math.random() * 3)]);
     setCount(count + 1);
     resetToDefault();
   };
