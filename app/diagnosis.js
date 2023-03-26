@@ -11,33 +11,43 @@ const Diagnosis = ({ navigation }) => {
     "Does your child get lost, even in familiar surroundings?",
     "Does your child reverse or mix up numbers? for example 63 for 36, or 785 for 875?",
   ];
-  const [qestionNum, setQestionNum] = useState(0);
-  const options = ["Very Often", "Often", "Sometimes", "Rarely", "Never"];
+  const [questionNum, setQuestionNum] = useState(0);
+  const options = ["Often", "Sometimes", "Rarely", "Never"];
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.mainTitle}>Answer the fllowing questions</Text>
-      <View style={styles.questionContainer}>
-        <Text style={styles.question}>{questions[qestionNum]}</Text>
-      </View>
-      <View style={styles.optionContainer}>
-        {options.map((item, index) => {
-          return (
-            <TouchableOpacity style={styles.optionButton}>
-              <Text style={styles.option}>{item}</Text>
+      {questionNum < questions.length ? (
+        <>
+          <Text style={styles.mainTitle}>Answer the fllowing questions</Text>
+          <View style={styles.questionContainer}>
+            <Text style={styles.question}>{questions[questionNum]}</Text>
+          </View>
+          <View style={styles.optionContainer}>
+            {options.map((item, index) => {
+              return (
+                <TouchableOpacity style={styles.optionButton}>
+                  <Text style={styles.option}>{item}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+          <View style={styles.submitContainer}>
+            <TouchableOpacity
+              style={styles.submitWrapper}
+              onPress={() => {
+                setQuestionNum(questionNum + 1);
+              }}
+            >
+              <Text style={styles.submitTitle}>Next</Text>
             </TouchableOpacity>
-          );
-        })}
-      </View>
-      <View style={styles.submitContainer}>
-        <TouchableOpacity
-          style={styles.submitWrapper}
-          onPress={() => {
-            setQestionNum(qestionNum + 1);
-          }}
-        >
-          <Text style={styles.submitTitle}>Next</Text>
-        </TouchableOpacity>
-      </View>
+          </View>
+        </>
+      ) : (
+        <>
+          <View>
+            <Text style={styles.mainTitle}>Your results</Text>
+          </View>
+        </>
+      )}
     </SafeAreaView>
   );
 };
