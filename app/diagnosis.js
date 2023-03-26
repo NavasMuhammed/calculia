@@ -24,7 +24,7 @@ const Diagnosis = ({ navigation }) => {
           <View style={styles.optionContainer}>
             {options.map((item, index) => {
               return (
-                <TouchableOpacity style={styles.optionButton}>
+                <TouchableOpacity key={index} style={styles.optionButton}>
                   <Text style={styles.option}>{item}</Text>
                 </TouchableOpacity>
               );
