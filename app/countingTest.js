@@ -197,10 +197,10 @@ const styles = StyleSheet.create({
     height: 105,
   },
 
-  image:{
+  image: {
     width: 150,
     height: 150,
-    resizeMode:"stretch"
+    resizeMode: "stretch",
   },
   ballContainer: {
     alignSelf: "center",
