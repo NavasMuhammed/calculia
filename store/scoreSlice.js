@@ -9,7 +9,7 @@ export const scoreSlice = createSlice({
   name: "score",
   initialState,
   reducers: {
-    setColor: (state,action) => {
+    setScore: (state,action) => {
       state.value = action.payload;
     },
   },

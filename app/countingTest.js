@@ -7,9 +7,10 @@ import {
   Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "../store/detailsSlice";
 import axios from "axios";
+import { setScore } from "../store/scoreSlice";
 const data = [
   {
     id: 1,
@@ -58,8 +59,9 @@ const data = [
   },
 ];
 
-const CountingTest = () => {
+const CountingTest = ({navigation}) => {
   useEffect(() => {
+    dispatch(setScore(0));
     selectpic();
   }, []);
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
@@ -72,6 +74,8 @@ const CountingTest = () => {
   const alreadyselected = [];
   let random = 1;
   const questions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const dispatch = useDispatch();
+  const score = useSelector((state) => state.score.value);
   const incrementQnNum = () => {
     setQnNum(qnNum + 1);
     selectpic();
@@ -102,10 +106,18 @@ const CountingTest = () => {
     // setAns(correctAnswer);
     setIsOptionDisabled(true);
     setAns(selectedqn + 1);
+    addScore(response);
+  };
+  const addScore = (response) => {
+    if (response == selectedqn + 1) {
+      dispatch(setScore(score + 1))
+      // console.log(score+"reach");
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      {qnNum < 10 ? (<>
       <View style={styles.titleContainer}>
         <Text style={styles.mainTitle}>Question {qnNum}/10</Text>
       </View>
@@ -117,11 +129,7 @@ const CountingTest = () => {
 
       <View style={styles.questionContainer}>
         <Text style={styles.question}>
-          {qnNum < 9 ? (
-            <Text>COUNT THE BALLS</Text>
-          ) : (
-            <Text>ADD THE BALLS</Text>
-          )}
+          <Text>How Many balls are in the image</Text>
         </Text>
       </View>
       <View style={styles.imageContainer}>
@@ -166,6 +174,22 @@ const CountingTest = () => {
         >
           <Text style={styles.submitTitle}>Next</Text>
         </TouchableOpacity>
+      )}</>)
+       :(
+        <SafeAreaView style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.mainTitle}>Score: {score}</Text>
+          </View>
+          <Text style={styles.mainTitle}>GAME OVER</Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("testSelectionPage");
+            }}
+            style={styles.submitWrapper}
+          >
+            <Text style={styles.submitTitle}>Back to Menu</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
       )}
     </SafeAreaView>
   );

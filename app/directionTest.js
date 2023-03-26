@@ -2,18 +2,23 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
 import { useRef,useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setScore } from "../store/scoreSlice";
 const DsirectionTest = ({ navigation }) => {
   const [qN, setQN] = useState(0);
   const [count, setCount] = useState(0);
   useEffect(() => {
     setQN(Math.floor(Math.random() * 4));
+    dispatch(setScore(0));
   }, [])
-  
+  const score = useSelector((state) => state.score.value);
+  const dispatch = useDispatch();
   const options = ["UP", "LEFT", "RIGHT", "DOWN"];
+  const qnArr = ["DOWN", "LEFT", "UP", "RIGHT"]
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
   const [ans, setAns] = useState("");
   const [response, setResponse] = useState(0);
-  const validateAns = (response) => {
+  const validateAns =async (response) => {
     setResponse(response);
     setIsOptionDisabled(true);
     if (qN == 0) {
@@ -25,7 +30,17 @@ const DsirectionTest = ({ navigation }) => {
     } else if (qN == 3) {
       setAns("RIGHT");
     }
+    addScore(response);
   };
+
+  const addScore = (response) => {
+    setTimeout(() => {
+    if (response == qnArr[qN]) {
+      dispatch(setScore(score + 1))
+      console.log(score+"reach");
+    }
+  },500)};
+
   const handlePress = () => {
     // setQN(qN + 1);
     setQN([0,1,2,3].filter((item) => item != qN)[Math.floor(Math.random() * 3)]);
@@ -40,7 +55,7 @@ const DsirectionTest = ({ navigation }) => {
   };
   return (
     <>
-      {count <= 3 ? (
+      {count < 4 ? (
         <SafeAreaView style={styles.container}>
           <Text style={styles.mainTitle}>GUESS THE DIRECTION</Text>
           <View style={styles.questionBox}>
@@ -111,8 +126,10 @@ const DsirectionTest = ({ navigation }) => {
             </TouchableOpacity>
           )}
         </SafeAreaView>
-      ) : (
+      ) : <>
         <SafeAreaView style={styles.containerL}>
+          <Text style={styles.mainTitle}>SCORE</Text>
+          <Text style={styles.mainTitle}>{score}</Text>
           <Text style={styles.mainTitle}>GAME OVER</Text>
           <TouchableOpacity
             onPress={() => {
@@ -123,7 +140,7 @@ const DsirectionTest = ({ navigation }) => {
             <Text style={styles.submitTitle}>Back to Menu</Text>
           </TouchableOpacity>
         </SafeAreaView>
-      )}
+      </>}
     </>
   );
 };

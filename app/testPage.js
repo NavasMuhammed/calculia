@@ -7,8 +7,9 @@ import {
   Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "../store/detailsSlice";
+import { setScore } from "../store/scoreSlice";
 import axios from "axios";
 
 const TestPage = ({navigation}) => {
@@ -23,16 +24,20 @@ const TestPage = ({navigation}) => {
   const [question, setquestion] = useState();
   const [correctAnswer, setcorrectAnswer] = useState();
   const [options, setOptions] = useState([]);
-  const [score, setScore] = useState(0);
+  // const [score, setScore] = useState(0);
   const [Finished, setFinished] = useState(true);
   // let timeouttime = false
   const [timeouttime, settimeouttime] = useState(false);
   const [QNcount, setQNcount] = useState(0);
+//   function addScore({ id }){
+//     dispatch(setScore(score + 1));
+// }
+const dispatch = useDispatch();
 
   const details = useSelector((state) => state.details.value);
-  // const score = useSelector((state) => state.score.value);
+  const score = useSelector((state) => state.score.value);
 
-  let time = 2000;
+  let time = 1000;
   const getquestion = async () => {
     if (!timeouttime) {
       setTimeout(() => {
@@ -91,6 +96,10 @@ const TestPage = ({navigation}) => {
     // console.log(options);
   }, [qnNum]);
 
+  useEffect(() => {
+    dispatch(setScore(0));
+  }, []);
+
   const incrementQnNum = () => {
     setQnNum(qnNum + 1);
   };
@@ -114,8 +123,8 @@ const TestPage = ({navigation}) => {
   };
   const addScore = (response) => {
     if (response == correctAnswer) {
-      setScore(score + 1);
-      console.log(score);
+      dispatch(setScore(score + 1))
+      console.log(score+"reach");
     }
   };
 
@@ -174,6 +183,9 @@ const TestPage = ({navigation}) => {
         </>
       ) : (
         <SafeAreaView style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.mainTitle}>Score: {score}</Text>
+          </View>
           <Text style={styles.mainTitle}>GAME OVER</Text>
           <TouchableOpacity
             onPress={() => {

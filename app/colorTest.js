@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState,useEffect } from "react";
 import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setScore } from "../store/scoreSlice";
 const DsirectionTest = ({ navigation }) => {
   const [newqn, setNewqn] = useState([]);
   const [qN, setQN] = useState(0);
@@ -10,10 +12,14 @@ const DsirectionTest = ({ navigation }) => {
   useEffect(() => {
     setQN(Math.floor(Math.random() *6));
     setQNarray([...qNarray, qN]);
+    dispatch(setScore(0));
   }, [])
+  const score = useSelector((state) => state.score.value);
+  const dispatch = useDispatch();
   const options = ["RED", "BLUE", "BLACK", "GREEN", "WHITE", "YELLOW"];
   const [isOptionDisabled, setIsOptionDisabled] = useState(true);
   const [ans, setAns] = useState("");
+  const qnArr = ["YELLOW", "WHITE", "GREEN", "BLACK", "BLUE", "RED"];
   const [response, setResponse] = useState(0);
   const validateAns = (response) => {
     setResponse(response);
@@ -31,7 +37,15 @@ const DsirectionTest = ({ navigation }) => {
     } else if (qN == 5) {
       setAns("RED");
     }
+    addScore(response);
   };
+  const addScore = (response) => {
+    setTimeout(() => {
+    if (response == qnArr[qN]) {
+      dispatch(setScore(score + 1))
+      console.log(score+"reach");
+    }
+  },500)};
   const handlePress = () => {
     setQN(Math.floor(Math.random() * 6));
     if(qNarray.includes(qN)){
@@ -51,7 +65,7 @@ const DsirectionTest = ({ navigation }) => {
   };
   return (
     <>
-      {count <= 5 ? (
+      {count <= 6 ? (
         <SafeAreaView style={styles.container}>
           <Text style={styles.mainTitle}>GUESS THE COLOUR</Text>
           <View style={styles.questionBox}>
@@ -114,6 +128,8 @@ const DsirectionTest = ({ navigation }) => {
         </SafeAreaView>
       ) : (
         <SafeAreaView style={styles.containerL}>
+          <Text style={styles.mainTitle}>YOUR SCORE</Text>
+          <Text style={styles.mainTitle}>{score}</Text>
           <Text style={styles.mainTitle}>GAME OVER</Text>
           <TouchableOpacity
             onPress={() => {
