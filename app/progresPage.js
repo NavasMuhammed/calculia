@@ -69,11 +69,11 @@ const ProgressPage = ({ navigation }) => {
                 </View>
             </View>
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate("testSelectionPage")}>
-                    <Text style={styles.buttonTitle}>Dyscalculia Test</Text>
+                <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate("diagnosis")}>
+                    <Text style={styles.buttonTitle} >Dyscalculia Test</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonWrapper}>
-                    <Text style={styles.buttonTitle}>Complete Lesson</Text>
+                <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate("testSelectionPage")}>
+                    <Text style={styles.buttonTitle}>Complete Lessons</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrapper}>
                     <Text style={styles.buttonTitle}>View Progress</Text>
