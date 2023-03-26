@@ -124,8 +124,10 @@ const CountingTest = () => {
           )}
         </Text>
       </View>
-      <View style={styles.ballContainer}>
-        <Image source={data[selectedqn].Image} />
+      <View style={styles.imageContainer}>
+        <View style={styles.ballContainer}>
+          <Image style={styles.image} source={data[selectedqn].Image} />
+        </View>
       </View>
       <View style={styles.optionContainerBalls}>
         {options.map((option) => (
@@ -194,39 +196,16 @@ const styles = StyleSheet.create({
     width: 102,
     height: 105,
   },
-  ballImage9: {
-    width: 185,
-    height: 203,
-  },
-  ballImage8: {
-    width: 189,
-    height: 203,
-  },
-  ballImage6: {
-    width: 140,
-    height: 200,
-  },
-  ballImage1: {
-    width: 180,
-    height: 180,
-  },
-  ballImage5: {
-    width: 145,
-    height: 200,
-  },
-  ballImage7: {
-    width: 182,
-    height: 200,
-  },
-  ballImage2: {
-    width: 282,
-    height: 130,
+
+  image:{
+    width: 150,
+    height: 150,
+    resizeMode:"stretch"
   },
   ballContainer: {
     alignSelf: "center",
-    width: "auto",
-    height: 125,
-    bottom: 40,
+
+    overflow: "hidden",
   },
   optionContainerBalls: {
     alignSelf: "center",
@@ -253,11 +232,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   titleContainer: {
-    paddingTop: 55,
+    // paddingTop: 55,
     justifyContent: "flex-start",
     alignItems: "center",
-    width: "100%",
-    height: "10%",
+    // width: "100%",
+    // height: "10%",
   },
   mainTitle: {
     fontSize: 24,
@@ -269,7 +248,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "10%",
-    bottom: 20,
+    // bottom: 20,
   },
   question: {
     fontSize: 24,
@@ -279,7 +258,7 @@ const styles = StyleSheet.create({
   progressContainer: {
     top: 30,
     width: "100%",
-    justifyContent: "flex-start",
+    // justifyContent: "flex-start",
     alignItems: "center",
   },
   progressBar: {
