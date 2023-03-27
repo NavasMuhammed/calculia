@@ -1,45 +1,266 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 const Diagnosis = ({ navigation }) => {
-  const questions = [
-    "Does your child still count on his fingers past third grade?",
-    "Does your child struggle to connect the concept of numbers to real-world items? When you ask him how many cookies are left, for example, does he seem confused by the question or answer incorrectly?",
-    "Does your child get unnaturally upset or complain of feeling ill while completing math homework?",
-    "Does your child say numbers out of order — long after peers have mastered this skill?",
-    "Does your child struggle to understand money, and have difficulty making change or sticking to a budget?",
-    "Does your child get lost, even in familiar surroundings?",
-    "Does your child reverse or mix up numbers? for example 63 for 36, or 785 for 875?",
+  var level = 1;
+  const questions =
+    level == 1
+      ? [
+          "How many fingers are on your right hand",
+          "how many eyes you have",
+          "how many nose you have",
+          "how many legs you have",
+          "how many fingers are there in your both hands",
+          "count the number of balls present",
+          "count the number of balls present",
+          "count the number of balls present",
+          "count the number of balls present",
+          "count the number of boys present",
+          "select ten form below",
+          "select two from below",
+          "select nine from below",
+          "select seven from below",
+          "what is one added to one ",
+          "find direction of arrow ⬆️",
+          "find direction of arrow ⬇️",
+          "find the direction of arrow ⬅️",
+          "find the direction of arrow ➡️",
+          "which hand you use for eating",
+        ]
+      : level == 2
+      ? [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20",
+        ]
+      : level == 3
+      ? [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20",
+        ]
+      : level == 4
+      ? [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20",
+        ]
+      : [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19",
+          "20",
+        ];
+  const answers = [
+    [5, 2, 1, 2, 10],
+    [1, 3, 4, 2, 1],
+    [10, 2, 9, 7, 2],
+    ["up", "down", "left", "right", "right"],
   ];
+  const [ans, setAns] = useState();
+  const [response, setResponse] = useState();
   const [questionNum, setQuestionNum] = useState(0);
-  const options = ["Often", "Sometimes", "Rarely", "Never"];
+  var options =
+    (level == 1) & (questionNum < 5)
+      ? ["2", "1", "5", "10"]
+      : (level == 1) & (questionNum < 10)
+      ? ["3", "4", "2", "1"]
+      : (level == 1) & (questionNum < 15)
+      ? ["7", "2", "9", "10"]
+      : (level == 1) & (questionNum < 20)
+      ? ["down", "up", "right", "left"]
+      : (level == 2) & (questionNum < 5)
+      ? ["0", "2", "1", "4"]
+      : (level == 2) & (questionNum < 10)
+      ? ["new", "pew", "new", "aww"]
+      : (level == 2) & (questionNum < 15)
+      ? ["an", "pon", "se", "ss"]
+      : (level == 2) & (questionNum < 20)
+      ? ["brr", "srr", "ree", "trr"]
+      : (level == 3) & (questionNum < 5)
+      ? ["0", "2", "1", "4"]
+      : (level == 3) & (questionNum < 10)
+      ? ["new", "pew", "new", "aww"]
+      : (level == 3) & (questionNum < 15)
+      ? ["an", "pon", "se", "ss"]
+      : (level == 3) & (questionNum < 20)
+      ? ["brr", "srr", "ree", "trr"]
+      : (level == 4) & (questionNum < 5)
+      ? ["0", "2", "1", "4"]
+      : (level == 4) & (questionNum < 10)
+      ? ["new", "pew", "new", "aww"]
+      : (level == 4) & (questionNum < 15)
+      ? ["an", "pon", "se", "ss"]
+      : (level == 4) & (questionNum < 20)
+      ? ["brr", "srr", "ree", "trr"]
+      : (level == 5) & (questionNum < 5)
+      ? ["0", "2", "1", "4"]
+      : (level == 5) & (questionNum < 10)
+      ? ["new", "pew", "new", "aww"]
+      : (level == 5) & (questionNum < 15)
+      ? ["an", "pon", "se", "ss"]
+      : (level == 5) & (questionNum < 20)
+      ? ["brr", "srr", "ree", "trr"]
+      : [];
+  const [isOptionDisabled, setIsOptionDisabled] = useState(false);
+  const validateAns = async (response) => {
+    setResponse(response);
+    setIsOptionDisabled(true);
+    if (level == 1 && questionNum == 0) {
+      setAns(answers[0][0]);
+    } else if (level == 1 && questionNum == 1) {
+      setAns(answers[0][1]);
+    } else if (level == 1 && questionNum == 2) {
+      setAns(answers[0][2]);
+    } else if (level == 1 && questionNum == 3) {
+      setAns(answers[0][3]);
+    } else if (level == 1 && questionNum == 4) {
+      setAns(answers[0][4]);
+    }
+  };
+  const resetToDefault = () => {
+    setResponse(null);
+    setAns(null);
+    setIsOptionDisabled(false);
+  };
   return (
     <SafeAreaView style={styles.container}>
       {questionNum < questions.length ? (
         <>
+          <Text style={styles.mainTitle}>level: {ans}</Text>
+          <Text style={styles.mainTitle}>question number: {questionNum}</Text>
           <Text style={styles.mainTitle}>Answer the fllowing questions</Text>
+          {(level == 1) & (questionNum == 5) ? (
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={require("./1.png")}></Image>
+            </View>
+          ) : (level == 1) & (questionNum == 6) ? (
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={require("./3.png")}></Image>
+            </View>
+          ) : (level == 1) & (questionNum == 7) ? (
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={require("./4.png")}></Image>
+            </View>
+          ) : (level == 1) & (questionNum == 8) ? (
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={require("./2.png")}></Image>
+            </View>
+          ) : (level == 1) & (questionNum == 9) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./child.png")}
+              ></Image>
+            </View>
+          ) : (
+            <></>
+          )}
           <View style={styles.questionContainer}>
             <Text style={styles.question}>{questions[questionNum]}</Text>
           </View>
           <View style={styles.optionContainer}>
-            {options.map((item, index) => {
+            {options.map((option) => {
               return (
-                <TouchableOpacity style={styles.optionButton}>
-                  <Text style={styles.option}>{item}</Text>
+                <TouchableOpacity
+                  style={{
+                    borderRadius: 15,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "70%",
+                    padding: 20,
+                    marginTop: 20,
+                    backgroundColor:
+                      option == ans
+                        ? "#00FF19"
+                        : option == response
+                        ? "#FF0330"
+                        : "#1E1F3B",
+                  }}
+                  key={option}
+                  onPress={() => validateAns(option)}
+                >
+                  <Text style={styles.option}>{option}</Text>
                 </TouchableOpacity>
               );
             })}
           </View>
-          <View style={styles.submitContainer}>
-            <TouchableOpacity
-              style={styles.submitWrapper}
-              onPress={() => {
-                setQuestionNum(questionNum + 1);
-              }}
-            >
-              <Text style={styles.submitTitle}>Next</Text>
-            </TouchableOpacity>
-          </View>
+          {isOptionDisabled && (
+            <View style={styles.submitContainer}>
+              <TouchableOpacity
+                style={styles.submitWrapper}
+                onPress={() => {
+                  setQuestionNum(questionNum + 1);
+                  resetToDefault();
+                }}
+              >
+                <Text style={styles.submitTitle}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </>
       ) : (
         <>
@@ -64,7 +285,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#141527",
   },
   mainTitle: {
-    flex: 0.5,
+    flex: 0.2,
     color: "#fff",
     fontSize: 24,
     // backgroundColor: "#fff",
@@ -74,6 +295,14 @@ const styles = StyleSheet.create({
   questionContainer: {
     width: "100%",
     alignItems: "center",
+  },
+  imageContainer: {
+    margin: 10,
+  },
+  image: {
+    width: 150,
+    height: 150,
+    resizeMode: "contain",
   },
   question: {
     color: "white",
