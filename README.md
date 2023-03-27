@@ -1,33 +1,15 @@
-Calculia
+# Expo Router Example
 
+Use [`expo-router`](https://expo.github.io/router) to build native navigation using files in the `app/` directory.
 
-Overview
-Calculia is an app built with Expo and React Native that aims to help people with dyslexia. The app includes a diagnosis test, 5 different exercises with different levels, and virtual achievements. The app is designed to improve reading and writing skills and help users overcome the challenges that dyslexia presents.
+## 🚀 How to use
 
-Features
-Diagnosis test to assess the user's level of dyslexia
-5 different exercises to improve reading and writing skills
-Virtual achievements to motivate and encourage progress
-User-friendly interface
-Different levels of difficulty to cater to users of different ages and skill levels
-Screenshots
-Calculia Screenshots
+```sh
+npx create-react-native-app -t with-router
+```
 
-Getting Started
-Prerequisites
-Node.js v14 or later
-Expo CLI: npm install -g expo-cli
-Yarn: npm install -g yarn
-Installing
-Clone the repository: git clone https://github.com/your_username/dyslexia-helper.git
-Install dependencies: cd dyslexia-helper && yarn
-Start the app: expo start
-Running the tests
-Run tests: yarn test
-Contributing
-We welcome contributions from anyone. Please follow the Contributing Guidelines when submitting a pull request.
+## 📝 Notes
 
-License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
-
-
+- [Expo Router: Docs](https://expo.github.io/router)
+- [Expo Router: Repo](https://github.com/expo/router)
+- [Request for Comments](https://github.com/expo/router/discussions/1)
