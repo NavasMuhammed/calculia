@@ -19,6 +19,7 @@ import CountingTest from "./countingTest";
 import DsirectionTest from "./directionTest";
 import ColorTest from "./colorTest";
 import Diagnosis from "./diagnosis";
+import Achievement from "./achievment";
 
 function App() {
   const Stack = createNativeStackNavigator();
@@ -42,6 +43,7 @@ function App() {
         <Stack.Screen name="directionTest" component={DsirectionTest} />
         <Stack.Screen name="colorTest" component={ColorTest} />
         <Stack.Screen name="diagnosis" component={Diagnosis} />
+        <Stack.Screen name="achievment" component={Achievement} />
       </Stack.Navigator>
     </NavigationContainer>
   );
