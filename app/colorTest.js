@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setScore } from "../store/scoreSlice";
 import {setcount4Qstn} from "../store/count4QstnSlice";
 import {setcount4Score} from "../store/count4ScoreSlice";
+import axios from "axios";
 
 
 const DsirectionTest = ({ navigation }) => {

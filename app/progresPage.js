@@ -43,7 +43,7 @@ const ProgressPage = ({ navigation }) => {
             })
         }
         
-        const getDetails = async(name) => {
+    const getDetails = async(name) => {
             axios.get('http://10.0.2.2:5000/test', {
                 params: {
                     name: name
@@ -52,8 +52,9 @@ const ProgressPage = ({ navigation }) => {
                 ,
             })
             .then(res => {
-                console.log(res.data.progress)
-                setprogress(res.data.progress)
+                // console.log(res.data.progress)
+                // setprogress(res.data.progress)
+                setprogress(parseInt((res.data.countScore+res.data.count2Score+res.data.count3Score+res.data.count4Score)*100/(res.data.countQstn+res.data.count2Qstn+res.data.count3Qstn+res.data.count4Qstn)))
                 addDetails({id:res.data})
                 dispatch(setcountQstn(res.data.countQstn))
                 dispatch(setcountScore(res.data.countScore))

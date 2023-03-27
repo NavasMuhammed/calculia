@@ -17,10 +17,10 @@ const TestSelectionPage = ({ navigation }) => {
     const count4Score = useSelector((state) => state.count4Score.value);
 
     const dispatch = useDispatch();
-    const countPercent = countScore / countQstn * 100;
-    const count2Percent = count2Score / count2Qstn * 100;
-    const count3Percent = count3Score / count3Qstn * 100;
-    const count4Percent = count4Score / count4Qstn * 100;
+    const countPercent = parseInt(countScore / countQstn * 100);
+    const count2Percent = parseInt(count2Score / count2Qstn * 100);
+    const count3Percent = parseInt(count3Score / count3Qstn * 100);
+    const count4Percent = parseInt(count4Score / count4Qstn * 100);
     useEffect(() => {
         console.log(details.payload);
     }, [])
