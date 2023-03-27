@@ -1,215 +1,96 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Questions, Answers, Options } from "./data";
 const Diagnosis = ({ navigation }) => {
-  var level = 1;
+  const [level, setLevel] = useState(0);
   const questions =
-    level == 1
-      ? [
-          "How many fingers are on your right hand",
-          "how many eyes you have",
-          "how many nose you have",
-          "how many legs you have",
-          "how many fingers are there in your both hands",
-          "count the number of balls present",
-          "count the number of balls present",
-          "count the number of balls present",
-          "count the number of balls present",
-          "count the number of boys present",
-          "select ten form below",
-          "select two from below",
-          "select nine from below",
-          "select seven from below",
-          "what is one added to one ",
-          "find direction of arrow ⬆️",
-          "find direction of arrow ⬇️",
-          "find the direction of arrow ⬅️",
-          "find the direction of arrow ➡️",
-          "which hand you use for eating",
-        ]
+    level == 0
+      ? Questions.level1
       : level == 2
-      ? [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10",
-          "11",
-          "12",
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "19",
-          "20",
-        ]
+      ? Questions.level2
       : level == 3
-      ? [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10",
-          "11",
-          "12",
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "19",
-          "20",
-        ]
+      ? Questions.level3
       : level == 4
-      ? [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10",
-          "11",
-          "12",
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "19",
-          "20",
-        ]
-      : [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10",
-          "11",
-          "12",
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "19",
-          "20",
-        ];
+      ? Questions.level4
+      : [];
   const answers = [
-    [5, 2, 1, 2, 10],
-    [1, 3, 4, 2, 1],
-    [10, 2, 9, 7, 2],
-    ["up", "down", "left", "right", "right"],
+    Answers.level1,
+    Answers.level2,
+    Answers.level3,
+    Answers.level4,
+  ];
+  const optionst = [
+    Options.level1,
+    Options.level2,
+    Options.level3,
+    Options.level4,
   ];
   const [ans, setAns] = useState();
   const [response, setResponse] = useState();
   const [questionNum, setQuestionNum] = useState(0);
-  var options =
-    (level == 1) & (questionNum < 5)
-      ? ["2", "1", "5", "10"]
-      : (level == 1) & (questionNum < 10)
-      ? ["3", "4", "2", "1"]
-      : (level == 1) & (questionNum < 15)
-      ? ["7", "2", "9", "10"]
-      : (level == 1) & (questionNum < 20)
-      ? ["down", "up", "right", "left"]
-      : (level == 2) & (questionNum < 5)
-      ? ["0", "2", "1", "4"]
-      : (level == 2) & (questionNum < 10)
-      ? ["new", "pew", "new", "aww"]
-      : (level == 2) & (questionNum < 15)
-      ? ["an", "pon", "se", "ss"]
-      : (level == 2) & (questionNum < 20)
-      ? ["brr", "srr", "ree", "trr"]
-      : (level == 3) & (questionNum < 5)
-      ? ["0", "2", "1", "4"]
-      : (level == 3) & (questionNum < 10)
-      ? ["new", "pew", "new", "aww"]
-      : (level == 3) & (questionNum < 15)
-      ? ["an", "pon", "se", "ss"]
-      : (level == 3) & (questionNum < 20)
-      ? ["brr", "srr", "ree", "trr"]
-      : (level == 4) & (questionNum < 5)
-      ? ["0", "2", "1", "4"]
-      : (level == 4) & (questionNum < 10)
-      ? ["new", "pew", "new", "aww"]
-      : (level == 4) & (questionNum < 15)
-      ? ["an", "pon", "se", "ss"]
-      : (level == 4) & (questionNum < 20)
-      ? ["brr", "srr", "ree", "trr"]
-      : (level == 5) & (questionNum < 5)
-      ? ["0", "2", "1", "4"]
-      : (level == 5) & (questionNum < 10)
-      ? ["new", "pew", "new", "aww"]
-      : (level == 5) & (questionNum < 15)
-      ? ["an", "pon", "se", "ss"]
-      : (level == 5) & (questionNum < 20)
-      ? ["brr", "srr", "ree", "trr"]
-      : [];
+  const [option, setOption] = useState([]);
+  const buddi = (levelt, questiont, ranget) => {
+    setOption(
+      (level == levelt) & (questiont < ranget) ? optionst[levelt][ranget] : []
+    );
+  };
+
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
+  const correctAnswer = (questionNumt, levelt) => {
+    if (level == levelt && questionNum == questionNumt) {
+      setAns(answers[levelt][questionNumt]);
+    }
+  };
   const validateAns = async (response) => {
     setResponse(response);
     setIsOptionDisabled(true);
-    if (level == 1 && questionNum == 0) {
-      setAns(answers[0][0]); 
-    } else if (level == 1 && questionNum == 1) {
-      setAns(answers[0][1]);
-    } else if (level == 1 && questionNum == 2) {
-      setAns(answers[0][2]);
-    } else if (level == 1 && questionNum == 3) {
-      setAns(answers[0][3]);
-    } else if (level == 1 && questionNum == 4) {
-      setAns(answers[0][4]);
-    }
+    correctAnswer(questionNum, level);
   };
   const resetToDefault = () => {
     setResponse(null);
     setAns(null);
     setIsOptionDisabled(false);
   };
+  const [range, setRange] = useState(0);
+  useEffect(() => {
+    questionNum < 5
+      ? setRange(5)
+      : questionNum < 10
+      ? setRange(10)
+      : questionNum < 15
+      ? setRange(15)
+      : questionNum < 20
+      ? setRange(20)
+      : 0;
+    console.log(range);
+    buddi(level, questionNum, range);
+  }, [range, questionNum]);
+
   return (
     <SafeAreaView style={styles.container}>
       {questionNum < questions.length ? (
         <>
-          <Text style={styles.mainTitle}>level: {ans}</Text>
+          <Text style={styles.mainTitle}>level: {level}</Text>
           <Text style={styles.mainTitle}>question number: {questionNum}</Text>
           <Text style={styles.mainTitle}>Answer the fllowing questions</Text>
-          {(level == 1) & (questionNum == 5) ? (
+          {(level == 0) & (questionNum == 5) ? (
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={require("./1.png")}></Image>
             </View>
-          ) : (level == 1) & (questionNum == 6) ? (
+          ) : (level == 0) & (questionNum == 6) ? (
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={require("./3.png")}></Image>
             </View>
-          ) : (level == 1) & (questionNum == 7) ? (
+          ) : (level == 0) & (questionNum == 7) ? (
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={require("./4.png")}></Image>
             </View>
-          ) : (level == 1) & (questionNum == 8) ? (
+          ) : (level == 0) & (questionNum == 8) ? (
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={require("./2.png")}></Image>
             </View>
-          ) : (level == 1) & (questionNum == 9) ? (
+          ) : (level == 0) & (questionNum == 9) ? (
             <View style={styles.imageContainer}>
               <Image
                 style={styles.image}
@@ -223,7 +104,7 @@ const Diagnosis = ({ navigation }) => {
             <Text style={styles.question}>{questions[questionNum]}</Text>
           </View>
           <View style={styles.optionContainer}>
-            {options.map((option) => {
+            {option.map((option) => {
               return (
                 <TouchableOpacity
                   style={{
@@ -266,6 +147,17 @@ const Diagnosis = ({ navigation }) => {
         <>
           <View>
             <Text style={styles.mainTitle}>Your results</Text>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.submitWrapper}
+              onPress={() => {
+                setQuestionNum(0);
+                setLevel(level + 1);
+              }}
+            >
+              <Text style={styles.submitTitle}>Next</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}
