@@ -3,10 +3,19 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from '../store/detailsSlice';
+import { setcountQstn } from '../store/countQstnSlice';
+import { setcountScore } from '../store/countScoreSlice';
+import { setcount2Qstn } from '../store/count2QstnSlice';
+import { setcount2Score } from '../store/count2ScoreSlice';
+import { setcount3Qstn } from '../store/count3QstnSlice';
+import { setcount3Score } from '../store/count3ScoreSlice';
+import { setcount4Qstn } from '../store/count4QstnSlice';
+import { setcount4Score } from '../store/count4ScoreSlice';
 
 
 const ProgressPage = ({ navigation }) => {
     const [username, setusername] = useState("")
+    
     const [progress, setprogress] = useState(0)
     const email = useSelector((state) => state.color.value);
     const details = useSelector((state) => state.details.value);
@@ -34,7 +43,7 @@ const ProgressPage = ({ navigation }) => {
             })
         }
         
-        const getDetails = async(name) => {
+    const getDetails = async(name) => {
             axios.get('http://10.0.2.2:5000/test', {
                 params: {
                     name: name
@@ -43,9 +52,18 @@ const ProgressPage = ({ navigation }) => {
                 ,
             })
             .then(res => {
-                console.log(res.data.progress)
-                setprogress(res.data.progress)
+                // console.log(res.data.progress)
+                // setprogress(res.data.progress)
+                setprogress(parseInt((res.data.countScore+res.data.count2Score+res.data.count3Score+res.data.count4Score)*100/(res.data.countQstn+res.data.count2Qstn+res.data.count3Qstn+res.data.count4Qstn)))
                 addDetails({id:res.data})
+                dispatch(setcountQstn(res.data.countQstn))
+                dispatch(setcountScore(res.data.countScore))
+                dispatch(setcount2Qstn(res.data.count2Qstn))
+                dispatch(setcount2Score(res.data.count2Score))
+                dispatch(setcount3Qstn(res.data.count3Qstn))
+                dispatch(setcount3Score(res.data.count3Score))
+                dispatch(setcount4Qstn(res.data.count4Qstn))
+                dispatch(setcount4Score(res.data.count4Score))
                 console.log(details.payload)
             })
             .catch(err => {
@@ -68,11 +86,11 @@ const ProgressPage = ({ navigation }) => {
                 </View>
             </View>
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate("testSelectionPage")}>
-                    <Text style={styles.buttonTitle}>Dyscalculia Test</Text>
+                <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate("diagnosis")}>
+                    <Text style={styles.buttonTitle} >Dyscalculia Test</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonWrapper}>
-                    <Text style={styles.buttonTitle}>Complete Lesson</Text>
+                <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate("testSelectionPage")}>
+                    <Text style={styles.buttonTitle}>Complete Lessons</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrapper}>
                     <Text style={styles.buttonTitle}>View Progress</Text>
