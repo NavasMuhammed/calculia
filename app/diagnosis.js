@@ -170,7 +170,7 @@ const Diagnosis = ({ navigation }) => {
     setResponse(response);
     setIsOptionDisabled(true);
     if (level == 1 && questionNum == 0) {
-      setAns(answers[0][0]);
+      setAns(answers[0][0]); 
     } else if (level == 1 && questionNum == 1) {
       setAns(answers[0][1]);
     } else if (level == 1 && questionNum == 2) {
