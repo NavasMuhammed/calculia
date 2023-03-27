@@ -1,50 +1,163 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Questions, Answers, Options } from "./data";
 const Diagnosis = ({ navigation }) => {
-  const questions = [
-    "Does your child still count on his fingers past third grade?",
-    "Does your child struggle to connect the concept of numbers to real-world items? When you ask him how many cookies are left, for example, does he seem confused by the question or answer incorrectly?",
-    "Does your child get unnaturally upset or complain of feeling ill while completing math homework?",
-    "Does your child say numbers out of order — long after peers have mastered this skill?",
-    "Does your child struggle to understand money, and have difficulty making change or sticking to a budget?",
-    "Does your child get lost, even in familiar surroundings?",
-    "Does your child reverse or mix up numbers? for example 63 for 36, or 785 for 875?",
+  const [level, setLevel] = useState(0);
+  const questions =
+    level == 0
+      ? Questions.level1
+      : level == 2
+      ? Questions.level2
+      : level == 3
+      ? Questions.level3
+      : level == 4
+      ? Questions.level4
+      : [];
+  const answers = [
+    Answers.level1,
+    Answers.level2,
+    Answers.level3,
+    Answers.level4,
   ];
+  const optionst = [
+    Options.level1,
+    Options.level2,
+    Options.level3,
+    Options.level4,
+  ];
+  const [ans, setAns] = useState();
+  const [response, setResponse] = useState();
   const [questionNum, setQuestionNum] = useState(0);
-  const options = ["Often", "Sometimes", "Rarely", "Never"];
+  const [option, setOption] = useState([]);
+  const buddi = (levelt, questiont, ranget) => {
+    setOption(
+      (level == levelt) & (questiont < ranget) ? optionst[levelt][ranget] : []
+    );
+  };
+
+  const [isOptionDisabled, setIsOptionDisabled] = useState(false);
+  const correctAnswer = (questionNumt, levelt) => {
+    if (level == levelt && questionNum == questionNumt) {
+      setAns(answers[levelt][questionNumt]);
+    }
+  };
+  const validateAns = async (response) => {
+    setResponse(response);
+    setIsOptionDisabled(true);
+    correctAnswer(questionNum, level);
+  };
+  const resetToDefault = () => {
+    setResponse(null);
+    setAns(null);
+    setIsOptionDisabled(false);
+  };
+  const [range, setRange] = useState(0);
+  useEffect(() => {
+    questionNum < 5
+      ? setRange(5)
+      : questionNum < 10
+      ? setRange(10)
+      : questionNum < 15
+      ? setRange(15)
+      : questionNum < 20
+      ? setRange(20)
+      : 0;
+    console.log(range);
+    buddi(level, questionNum, range);
+  }, [range, questionNum]);
+
   return (
     <SafeAreaView style={styles.container}>
       {questionNum < questions.length ? (
         <>
+          <Text style={styles.mainTitle}>level: {level}</Text>
+          <Text style={styles.mainTitle}>question number: {questionNum}</Text>
           <Text style={styles.mainTitle}>Answer the fllowing questions</Text>
+          {(level == 0) & (questionNum == 5) ? (
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={require("./1.png")}></Image>
+            </View>
+          ) : (level == 0) & (questionNum == 6) ? (
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={require("./3.png")}></Image>
+            </View>
+          ) : (level == 0) & (questionNum == 7) ? (
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={require("./4.png")}></Image>
+            </View>
+          ) : (level == 0) & (questionNum == 8) ? (
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={require("./2.png")}></Image>
+            </View>
+          ) : (level == 0) & (questionNum == 9) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./child.png")}
+              ></Image>
+            </View>
+          ) : (
+            <></>
+          )}
           <View style={styles.questionContainer}>
             <Text style={styles.question}>{questions[questionNum]}</Text>
           </View>
           <View style={styles.optionContainer}>
-            {options.map((item, index) => {
+            {option.map((option) => {
               return (
-                <TouchableOpacity style={styles.optionButton}>
-                  <Text style={styles.option}>{item}</Text>
+                <TouchableOpacity
+                  style={{
+                    borderRadius: 15,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "70%",
+                    padding: 20,
+                    marginTop: 20,
+                    backgroundColor:
+                      option == ans
+                        ? "#00FF19"
+                        : option == response
+                        ? "#FF0330"
+                        : "#1E1F3B",
+                  }}
+                  key={option}
+                  onPress={() => validateAns(option)}
+                >
+                  <Text style={styles.option}>{option}</Text>
                 </TouchableOpacity>
               );
             })}
           </View>
-          <View style={styles.submitContainer}>
-            <TouchableOpacity
-              style={styles.submitWrapper}
-              onPress={() => {
-                setQuestionNum(questionNum + 1);
-              }}
-            >
-              <Text style={styles.submitTitle}>Next</Text>
-            </TouchableOpacity>
-          </View>
+          {isOptionDisabled && (
+            <View style={styles.submitContainer}>
+              <TouchableOpacity
+                style={styles.submitWrapper}
+                onPress={() => {
+                  setQuestionNum(questionNum + 1);
+                  resetToDefault();
+                }}
+              >
+                <Text style={styles.submitTitle}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </>
       ) : (
         <>
           <View>
             <Text style={styles.mainTitle}>Your results</Text>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.submitWrapper}
+              onPress={() => {
+                setQuestionNum(0);
+                setLevel(level + 1);
+              }}
+            >
+              <Text style={styles.submitTitle}>Next</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}
@@ -64,7 +177,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#141527",
   },
   mainTitle: {
-    flex: 0.5,
+    flex: 0.2,
     color: "#fff",
     fontSize: 24,
     // backgroundColor: "#fff",
@@ -74,6 +187,14 @@ const styles = StyleSheet.create({
   questionContainer: {
     width: "100%",
     alignItems: "center",
+  },
+  imageContainer: {
+    margin: 10,
+  },
+  image: {
+    width: 150,
+    height: 150,
+    resizeMode: "contain",
   },
   question: {
     color: "white",
