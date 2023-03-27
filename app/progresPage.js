@@ -5,6 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from '../store/detailsSlice';
 import { setcountQstn } from '../store/countQstnSlice';
 import { setcountScore } from '../store/countScoreSlice';
+import { setcount2Qstn } from '../store/count2QstnSlice';
+import { setcount2Score } from '../store/count2ScoreSlice';
+import { setcount3Qstn } from '../store/count3QstnSlice';
+import { setcount3Score } from '../store/count3ScoreSlice';
+import { setcount4Qstn } from '../store/count4QstnSlice';
+import { setcount4Score } from '../store/count4ScoreSlice';
 
 
 const ProgressPage = ({ navigation }) => {
@@ -51,6 +57,12 @@ const ProgressPage = ({ navigation }) => {
                 addDetails({id:res.data})
                 dispatch(setcountQstn(res.data.countQstn))
                 dispatch(setcountScore(res.data.countScore))
+                dispatch(setcount2Qstn(res.data.count2Qstn))
+                dispatch(setcount2Score(res.data.count2Score))
+                dispatch(setcount3Qstn(res.data.count3Qstn))
+                dispatch(setcount3Score(res.data.count3Score))
+                dispatch(setcount4Qstn(res.data.count4Qstn))
+                dispatch(setcount4Score(res.data.count4Score))
                 console.log(details.payload)
             })
             .catch(err => {

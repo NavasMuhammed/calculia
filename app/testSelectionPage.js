@@ -9,8 +9,18 @@ const TestSelectionPage = ({ navigation }) => {
     const details = useSelector((state) => state.details.value);
     const countQstn = useSelector((state) => state.countQstn.value);
     const countScore = useSelector((state) => state.countScore.value);
+    const count2Qstn = useSelector((state) => state.count2Qstn.value);
+    const count2Score = useSelector((state) => state.count2Score.value);
+    const count3Qstn = useSelector((state) => state.count3Qstn.value);
+    const count3Score = useSelector((state) => state.count3Score.value);
+    const count4Qstn = useSelector((state) => state.count4Qstn.value);
+    const count4Score = useSelector((state) => state.count4Score.value);
+
     const dispatch = useDispatch();
     const countPercent = countScore / countQstn * 100;
+    const count2Percent = count2Score / count2Qstn * 100;
+    const count3Percent = count3Score / count3Qstn * 100;
+    const count4Percent = count4Score / count4Qstn * 100;
     useEffect(() => {
         console.log(details.payload);
     }, [])
@@ -31,19 +41,19 @@ const TestSelectionPage = ({ navigation }) => {
             <TouchableOpacity onPress={() => navigation.navigate("countingTest")} style={styles.ButtonContainer}>
                 <ImageBackground source={require('./countBG.png')} resizeMode="cover" style={styles.bgcImage}>
                     <Text style={styles.buttonCText}>COUNTING</Text>
-                    <Text style={styles.buttonText}>{details.payload.countPercent}</Text>
+                    <Text style={styles.buttonText}>{count2Percent}</Text>
                 </ImageBackground>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("directionTest")} style={styles.ButtonContainer}>
                 <ImageBackground source={require('./dirBg.png')} resizeMode="cover" style={styles.bgImage}>
                     <Text style={styles.buttonCText}>DIRECTIONS</Text>
-                    <Text style={styles.buttonText}>{details.payload.dirPercent}</Text>
+                    <Text style={styles.buttonText}>{count3Percent}</Text>
                 </ImageBackground>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("colorTest")} style={styles.ButtonContainer}>
                 <ImageBackground source={require('./colorBG.png')} resizeMode="cover" style={styles.bgImage}>
                     <Text style={styles.buttonCText}>COLORS</Text>
-                    <Text style={styles.buttonText}>{details.payload.colorPercent}</Text>
+                    <Text style={styles.buttonText}>{count4Percent}</Text>
                 </ImageBackground>
             </TouchableOpacity>
 

@@ -107,8 +107,10 @@ app.get('/question',async (req, res) => {
 
 app.post('/update',async (req, res) => {
     let countQstn = req.body.data.countQstn;
+    console.log("reached in update"+countQstn);
     let countScore = req.body.data.countScore;
     let name = req.body.data.name;
+    let reqfields = req.body.data.reqFields;
     //insert into database
     var citiesRef = db.collection('studentDetails');
     var query = await citiesRef
@@ -119,8 +121,8 @@ app.post('/update',async (req, res) => {
             snapshot.forEach(doc => {
                 console.log(doc.id, '=>', doc.data());
                 db.collection("studentDetails").doc(doc.id).update({
-                    countQstn: countQstn,
-                    countScore: countScore
+                    [reqfields[0]]: countQstn,
+                    [reqfields[1]]: countScore
                 })
 
     console.log(req.body.data);

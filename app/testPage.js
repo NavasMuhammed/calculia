@@ -114,6 +114,7 @@ const dispatch = useDispatch();
                 countQstn: countQstn,
                 countScore: countScore,
                 name: details.payload.name,
+                reqFields:["countQstn","countScore"]
             },
             headers: { 'Content-Type': 'application/json' }
         }).then((res) => {

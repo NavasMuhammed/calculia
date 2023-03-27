@@ -4,6 +4,12 @@ import React, { useState } from "react";
 import { useRef,useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setScore } from "../store/scoreSlice";
+import { setcount3Qstn } from "../store/count3QstnSlice";
+import { setcount3Score } from "../store/count3ScoreSlice";
+import axios from "axios";
+
+
+
 const DsirectionTest = ({ navigation }) => {
   const [qN, setQN] = useState(0);
   const [count, setCount] = useState(0);
@@ -11,14 +17,18 @@ const DsirectionTest = ({ navigation }) => {
     setQN(Math.floor(Math.random() * 4));
     dispatch(setScore(0));
   }, [])
+  const details = useSelector((state) => state.details.value);
   const score = useSelector((state) => state.score.value);
+  const count3Qstn = useSelector((state) => state.count3Qstn.value);
+  const count3Score = useSelector((state) => state.count3Score.value);
+
   const dispatch = useDispatch();
   const options = ["UP", "LEFT", "RIGHT", "DOWN"];
   const qnArr = ["DOWN", "LEFT", "UP", "RIGHT"]
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
   const [ans, setAns] = useState("");
   const [response, setResponse] = useState(0);
-  const validateAns =async (response) => {
+  const validateAns = (response) => {
     setResponse(response);
     setIsOptionDisabled(true);
     if (qN == 0) {
@@ -33,12 +43,38 @@ const DsirectionTest = ({ navigation }) => {
     addScore(response);
   };
 
+  useEffect(() => {
+    (async () => {
+      console.log("update called")
+      await update();
+    })();
+  }, [count3Qstn]);
+
+  const update =async () => {
+    await axios.post('http://10.0.2.2:5000/update', {
+            data: {
+                countQstn: count3Qstn,
+                countScore: count3Score,
+                name: details.payload.name,
+                reqFields:["count3Qstn","count3Score"]
+            },
+            headers: { 'Content-Type': 'application/json' }
+        }).then((res) => {
+            console.log(res.data);
+        }).catch((err) => {
+            console.log(err);
+        })
+  }
+
+
   const addScore = (response) => {
     setTimeout(() => {
     if (response == qnArr[qN]) {
       dispatch(setScore(score + 1))
-      console.log(score+"reach");
+      dispatch(setcount3Score(count3Score + 1));
+      console.log(count3Score+"reach");
     }
+    dispatch(setcount3Qstn(count3Qstn + 1));
   },500)};
 
   const handlePress = () => {

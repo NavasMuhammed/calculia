@@ -9,6 +9,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "../store/detailsSlice";
+import { setcount2Qstn } from "../store/count2QstnSlice";
+import { setcount2Score } from "../store/count2ScoreSlice";
 import axios from "axios";
 import { setScore } from "../store/scoreSlice";
 const data = [
@@ -60,10 +62,10 @@ const data = [
 ];
 
 const CountingTest = ({navigation}) => {
-  useEffect(() => {
-    dispatch(setScore(0));
-    selectpic();
-  }, []);
+
+  const details = useSelector((state) => state.details.value);
+  const count2Qstn = useSelector((state) => state.count2Qstn.value);
+  const count2Score = useSelector((state) => state.count2Score.value);
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
   const [ans, setAns] = useState(Number);
   const [correctAnswer, setCorrectAnswer] = useState(Number);
@@ -76,6 +78,35 @@ const CountingTest = ({navigation}) => {
   const questions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const dispatch = useDispatch();
   const score = useSelector((state) => state.score.value);
+
+  useEffect(() => {
+    dispatch(setScore(0));
+    selectpic();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      console.log("update called")
+      await update();
+    })();
+  }, [count2Qstn]);
+
+  const update =async () => {
+    await axios.post('http://10.0.2.2:5000/update', {
+            data: {
+                countQstn: count2Qstn,
+                countScore: count2Score,
+                name: details.payload.name,
+                reqFields:["count2Qstn","count2Score"]
+            },
+            headers: { 'Content-Type': 'application/json' }
+        }).then((res) => {
+            console.log(res.data);
+        }).catch((err) => {
+            console.log(err);
+        })
+  }
+
   const incrementQnNum = () => {
     setQnNum(qnNum + 1);
     selectpic();
@@ -111,8 +142,11 @@ const CountingTest = ({navigation}) => {
   const addScore = (response) => {
     if (response == selectedqn + 1) {
       dispatch(setScore(score + 1))
-      // console.log(score+"reach");
+      dispatch(setcount2Score(count2Score + 1));
+      console.log(count2Score+"reach");
     }
+    console.log("qn updated")
+    dispatch(setcount2Qstn(count2Qstn + 1));
   };
 
   return (

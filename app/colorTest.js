@@ -4,6 +4,10 @@ import React, { useState,useEffect } from "react";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setScore } from "../store/scoreSlice";
+import {setcount4Qstn} from "../store/count4QstnSlice";
+import {setcount4Score} from "../store/count4ScoreSlice";
+
+
 const DsirectionTest = ({ navigation }) => {
   const [newqn, setNewqn] = useState([]);
   const [qN, setQN] = useState(0);
@@ -21,6 +25,36 @@ const DsirectionTest = ({ navigation }) => {
   const [ans, setAns] = useState("");
   const qnArr = ["YELLOW", "WHITE", "GREEN", "BLACK", "BLUE", "RED"];
   const [response, setResponse] = useState(0);
+
+  const details = useSelector((state) => state.details.value);
+  // const score = useSelector((state) => state.score.value);
+  const count4Qstn = useSelector((state) => state.count4Qstn.value);
+  const count4Score = useSelector((state) => state.count4Score.value);
+
+
+  useEffect(() => {
+    (async () => {
+      console.log("update called")
+      await update();
+    })();
+  }, [count4Qstn]);
+
+  const update =async () => {
+    await axios.post('http://10.0.2.2:5000/update', {
+            data: {
+                countQstn: count4Qstn,
+                countScore: count4Score,
+                name: details.payload.name,
+                reqFields:["count4Qstn","count4Score"]
+            },
+            headers: { 'Content-Type': 'application/json' }
+        }).then((res) => {
+            console.log(res.data);
+        }).catch((err) => {
+            console.log(err);
+        })
+  }
+
   const validateAns = (response) => {
     setResponse(response);
     setIsOptionDisabled(true);
@@ -43,8 +77,10 @@ const DsirectionTest = ({ navigation }) => {
     setTimeout(() => {
     if (response == qnArr[qN]) {
       dispatch(setScore(score + 1))
-      console.log(score+"reach");
+      dispatch(setcount4Score(count4Score + 1));
+      console.log(count4Score+"reach");
     }
+    dispatch(setcount4Qstn(count4Qstn + 1));
   },500)};
   const handlePress = () => {
     setQN(Math.floor(Math.random() * 6));
