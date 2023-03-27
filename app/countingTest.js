@@ -13,50 +13,51 @@ import { setcount2Qstn } from "../store/count2QstnSlice";
 import { setcount2Score } from "../store/count2ScoreSlice";
 import axios from "axios";
 import { setScore } from "../store/scoreSlice";
+// import a from './img/1.png'
 const data = [
   {
     id: 1,
-    Image: require("./1.png"),
+    Image: require("./img/1.png"),
     style: "styles.ballImage1",
   },
   {
     id: 2,
-    Image: require("./2.png"),
+    Image: require("./img/2.png"),
     style: "styles.ballImage2",
   },
   {
     id: 3,
-    Image: require("./3.png"),
+    Image: require("./img/3.png"),
     style: "styles.ballImage5",
   },
   {
     id: 4,
-    Image: require("./4.png"),
+    Image: require("./img/4.png"),
     style: "styles.ballImage5",
   },
   {
     id: 5,
-    Image: require("./5.png"),
+    Image: require("./img/5.png"),
     style: "styles.ballImage5",
   },
   {
     id: 6,
-    Image: require("./6.png"),
+    Image: require("./img/6.png"),
     style: "styles.ballImage5",
   },
   {
     id: 7,
-    Image: require("./7.png"),
+    Image: require("./img/7.png"),
     style: "styles.ballImage5",
   },
   {
     id: 8,
-    Image: require("./8.png"),
+    Image: require("./img/8.png"),
     style: "styles.ballImage7",
   },
   {
     id: 9,
-    Image: require("./9.png"),
+    Image: require("./img/9.png"),
     style: "styles.ballImage8",
   },
 ];
