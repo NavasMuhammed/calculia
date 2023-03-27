@@ -10,6 +10,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "../store/detailsSlice";
 import { setScore } from "../store/scoreSlice";
+import { setcountQstn, setCountQstn } from "../store/countQstnSlice";
+import { setcountScore } from "../store/countScoreSlice";
 import axios from "axios";
 
 const TestPage = ({navigation}) => {
@@ -36,6 +38,8 @@ const dispatch = useDispatch();
 
   const details = useSelector((state) => state.details.value);
   const score = useSelector((state) => state.score.value);
+  const countQstn = useSelector((state) => state.countQstn.value);
+  const countScore = useSelector((state) => state.countScore.value);
 
   let time = 1000;
   const getquestion = async () => {
@@ -100,6 +104,25 @@ const dispatch = useDispatch();
     dispatch(setScore(0));
   }, []);
 
+  useEffect(() => {
+    update();
+  }, [countQstn]);
+
+  const update =async () => {
+    await axios.post('http://10.0.2.2:5000/update', {
+            data: {
+                countQstn: countQstn,
+                countScore: countScore,
+                name: details.payload.name,
+            },
+            headers: { 'Content-Type': 'application/json' }
+        }).then((res) => {
+            console.log(res.data);
+        }).catch((err) => {
+            console.log(err);
+        })
+  }
+
   const incrementQnNum = () => {
     setQnNum(qnNum + 1);
   };
@@ -124,8 +147,10 @@ const dispatch = useDispatch();
   const addScore = (response) => {
     if (response == correctAnswer) {
       dispatch(setScore(score + 1))
+      dispatch(setcountScore(countScore + 1));
       console.log(score+"reach");
     }
+    dispatch(setcountQstn(countQstn + 1));
   };
 
   return (

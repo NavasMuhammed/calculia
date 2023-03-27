@@ -1,7 +1,9 @@
 //express backend
 const express = require('express')
 const cors = require('cors')
+var bodyParser = require('body-parser')
 var admin = require("firebase-admin");
+
 
 var serviceAccount = require("C:/Users/hilal/Downloads/fir-auth-279eb-firebase-adminsdk-3os3j-2630e2ce66.json");
 
@@ -12,6 +14,10 @@ const db = admin.firestore();
 
 const app = express()
 const port = 5000
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 app.use(cors())
 
@@ -98,6 +104,28 @@ app.get('/question',async (req, res) => {
         });
     res.json(questData)
 })
+
+app.post('/update',async (req, res) => {
+    let countQstn = req.body.data.countQstn;
+    let countScore = req.body.data.countScore;
+    let name = req.body.data.name;
+    //insert into database
+    var citiesRef = db.collection('studentDetails');
+    var query = await citiesRef
+        .where('name', '==', name)
+        .get()
+        .then(snapshot => {
+            // console.log(snapshot)
+            snapshot.forEach(doc => {
+                console.log(doc.id, '=>', doc.data());
+                db.collection("studentDetails").doc(doc.id).update({
+                    countQstn: countQstn,
+                    countScore: countScore
+                })
+
+    console.log(req.body.data);
+})})})
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

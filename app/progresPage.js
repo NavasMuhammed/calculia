@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from '../store/detailsSlice';
+import { setcountQstn } from '../store/countQstnSlice';
+import { setcountScore } from '../store/countScoreSlice';
 
 
 const ProgressPage = ({ navigation }) => {
@@ -47,6 +49,8 @@ const ProgressPage = ({ navigation }) => {
                 console.log(res.data.progress)
                 setprogress(res.data.progress)
                 addDetails({id:res.data})
+                dispatch(setcountQstn(res.data.countQstn))
+                dispatch(setcountScore(res.data.countScore))
                 console.log(details.payload)
             })
             .catch(err => {
