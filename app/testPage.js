@@ -17,15 +17,18 @@ import axios from "axios";
 const TestPage = ({navigation}) => {
   let data = [];
   let singleData = [];
-  var questionArr = [];
+  // var questionArr = [];
   let ansarray = [];
+  const [data1, setdata1] = useState([]);
+  const [singleData1, setsingleData1] = useState([]);
+  const [ansarray1, setansarray1] = useState([]);
   const [qnNum, setQnNum] = useState(0);
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
   const [response, setResponse] = useState(null);
   const [ans, setAns] = useState(false);
   const [question, setquestion] = useState();
   const [correctAnswer, setcorrectAnswer] = useState();
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState([1,2,3,4]);
   // const [score, setScore] = useState(0);
   const [Finished, setFinished] = useState(true);
   // let timeouttime = false
@@ -52,19 +55,18 @@ const dispatch = useDispatch();
         settimeouttime(true);
       }, time);
     } else if (qnNum < QNcount) {
-      setTimeout(() => {
-        setquestion(singleData[qnNum]);
-        setOptions(data[qnNum]);
-        setcorrectAnswer(ansarray[qnNum]);
-        console.log(QNcount);
-        console.log(qnNum);
-      }, time);
+        setquestion(singleData1[qnNum]);
+        setOptions(data1[qnNum]);
+        setcorrectAnswer(ansarray1[qnNum]);
+        console.log(data1);
+        console.log(singleData1);
     } else {
       console.log("executed");
       setFinished(false);
     }
   };
   const getDetails = async (n) => {
+    console.log("reached here");
     await axios
       .get("http://10.0.2.2:5000/question", {
         params: {
@@ -74,35 +76,34 @@ const dispatch = useDispatch();
       })
       .then((res) => {
         res.data.forEach((element) => {
-          let answersArr = [];
-
-          answersArr[0] = element.opt1;
-          answersArr[1] = element.opt2;
-          answersArr[2] = element.opt3;
-          answersArr[3] = element.opt4;
-          questionArr[0] = element.question;
-          data.push(answersArr);
+          data.push([element.opt1, element.opt2, element.opt3, element.opt4]);
           ansarray.push(element.answer);
           singleData.push(element.question);
-          // console.log(data)
+          console.log(element)
         });
-        setQNcount(data.length);
+        setQNcount(data.length-1);
+        setdata1(data);
+        setsingleData1(singleData);
+        setansarray1(ansarray);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err+"here");
       });
   };
   useEffect(() => {
-    getDetails();
     getquestion();
-    console.log(qnNum);
-    // console.log(singleData.length);
-    // console.log(options);
   }, [qnNum]);
 
   useEffect(() => {
     dispatch(setScore(0));
+    (async () => {
+      await getDetails();
+      // getquestion();
+      console.log(qnNum);
+    })();
   }, []);
+
+
 
   useEffect(() => {
     update();
