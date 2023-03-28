@@ -1,7 +1,15 @@
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { setDetails } from "../store/detailsSlice";
+import CircularProgress from "react-native-circular-progress-indicator";
 import { setDetails } from '../store/detailsSlice';
 import { setcountQstn } from '../store/countQstnSlice';
 import { setcountScore } from '../store/countScoreSlice';
@@ -14,16 +22,16 @@ import { setcount4Score } from '../store/count4ScoreSlice';
 
 
 const ProgressPage = ({ navigation }) => {
-    const [username, setusername] = useState("")
-    
-    const [progress, setprogress] = useState(0)
-    const email = useSelector((state) => state.color.value);
-    const details = useSelector((state) => state.details.value);
-    const dispatch = useDispatch();
+  const [username, setusername] = useState("");
 
-    function addDetails({ id }){
-        dispatch(setDetails({ payload: id }));
-    }
+  const [progress, setprogress] = useState(0);
+  const email = useSelector((state) => state.color.value);
+  const details = useSelector((state) => state.details.value);
+  const dispatch = useDispatch();
+
+  function addDetails({ id }) {
+    dispatch(setDetails({ payload: id }));
+  }
 
     const getName = () => {
         axios.get('http://10.0.2.2:5000/', {
@@ -98,69 +106,64 @@ const ProgressPage = ({ navigation }) => {
             </View>
         </SafeAreaView>
 
-    )
-}
-
-export default ProgressPage
+export default ProgressPage;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "space-around",
-        backgroundColor: "#141527",
-
-    },
-    mainTitle: {
-        fontSize: 24,
-        fontWeight: "900",
-        color: "#fff",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-        paddingLeft: 22,
-    },
-    progressContainer: {
-        alignItems: "center",
-        justifyContent: "center",
-
-    },
-    circleProgress: {
-        width: 150,
-        height: 150,
-        borderRadius: 150,
-        backgroundColor: "#FC6746",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    circleProgressInner: {
-        width: 110,
-        height: 110,
-        borderRadius: 110,
-        backgroundColor: "#141527",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    progressText: {
-        color: "#FC6746",
-        fontWeight: "700",
-        fontSize: 32,
-    },
-    buttonsContainer: {
-        alignItems: "center",
-    },
-    buttonWrapper: {
-        width: "70%",
-        borderRadius: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: "#1E1F3B",
-        padding: 20,
-        // paddingRight: 90,
-        // paddingLeft: 90,
-        marginTop: 30,
-    },
-    buttonTitle: {
-        color: '#646577',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-})
+  container: {
+    flex: 1,
+    justifyContent: "space-around",
+    backgroundColor: "#141527",
+  },
+  mainTitle: {
+    fontSize: 24,
+    fontWeight: "900",
+    color: "#fff",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    paddingLeft: 22,
+  },
+  progressContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  circleProgress: {
+    width: 150,
+    height: 150,
+    borderRadius: 150,
+    backgroundColor: "#FC6746",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  circleProgressInner: {
+    width: 110,
+    height: 110,
+    borderRadius: 110,
+    backgroundColor: "#141527",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  progressText: {
+    color: "#FC6746",
+    fontWeight: "700",
+    fontSize: 32,
+  },
+  buttonsContainer: {
+    alignItems: "center",
+  },
+  buttonWrapper: {
+    width: "70%",
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#1E1F3B",
+    padding: 20,
+    // paddingRight: 90,
+    // paddingLeft: 90,
+    marginTop: 30,
+  },
+  buttonTitle: {
+    color: "#646577",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+});
