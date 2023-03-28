@@ -1,5 +1,7 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
+import { setScore } from "../store/scoreSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Questions, Answers, Options } from "./data";
 const Diagnosis = ({ navigation }) => {
@@ -30,6 +32,13 @@ const Diagnosis = ({ navigation }) => {
   const [response, setResponse] = useState();
   const [questionNum, setQuestionNum] = useState(0);
   const [option, setOption] = useState([]);
+  const score = useSelector((state) => state.score.value);
+  const dispatch = useDispatch();
+
+  useEffect(() => { 
+    dispatch(setScore(0));
+  }, []);
+
   const buddi = (levelt, questiont, ranget) => {
     setOption(
       (level == levelt) & (questiont < ranget) ? optionst[levelt][ranget] : []
@@ -46,7 +55,9 @@ const Diagnosis = ({ navigation }) => {
     setResponse(response);
     setIsOptionDisabled(true);
     correctAnswer(questionNum, level);
+    dispatch(setScore(score + 1));
   };
+
   const resetToDefault = () => {
     setResponse(null);
     setAns(null);
