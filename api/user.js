@@ -1,23 +1,22 @@
 //express backend
-const express = require('express')
-const cors = require('cors')
-var bodyParser = require('body-parser')
+const express = require("express");
+const cors = require("cors");
+var bodyParser = require("body-parser");
 var admin = require("firebase-admin");
 
-
-var serviceAccount = require("C:/Users/hilal/Downloads/fir-auth-279eb-firebase-adminsdk-3os3j-2630e2ce66.json");
+var serviceAccount = require("C:/Users/91920/Downloads/fir-auth-279eb-firebase-adminsdk-3os3j-dcb225b6d5.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 const db = admin.firestore();
 
-const app = express()
-const port = 5000
-app.use(bodyParser.urlencoded({ extended: false }))
+const app = express();
+const port = 5000;
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 app.use(cors());
 
@@ -105,29 +104,32 @@ app.get("/question", async (req, res) => {
   res.json(questData);
 });
 
-app.post('/update',async (req, res) => {
-    let countQstn = req.body.data.countQstn;
-    console.log("reached in update"+countQstn);
-    let countScore = req.body.data.countScore;
-    let name = req.body.data.name;
-    let reqfields = req.body.data.reqFields;
-    //insert into database
-    var citiesRef = db.collection('studentDetails');
-    var query = await citiesRef
-        .where('name', '==', name)
-        .get()
-        .then(snapshot => {
-            // console.log(snapshot)
-            snapshot.forEach(doc => {
-                console.log(doc.id, '=>', doc.data());
-                db.collection("studentDetails").doc(doc.id).update({
-                    [reqfields[0]]: countQstn,
-                    [reqfields[1]]: countScore
-                })
+app.post("/update", async (req, res) => {
+  let countQstn = req.body.data.countQstn;
+  console.log("reached in update" + countQstn);
+  let countScore = req.body.data.countScore;
+  let name = req.body.data.name;
+  let reqfields = req.body.data.reqFields;
+  //insert into database
+  var citiesRef = db.collection("studentDetails");
+  var query = await citiesRef
+    .where("name", "==", name)
+    .get()
+    .then((snapshot) => {
+      // console.log(snapshot)
+      snapshot.forEach((doc) => {
+        console.log(doc.id, "=>", doc.data());
+        db.collection("studentDetails")
+          .doc(doc.id)
+          .update({
+            [reqfields[0]]: countQstn,
+            [reqfields[1]]: countScore,
+          });
 
-    console.log(req.body.data);
-})})})
-
+        console.log(req.body.data);
+      });
+    });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

@@ -13,8 +13,8 @@ import { setScore } from "../store/scoreSlice";
 import { setcountQstn, setCountQstn } from "../store/countQstnSlice";
 import { setcountScore } from "../store/countScoreSlice";
 import axios from "axios";
-
-const TestPage = ({navigation}) => {
+import * as Progress from "react-native-progress";
+const TestPage = ({ navigation }) => {
   let data = [];
   let singleData = [];
   // var questionArr = [];
@@ -28,16 +28,16 @@ const TestPage = ({navigation}) => {
   const [ans, setAns] = useState(false);
   const [question, setquestion] = useState();
   const [correctAnswer, setcorrectAnswer] = useState();
-  const [options, setOptions] = useState([1,2,3,4]);
+  const [options, setOptions] = useState([1, 2, 3, 4]);
   // const [score, setScore] = useState(0);
   const [Finished, setFinished] = useState(true);
   // let timeouttime = false
   const [timeouttime, settimeouttime] = useState(false);
   const [QNcount, setQNcount] = useState(0);
-//   function addScore({ id }){
-//     dispatch(setScore(score + 1));
-// }
-const dispatch = useDispatch();
+  //   function addScore({ id }){
+  //     dispatch(setScore(score + 1));
+  // }
+  const dispatch = useDispatch();
 
   const details = useSelector((state) => state.details.value);
   const score = useSelector((state) => state.score.value);
@@ -55,11 +55,11 @@ const dispatch = useDispatch();
         settimeouttime(true);
       }, time);
     } else if (qnNum < QNcount) {
-        setquestion(singleData1[qnNum]);
-        setOptions(data1[qnNum]);
-        setcorrectAnswer(ansarray1[qnNum]);
-        console.log(data1);
-        console.log(singleData1);
+      setquestion(singleData1[qnNum]);
+      setOptions(data1[qnNum]);
+      setcorrectAnswer(ansarray1[qnNum]);
+      console.log(data1);
+      console.log(singleData1);
     } else {
       console.log("executed");
       setFinished(false);
@@ -79,15 +79,15 @@ const dispatch = useDispatch();
           data.push([element.opt1, element.opt2, element.opt3, element.opt4]);
           ansarray.push(element.answer);
           singleData.push(element.question);
-          console.log(element)
+          console.log(element);
         });
-        setQNcount(data.length-1);
+        setQNcount(data.length - 1);
         setdata1(data);
         setsingleData1(singleData);
         setansarray1(ansarray);
       })
       .catch((err) => {
-        console.log(err+"here");
+        console.log(err + "here");
       });
   };
   useEffect(() => {
@@ -103,27 +103,28 @@ const dispatch = useDispatch();
     })();
   }, []);
 
-
-
   useEffect(() => {
     update();
   }, [countQstn]);
 
-  const update =async () => {
-    await axios.post('http://10.0.2.2:5000/update', {
-            data: {
-                countQstn: countQstn,
-                countScore: countScore,
-                name: details.payload.name,
-                reqFields:["countQstn","countScore"]
-            },
-            headers: { 'Content-Type': 'application/json' }
-        }).then((res) => {
-            console.log(res.data);
-        }).catch((err) => {
-            console.log(err);
-        })
-  }
+  const update = async () => {
+    await axios
+      .post("http://10.0.2.2:5000/update", {
+        data: {
+          countQstn: countQstn,
+          countScore: countScore,
+          name: details.payload.name,
+          reqFields: ["countQstn", "countScore"],
+        },
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const incrementQnNum = () => {
     setQnNum(qnNum + 1);
@@ -148,25 +149,34 @@ const dispatch = useDispatch();
   };
   const addScore = (response) => {
     if (response == correctAnswer) {
-      dispatch(setScore(score + 1))
+      dispatch(setScore(score + 1));
       dispatch(setcountScore(countScore + 1));
-      console.log(score+"reach");
+      console.log(score + "reach");
     }
     dispatch(setcountQstn(countQstn + 1));
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.mainTitle}>Question {qnNum}/10</Text>
-      </View>
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View style={styles.progressBarInner}></View>
-        </View>
-      </View>
       {Finished ? (
         <>
+          <View style={styles.titleContainer}>
+            <Text style={styles.mainTitle}>Question {qnNum}/10</Text>
+          </View>
+          <View style={styles.progressContainer}>
+            {/* <View style={styles.progressBar}>
+              <View style={styles.progressBarInner}></View>
+            </View> */}
+            <Progress.Bar
+              progress={qnNum / 10}
+              color="#FC6746"
+              unfilledColor={"#646577"}
+              borderRadius={50}
+              borderWidth={0}
+              height={20}
+              width={300}
+            />
+          </View>
           <View style={styles.questionContainer}>
             <Text style={styles.question}>FIND {question}</Text>
           </View>
@@ -211,14 +221,14 @@ const dispatch = useDispatch();
       ) : (
         <SafeAreaView style={styles.container}>
           <View style={styles.titleContainer}>
+            <Text style={styles.mainTitle}>GAME OVER</Text>
             <Text style={styles.mainTitle}>Score: {score}</Text>
           </View>
-          <Text style={styles.mainTitle}>GAME OVER</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("testSelectionPage");
             }}
-            style={styles.submitWrapper}
+            style={styles.submitWrapperN}
           >
             <Text style={styles.submitTitle}>Back to Menu</Text>
           </TouchableOpacity>
@@ -270,6 +280,11 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     color: "#fff",
   },
+  mainTitleG: {
+    fontSize: 24,
+    fontWeight: "900",
+    color: "#fff",
+  },
   questionContainer: {
     justifyContent: "flex-start",
     alignItems: "center",
@@ -283,8 +298,11 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     width: "100%",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
+    padding: 20,
+    marginTop: -20,
+    // backgroundColor:"#fff"
   },
   progressBar: {
     width: "80%",
@@ -304,6 +322,19 @@ const styles = StyleSheet.create({
 
   submitWrapper: {
     top: -50,
+    borderRadius: 15,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    backgroundColor: "#FC6746",
+    padding: 20,
+    width: "70%",
+    paddingRight: 90,
+    paddingLeft: 90,
+    marginTop: 30,
+  },
+  submitWrapperN: {
+    top: 0,
     borderRadius: 15,
     alignItems: "center",
     alignSelf: "center",

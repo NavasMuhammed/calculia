@@ -5,15 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Questions, Answers, Options } from "./data";
 const Diagnosis = ({ navigation }) => {
-  const [level, setLevel] = useState(0);
+  const [level, setLevel] = useState(3);
   const questions =
     level == 0
       ? Questions.level1
-      : level == 2
+      : level == 1
       ? Questions.level2
-      : level == 3
+      : level == 2
       ? Questions.level3
-      : level == 4
+      : level == 3
       ? Questions.level4
       : [];
   const answers = [
@@ -35,7 +35,7 @@ const Diagnosis = ({ navigation }) => {
   const score = useSelector((state) => state.score.value);
   const dispatch = useDispatch();
 
-  useEffect(() => { 
+  useEffect(() => {
     dispatch(setScore(0));
   }, []);
 
@@ -84,22 +84,36 @@ const Diagnosis = ({ navigation }) => {
         <>
           <Text style={styles.mainTitle}>level: {level}</Text>
           <Text style={styles.mainTitle}>question number: {questionNum}</Text>
-          <Text style={styles.mainTitle}>Answer the fllowing questions</Text>
+          <Text style={styles.mainTitle}>
+            Answer the fllowing questions{range}
+          </Text>
           {(level == 0) & (questionNum == 5) ? (
             <View style={styles.imageContainer}>
-              <Image style={styles.image} source={require("./img/1.png")}></Image>
+              <Image
+                style={styles.image}
+                source={require("./img/1.png")}
+              ></Image>
             </View>
           ) : (level == 0) & (questionNum == 6) ? (
             <View style={styles.imageContainer}>
-              <Image style={styles.image} source={require("./img/3.png")}></Image>
+              <Image
+                style={styles.image}
+                source={require("./img/3.png")}
+              ></Image>
             </View>
           ) : (level == 0) & (questionNum == 7) ? (
             <View style={styles.imageContainer}>
-              <Image style={styles.image} source={require("./img/4.png")}></Image>
+              <Image
+                style={styles.image}
+                source={require("./img/4.png")}
+              ></Image>
             </View>
           ) : (level == 0) & (questionNum == 8) ? (
             <View style={styles.imageContainer}>
-              <Image style={styles.image} source={require("./img/2.png")}></Image>
+              <Image
+                style={styles.image}
+                source={require("./img/2.png")}
+              ></Image>
             </View>
           ) : (level == 0) & (questionNum == 9) ? (
             <View style={styles.imageContainer}>

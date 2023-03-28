@@ -21,6 +21,7 @@ import ColorTest from "./colorTest";
 import Diagnosis from "./diagnosis";
 import Achievement from "./achievment";
 import ProgressSelectionPage from "./progressSelector";
+import OverallProgress from "./overallProgress";
 
 function App() {
   const Stack = createNativeStackNavigator();
@@ -45,6 +46,7 @@ function App() {
         <Stack.Screen name="colorTest" component={ColorTest} />
         <Stack.Screen name="diagnosis" component={Diagnosis} />
         <Stack.Screen name="achievment" component={Achievement} />
+        <Stack.Screen name="overall" component={OverallProgress} />
         <Stack.Screen
           name="progressSelection"
           component={ProgressSelectionPage}

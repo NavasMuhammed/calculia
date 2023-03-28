@@ -1,13 +1,12 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setScore } from "../store/scoreSlice";
-import {setcount4Qstn} from "../store/count4QstnSlice";
-import {setcount4Score} from "../store/count4ScoreSlice";
+import { setcount4Qstn } from "../store/count4QstnSlice";
+import { setcount4Score } from "../store/count4ScoreSlice";
 import axios from "axios";
-
 
 const DsirectionTest = ({ navigation }) => {
   const [newqn, setNewqn] = useState([]);
@@ -15,10 +14,10 @@ const DsirectionTest = ({ navigation }) => {
   const [qNarray, setQNarray] = useState([]);
   const [count, setCount] = useState(0);
   useEffect(() => {
-    setQN(Math.floor(Math.random() *6));
+    setQN(Math.floor(Math.random() *5));
     // setQNarray([...qNarray, qN]);
     dispatch(setScore(0));
-  }, [])
+  }, []);
   const score = useSelector((state) => state.score.value);
   const dispatch = useDispatch();
   const options = ["RED", "BLUE", "BLACK", "GREEN", "WHITE", "YELLOW"];
@@ -32,29 +31,31 @@ const DsirectionTest = ({ navigation }) => {
   const count4Qstn = useSelector((state) => state.count4Qstn.value);
   const count4Score = useSelector((state) => state.count4Score.value);
 
-
   useEffect(() => {
     (async () => {
-      console.log("update called")
+      console.log("update called");
       await update();
     })();
   }, [count4Qstn]);
 
-  const update =async () => {
-    await axios.post('http://10.0.2.2:5000/update', {
-            data: {
-                countQstn: count4Qstn,
-                countScore: count4Score,
-                name: details.payload.name,
-                reqFields:["count4Qstn","count4Score"]
-            },
-            headers: { 'Content-Type': 'application/json' }
-        }).then((res) => {
-            console.log(res.data);
-        }).catch((err) => {
-            console.log(err);
-        })
-  }
+  const update = async () => {
+    await axios
+      .post("http://10.0.2.2:5000/update", {
+        data: {
+          countQstn: count4Qstn,
+          countScore: count4Score,
+          name: details.payload.name,
+          reqFields: ["count4Qstn", "count4Score"],
+        },
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const validateAns = (response) => {
     setResponse(response);
@@ -76,15 +77,16 @@ const DsirectionTest = ({ navigation }) => {
   };
   const addScore = (response) => {
     setTimeout(() => {
-    if (response == qnArr[qN]) {
-      dispatch(setScore(score + 1))
-      dispatch(setcount4Score(count4Score + 1));
-      console.log(count4Score+"reach");
-    }
-    dispatch(setcount4Qstn(count4Qstn + 1));
-  },500)};
+      if (response == qnArr[qN]) {
+        dispatch(setScore(score + 1));
+        dispatch(setcount4Score(count4Score + 1));
+        console.log(count4Score + "reach");
+      }
+      dispatch(setcount4Qstn(count4Qstn + 1));
+    }, 500);
+  };
   const handlePress = () => {
-    setQN(Math.floor(Math.random() * 6));
+    setQN(Math.floor(Math.random() * 5));
     // if(qNarray.includes(qN)){
     //   setNewqn([0,1,2,3,4,5].filter((item) => !qNarray.includes(item)));
     //   setQN(newqn[0]);
@@ -92,7 +94,7 @@ const DsirectionTest = ({ navigation }) => {
     // }
     // setQNarray([...qNarray, qN]);
     setCount(count + 1);
-    resetToDefault();     
+    resetToDefault();
   };
 
   const resetToDefault = () => {
