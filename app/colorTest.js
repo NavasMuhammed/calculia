@@ -86,7 +86,7 @@ const DsirectionTest = ({ navigation }) => {
     }, 500);
   };
   const handlePress = () => {
-    setQN(Math.floor(Math.random() * 6));
+    setQN(Math.floor(Math.random() * 5));
     if (qNarray.includes(qN)) {
       setNewqn([0, 1, 2, 3, 4, 5].filter((item) => !qNarray.includes(item)));
       setQN(newqn[0]);
