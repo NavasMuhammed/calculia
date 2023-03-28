@@ -14,12 +14,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// let app;
-// if (!firebase.apps.length == true) {
-//     app = firebase.initializeApp(firebaseConfig);
-// } else {
-//     app = firebase.app()
-// }
+
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
