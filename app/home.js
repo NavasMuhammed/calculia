@@ -70,7 +70,7 @@ const Home = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.navigate("signup")}>
             <Text style={styles.logSubTitle}> Sign Up</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("overall")}>
+          <TouchableOpacity onPress={() => navigation.navigate("diagnosis")}>
             <Text style={styles.logSubTitle}> test</Text>
           </TouchableOpacity>
         </View>
