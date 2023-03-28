@@ -157,9 +157,6 @@ const CountingTest = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       {qnNum < 10 ? (
         <>
-          <View style={styles.titleContainer}>
-            <Text style={styles.mainTitle}>Question {qnNum}/10</Text>
-          </View>
           <View style={styles.progressContainer}>
             <Progress.Bar
               progress={qnNum / 10}
@@ -170,6 +167,9 @@ const CountingTest = ({ navigation }) => {
               height={20}
               width={300}
             />
+          </View>
+          <View style={styles.titleContainer}>
+            <Text style={styles.mainTitle}>Question {qnNum}/10</Text>
           </View>
 
           <View style={styles.questionContainer}>
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   image: {
     width: 150,
     height: 150,
-    resizeMode: "stretch",
+    resizeMode: "contain",
   },
   ballContainer: {
     alignSelf: "center",
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   progressContainer: {
-    top: -60,
+    // top: -60,
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "center",

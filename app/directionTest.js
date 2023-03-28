@@ -113,7 +113,7 @@ const DsirectionTest = ({ navigation }) => {
                 <View style={styles.box}></View>
               )}
               <View style={styles.boy}>
-                <Image source={require("./child.png")} />
+                <Image source={require("./img/child.png")} />
               </View>
               {qN == 3 ? (
                 <View style={styles.boxU}></View>

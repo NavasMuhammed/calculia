@@ -54,7 +54,7 @@ const Achievement = ({ navigation }) => {
           }}
         >
           <TouchableOpacity style={styles.cross} onPress={() => handlePress()}>
-            <Image source={require("./Cross.png")}></Image>
+            <Image source={require("./img/Cross.png")}></Image>
           </TouchableOpacity>
           <Text style={styles.modalTitle}>Achievements Unlocked</Text>
           <Text style={styles.achivedTitle}>Number master</Text>
@@ -77,7 +77,7 @@ const Achievement = ({ navigation }) => {
               style={styles.button}
             >
               <Image
-                source={require("./numberA.png")}
+                source={require("./img/numberA.png")}
                 style={styles.image}
               ></Image>
             </TouchableOpacity>
@@ -86,7 +86,7 @@ const Achievement = ({ navigation }) => {
               style={styles.button}
             >
               <Image
-                source={require("./countA.png")}
+                source={require("./img/countA.png")}
                 style={styles.image}
               ></Image>
             </TouchableOpacity>
@@ -96,7 +96,7 @@ const Achievement = ({ navigation }) => {
               style={styles.button}
             >
               <Image
-                source={require("./directionA.png")}
+                source={require("./img/directionA.png")}
                 style={styles.image}
               ></Image>
             </TouchableOpacity>
@@ -105,7 +105,7 @@ const Achievement = ({ navigation }) => {
               style={styles.button}
             >
               <Image
-                source={require("./colorA.png")}
+                source={require("./img/colorA.png")}
                 style={styles.image}
               ></Image>
             </TouchableOpacity>
@@ -116,7 +116,7 @@ const Achievement = ({ navigation }) => {
               style={styles.button}
             >
               <Image
-                source={require("./numberA.png")}
+                source={require("./img/numberA.png")}
                 style={styles.image}
               ></Image>
             </TouchableOpacity>
@@ -125,7 +125,7 @@ const Achievement = ({ navigation }) => {
               style={styles.button}
             >
               <Image
-                source={require("./countA.png")}
+                source={require("./img/countA.png")}
                 style={styles.image}
               ></Image>
             </TouchableOpacity>
@@ -135,7 +135,7 @@ const Achievement = ({ navigation }) => {
               style={styles.button}
             >
               <Image
-                source={require("./directionA.png")}
+                source={require("./img/directionA.png")}
                 style={styles.image}
               ></Image>
             </TouchableOpacity>
@@ -144,7 +144,7 @@ const Achievement = ({ navigation }) => {
               style={styles.button}
             >
               <Image
-                source={require("./colorA.png")}
+                source={require("./img/colorA.png")}
                 style={styles.image}
               ></Image>
             </TouchableOpacity>

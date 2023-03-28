@@ -119,7 +119,7 @@ const Diagnosis = ({ navigation }) => {
             <View style={styles.imageContainer}>
               <Image
                 style={styles.image}
-                source={require("./child.png")}
+                source={require("./img/child.png")}
               ></Image>
             </View>
           ) : (
