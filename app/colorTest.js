@@ -16,7 +16,7 @@ const DsirectionTest = ({ navigation }) => {
   const [count, setCount] = useState(0);
   useEffect(() => {
     setQN(Math.floor(Math.random() *6));
-    setQNarray([...qNarray, qN]);
+    // setQNarray([...qNarray, qN]);
     dispatch(setScore(0));
   }, [])
   const score = useSelector((state) => state.score.value);
@@ -85,12 +85,12 @@ const DsirectionTest = ({ navigation }) => {
   },500)};
   const handlePress = () => {
     setQN(Math.floor(Math.random() * 6));
-    if(qNarray.includes(qN)){
-      setNewqn([0,1,2,3,4,5].filter((item) => !qNarray.includes(item)));
-      setQN(newqn[0]);
-      // console.log(newqn);
-    }
-    setQNarray([...qNarray, qN]);
+    // if(qNarray.includes(qN)){
+    //   setNewqn([0,1,2,3,4,5].filter((item) => !qNarray.includes(item)));
+    //   setQN(newqn[0]);
+    //   // console.log(newqn);
+    // }
+    // setQNarray([...qNarray, qN]);
     setCount(count + 1);
     resetToDefault();     
   };
@@ -102,7 +102,7 @@ const DsirectionTest = ({ navigation }) => {
   };
   return (
     <>
-      {count <= 6 ? (
+      {count <= 5 ? (
         <SafeAreaView style={styles.container}>
           <Text style={styles.mainTitle}>GUESS THE COLOUR</Text>
           <View style={styles.questionBox}>
