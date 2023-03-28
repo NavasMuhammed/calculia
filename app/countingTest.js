@@ -13,6 +13,7 @@ import { setcount2Qstn } from "../store/count2QstnSlice";
 import { setcount2Score } from "../store/count2ScoreSlice";
 import axios from "axios";
 import { setScore } from "../store/scoreSlice";
+import * as Progress from "react-native-progress";
 // import a from './img/1.png'
 const data = [
   {
@@ -62,8 +63,7 @@ const data = [
   },
 ];
 
-const CountingTest = ({navigation}) => {
-
+const CountingTest = ({ navigation }) => {
   const details = useSelector((state) => state.details.value);
   const count2Qstn = useSelector((state) => state.count2Qstn.value);
   const count2Score = useSelector((state) => state.count2Score.value);
@@ -87,26 +87,29 @@ const CountingTest = ({navigation}) => {
 
   useEffect(() => {
     (async () => {
-      console.log("update called")
+      console.log("update called");
       await update();
     })();
   }, [count2Qstn]);
 
-  const update =async () => {
-    await axios.post('http://10.0.2.2:5000/update', {
-            data: {
-                countQstn: count2Qstn,
-                countScore: count2Score,
-                name: details.payload.name,
-                reqFields:["count2Qstn","count2Score"]
-            },
-            headers: { 'Content-Type': 'application/json' }
-        }).then((res) => {
-            console.log(res.data);
-        }).catch((err) => {
-            console.log(err);
-        })
-  }
+  const update = async () => {
+    await axios
+      .post("http://10.0.2.2:5000/update", {
+        data: {
+          countQstn: count2Qstn,
+          countScore: count2Score,
+          name: details.payload.name,
+          reqFields: ["count2Qstn", "count2Score"],
+        },
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const incrementQnNum = () => {
     setQnNum(qnNum + 1);
@@ -142,80 +145,88 @@ const CountingTest = ({navigation}) => {
   };
   const addScore = (response) => {
     if (response == selectedqn + 1) {
-      dispatch(setScore(score + 1))
+      dispatch(setScore(score + 1));
       dispatch(setcount2Score(count2Score + 1));
-      console.log(count2Score+"reach");
+      console.log(count2Score + "reach");
     }
-    console.log("qn updated")
+    console.log("qn updated");
     dispatch(setcount2Qstn(count2Qstn + 1));
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {qnNum < 10 ? (<>
-      <View style={styles.titleContainer}>
-        <Text style={styles.mainTitle}>Question {qnNum}/10</Text>
-      </View>
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View style={styles.progressBarInner}></View>
-        </View>
-      </View>
+      {qnNum < 10 ? (
+        <>
+          <View style={styles.titleContainer}>
+            <Text style={styles.mainTitle}>Question {qnNum}/10</Text>
+          </View>
+          <View style={styles.progressContainer}>
+            <Progress.Bar
+              progress={qnNum / 10}
+              color="#FC6746"
+              unfilledColor={"#646577"}
+              borderRadius={50}
+              borderWidth={0}
+              height={20}
+              width={300}
+            />
+          </View>
 
-      <View style={styles.questionContainer}>
-        <Text style={styles.question}>
-          <Text>How Many balls are in the image</Text>
-        </Text>
-      </View>
-      <View style={styles.imageContainer}>
-        <View style={styles.ballContainer}>
-          <Image style={styles.image} source={data[selectedqn].Image} />
-        </View>
-      </View>
-      <View style={styles.optionContainerBalls}>
-        {options.map((option) => (
-          <TouchableOpacity
-            style={{
-              width: 60,
-              height: 60,
-              backgroundColor: "#1E1F3B",
-              margin: 10,
-              borderRadius: 10,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor:
-                option == ans
-                  ? "#00FF19"
-                  : option == response
-                  ? "#FF0330"
-                  : "#1E1F3B",
-            }}
-            key={option}
-            onPress={() => validateAns(option)}
-          >
-            <Text style={styles.buttonTitle1}>{option}</Text>
-          </TouchableOpacity>
-        ))}
-        {/* {isOptionDisabled && <TouchableOpacity onPress={() => handlePress()
+          <View style={styles.questionContainer}>
+            <Text style={styles.question}>
+              <Text>How Many balls are in the image</Text>
+            </Text>
+          </View>
+          <View style={styles.imageContainer}>
+            <View style={styles.ballContainer}>
+              <Image style={styles.image} source={data[selectedqn].Image} />
+            </View>
+          </View>
+          <View style={styles.optionContainerBalls}>
+            {options.map((option) => (
+              <TouchableOpacity
+                style={{
+                  width: 60,
+                  height: 60,
+                  backgroundColor: "#1E1F3B",
+                  margin: 10,
+                  borderRadius: 10,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor:
+                    option == ans
+                      ? "#00FF19"
+                      : option == response
+                      ? "#FF0330"
+                      : "#1E1F3B",
+                }}
+                key={option}
+                onPress={() => validateAns(option)}
+              >
+                <Text style={styles.buttonTitle1}>{option}</Text>
+              </TouchableOpacity>
+            ))}
+            {/* {isOptionDisabled && <TouchableOpacity onPress={() => handlePress()
                 } style={styles.submitWrapper1}>
                     <Text style={styles.submitTitle1}>Next</Text>
                 </TouchableOpacity>
                 } */}
-      </View>
-      {isOptionDisabled && (
-        <TouchableOpacity
-          onPress={() => handlePress()}
-          style={styles.submitWrapper}
-        >
-          <Text style={styles.submitTitle}>Next</Text>
-        </TouchableOpacity>
-      )}</>)
-       :(
+          </View>
+          {isOptionDisabled && (
+            <TouchableOpacity
+              onPress={() => handlePress()}
+              style={styles.submitWrapper}
+            >
+              <Text style={styles.submitTitle}>Next</Text>
+            </TouchableOpacity>
+          )}
+        </>
+      ) : (
         <SafeAreaView style={styles.container}>
           <View style={styles.titleContainer}>
             <Text style={styles.mainTitle}>Score: {score}</Text>
+            <Text style={styles.mainTitle}>GAME OVER</Text>
           </View>
-          <Text style={styles.mainTitle}>GAME OVER</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("testSelectionPage");
@@ -292,8 +303,9 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     // paddingTop: 55,
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
+    padding: 20,
     // width: "100%",
     // height: "10%",
   },
@@ -315,9 +327,9 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   progressContainer: {
-    top: 30,
+    top: -60,
     width: "100%",
-    // justifyContent: "flex-start",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   progressBar: {

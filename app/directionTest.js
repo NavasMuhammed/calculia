@@ -1,14 +1,12 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
-import { useRef,useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setScore } from "../store/scoreSlice";
 import { setcount3Qstn } from "../store/count3QstnSlice";
 import { setcount3Score } from "../store/count3ScoreSlice";
 import axios from "axios";
-
-
 
 const DsirectionTest = ({ navigation }) => {
   const [qN, setQN] = useState(0);
@@ -16,7 +14,7 @@ const DsirectionTest = ({ navigation }) => {
   useEffect(() => {
     setQN(Math.floor(Math.random() * 4));
     dispatch(setScore(0));
-  }, [])
+  }, []);
   const details = useSelector((state) => state.details.value);
   const score = useSelector((state) => state.score.value);
   const count3Qstn = useSelector((state) => state.count3Qstn.value);
@@ -24,7 +22,7 @@ const DsirectionTest = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const options = ["UP", "LEFT", "RIGHT", "DOWN"];
-  const qnArr = ["DOWN", "LEFT", "UP", "RIGHT"]
+  const qnArr = ["DOWN", "LEFT", "UP", "RIGHT"];
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
   const [ans, setAns] = useState("");
   const [response, setResponse] = useState(0);
@@ -45,41 +43,46 @@ const DsirectionTest = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      console.log("update called")
+      console.log("update called");
       await update();
     })();
   }, [count3Qstn]);
 
-  const update =async () => {
-    await axios.post('http://10.0.2.2:5000/update', {
-            data: {
-                countQstn: count3Qstn,
-                countScore: count3Score,
-                name: details.payload.name,
-                reqFields:["count3Qstn","count3Score"]
-            },
-            headers: { 'Content-Type': 'application/json' }
-        }).then((res) => {
-            console.log(res.data);
-        }).catch((err) => {
-            console.log(err);
-        })
-  }
-
+  const update = async () => {
+    await axios
+      .post("http://10.0.2.2:5000/update", {
+        data: {
+          countQstn: count3Qstn,
+          countScore: count3Score,
+          name: details.payload.name,
+          reqFields: ["count3Qstn", "count3Score"],
+        },
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const addScore = (response) => {
     setTimeout(() => {
-    if (response == qnArr[qN]) {
-      dispatch(setScore(score + 1))
-      dispatch(setcount3Score(count3Score + 1));
-      console.log(count3Score+"reach");
-    }
-    dispatch(setcount3Qstn(count3Qstn + 1));
-  },500)};
+      if (response == qnArr[qN]) {
+        dispatch(setScore(score + 1));
+        dispatch(setcount3Score(count3Score + 1));
+        console.log(count3Score + "reach");
+      }
+      dispatch(setcount3Qstn(count3Qstn + 1));
+    }, 500);
+  };
 
   const handlePress = () => {
     // setQN(qN + 1);
-    setQN([0,1,2,3].filter((item) => item != qN)[Math.floor(Math.random() * 3)]);
+    setQN(
+      [0, 1, 2, 3].filter((item) => item != qN)[Math.floor(Math.random() * 3)]
+    );
     setCount(count + 1);
     resetToDefault();
   };
@@ -93,7 +96,7 @@ const DsirectionTest = ({ navigation }) => {
     <>
       {count < 4 ? (
         <SafeAreaView style={styles.container}>
-          <Text style={styles.mainTitle}>GUESS THE DIRECTION</Text>
+          <Text style={styles.mainTitle}>FIND DIRECTION OF THE BOX</Text>
           <View style={styles.questionBox}>
             <View style={styles.row1}>
               {qN == 2 ? (
@@ -162,21 +165,23 @@ const DsirectionTest = ({ navigation }) => {
             </TouchableOpacity>
           )}
         </SafeAreaView>
-      ) : <>
-        <SafeAreaView style={styles.containerL}>
-          <Text style={styles.mainTitle}>SCORE</Text>
-          <Text style={styles.mainTitle}>{score}</Text>
-          <Text style={styles.mainTitle}>GAME OVER</Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("testSelectionPage");
-            }}
-            style={styles.submitWrapperL}
-          >
-            <Text style={styles.submitTitle}>Back to Menu</Text>
-          </TouchableOpacity>
-        </SafeAreaView>
-      </>}
+      ) : (
+        <>
+          <SafeAreaView style={styles.containerL}>
+            <Text style={styles.mainTitle}>SCORE</Text>
+            <Text style={styles.mainTitle}>{score}</Text>
+            <Text style={styles.mainTitle}>GAME OVER</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("testSelectionPage");
+              }}
+              style={styles.submitWrapperL}
+            >
+              <Text style={styles.submitTitle}>Back to Menu</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
+        </>
+      )}
     </>
   );
 };
