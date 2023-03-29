@@ -15,7 +15,7 @@ import { setcountQstn, setCountQstn } from "../store/countQstnSlice";
 import { setcountScore } from "../store/countScoreSlice";
 import axios from "axios";
 import * as Progress from "react-native-progress";
-
+import { images } from "./data";
 const TestPage = ({ navigation }) => {
   let data = [];
   let singleData = [];
@@ -162,6 +162,12 @@ const TestPage = ({ navigation }) => {
     }
     dispatch(setcountQstn(countQstn + 1));
   };
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    if (qnNum == QNcount) {
+      setActive(!active);
+    }
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -227,11 +233,181 @@ const TestPage = ({ navigation }) => {
         </>
       ) : (
         <SafeAreaView style={styles.container}>
+          {achievment && (
+            <View
+              style={{
+                left: "8%",
+                top: "20%",
+                willChange: "transform",
+                marginLeft: "auto",
+                marginRight: "auto",
+                height: 450,
+                alignItems: "center",
+                justifyContent: "center",
+                width: 350,
+                borderRadius: 20,
+                backgroundColor: "#1E1F3B",
+                position: "absolute",
+                zIndex: 99,
+                shadowOffset: { width: -2, height: 4 },
+                shadowColor: "#000",
+                shadowOpacity: 2,
+                shadowRadius: 10,
+                elevation: 10,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  padding: 15,
+                  position: "absolute",
+                  left: "86%",
+                  top: 0,
+                  // backgroundColor: "#ffff",
+                }}
+                onPress={() => setActive(!active)}
+              >
+                <Image source={require("./img/Cross.png")}></Image>
+              </TouchableOpacity>
+
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 24,
+                  fontWeight: "900",
+                }}
+              >
+                Achievements Unlocked
+              </Text>
+              <View
+                style={{
+                  marginTop: 15,
+                  borderWidth: 2,
+                  borderRadius: 30,
+                  borderColor: "#FC6746",
+                }}
+              >
+                
+                {levels == 1 ? (
+                  <Image
+                    source={images.numbers.level1.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : levels == 2 ? (
+                  <Image
+                    source={images.numbers.level2.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : levels == 3 ? (
+                  <Image
+                    source={images.numbers.level3.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : levels == 4 ? (
+                  <Image
+                    source={images.numbers.level4.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : (
+                  <></>
+                )}
+              </View>
+
+              {levels == 1 ? (
+                    <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 20,
+                      fontWeight: "700",
+                      paddingTop: 30,
+                    }}
+                  >
+                    {images.numbers.level1.title}
+                  </Text>
+                ) : levels == 2 ? (
+                  <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.numbers.level2.title}
+                </Text>
+                ) : levels == 3 ? (
+                  <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.numbers.level3.title}
+                </Text>
+                ) : levels == 4 ? (
+                  <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.numbers.level4.title}
+                </Text>
+                ) : (
+                  <></>
+                )}
+            
+
+              <Text
+                style={{
+                  color: "#646577",
+                  fontWeight: "900",
+                  paddingTop: 10,
+                  fontSize: 16,
+                }}
+              >
+                Correct Answered 95/100
+              </Text>
+              <Text
+                style={{
+                  fontSize: 24,
+                  fontWeight: "900",
+                  color: "#fff",
+                  paddingTop: 40,
+                }}
+              >
+                CONGRATULATION
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setActive(!active);
+                }}
+                style={styles.submitWrapperN}
+              >
+                <Text style={styles.submitTitle}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <View style={styles.titleContainer}>
             <Text style={styles.mainTitle}>GAME OVER</Text>
             <Text style={styles.mainTitle}>Score: {score}</Text>
           </View>
-          {achievment && (<Text style={styles.mainTitle}>Achievment Unlocked</Text>  )        }
+          {/* {achievment && (<Text style={styles.mainTitle}>Achievment Unlocked</Text>  )        } */}
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("testSelectionPage");
