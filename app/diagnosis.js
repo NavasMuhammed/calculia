@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Questions, Answers, Options } from "./data";
 const Diagnosis = ({ navigation }) => {
-  const [level, setLevel] = useState(3);
+  const [level, setLevel] = useState(2);
   const questions =
     level == 0
       ? Questions.level1
@@ -116,6 +116,111 @@ const Diagnosis = ({ navigation }) => {
               ></Image>
             </View>
           ) : (level == 0) & (questionNum == 9) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/child.png")}
+              ></Image>
+            </View>
+          ) : (level == 1) & (questionNum == 5) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/1.png")}
+              ></Image>
+            </View>
+          ) : (level == 1) & (questionNum == 6) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/3.png")}
+              ></Image>
+            </View>
+          ) : (level == 1) & (questionNum == 7) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/4.png")}
+              ></Image>
+            </View>
+          ) : (level == 1) & (questionNum == 8) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/2.png")}
+              ></Image>
+            </View>
+          ) : (level == 1) & (questionNum == 9) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/child.png")}
+              ></Image>
+            </View>
+          ) : (level == 2) & (questionNum == 5) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/1.png")}
+              ></Image>
+            </View>
+          ) : (level == 2) & (questionNum == 6) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/3.png")}
+              ></Image>
+            </View>
+          ) : (level == 2) & (questionNum == 7) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/4.png")}
+              ></Image>
+            </View>
+          ) : (level == 2) & (questionNum == 8) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/2.png")}
+              ></Image>
+            </View>
+          ) : (level == 2) & (questionNum == 9) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/child.png")}
+              ></Image>
+            </View>
+          ) : (level == 3) & (questionNum == 5) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/1.png")}
+              ></Image>
+            </View>
+          ) : (level == 3) & (questionNum == 6) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/3.png")}
+              ></Image>
+            </View>
+          ) : (level == 3) & (questionNum == 7) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/4.png")}
+              ></Image>
+            </View>
+          ) : (level == 3) & (questionNum == 8) ? (
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={require("./img/2.png")}
+              ></Image>
+            </View>
+          ) : (level == 3) & (questionNum == 9) ? (
             <View style={styles.imageContainer}>
               <Image
                 style={styles.image}
@@ -284,3 +389,18 @@ const styles = StyleSheet.create({
 //  paddingRight: 90,
 //  paddingLeft: 90,
 //  marginTop: 30,
+// 6,
+//     2,
+//     8,
+//     10,
+//     6,
+// 1,
+//     2,
+//     3,
+//     4,
+//     2,
+// 1,
+//     3,
+//     4,
+//     2,
+//     1,
