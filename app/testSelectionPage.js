@@ -42,8 +42,8 @@ const TestSelectionPage = ({ navigation }) => {
         style={styles.ButtonContainer}
       >
         <ImageBackground
-          source={require("./numBG.png")}
-          resizeMode="cover"
+          source={require("./img/numBG.png")}
+          resizeMode="contain"
           style={styles.bgNImage}
         >
           <Text style={styles.buttonText}>NUMERICALS</Text>
@@ -56,8 +56,8 @@ const TestSelectionPage = ({ navigation }) => {
         style={styles.ButtonContainer}
       >
         <ImageBackground
-          source={require("./countBG.png")}
-          resizeMode="cover"
+          source={require("./img/countBG.png")}
+          resizeMode="contain"
           style={styles.bgcImage}
         >
           <Text style={styles.buttonCText}>COUNTING</Text>
@@ -69,8 +69,8 @@ const TestSelectionPage = ({ navigation }) => {
         style={styles.ButtonContainer}
       >
         <ImageBackground
-          source={require("./dirBg.png")}
-          resizeMode="cover"
+          source={require("./img/dirBg.png")}
+          resizeMode="contain"
           style={styles.bgImage}
         >
           <Text style={styles.buttonCText}>DIRECTIONS</Text>
@@ -82,8 +82,8 @@ const TestSelectionPage = ({ navigation }) => {
         style={styles.ButtonContainer}
       >
         <ImageBackground
-          source={require("./colorBG.png")}
-          resizeMode="cover"
+          source={require("./img/colorBG.png")}
+          resizeMode="contain"
           style={styles.bgImage}
         >
           <Text style={styles.buttonCText}>COLORS</Text>

@@ -1,14 +1,13 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
-import { useRef,useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setScore } from "../store/scoreSlice";
 import { setcount3Qstn } from "../store/count3QstnSlice";
 import { setcount3Score } from "../store/count3ScoreSlice";
 import axios from "axios";
-
-
+import { images } from "./data";
 
 const DsirectionTest = ({ navigation }) => {
   const [qN, setQN] = useState(0);
@@ -16,18 +15,22 @@ const DsirectionTest = ({ navigation }) => {
   useEffect(() => {
     setQN(Math.floor(Math.random() * 4));
     dispatch(setScore(0));
-  }, [])
+  }, []);
   const details = useSelector((state) => state.details.value);
   const score = useSelector((state) => state.score.value);
   const count3Qstn = useSelector((state) => state.count3Qstn.value);
   const count3Score = useSelector((state) => state.count3Score.value);
+  const levels = useSelector((state) => state.levels.value);
 
   const dispatch = useDispatch();
   const options = ["UP", "LEFT", "RIGHT", "DOWN"];
-  const qnArr = ["DOWN", "LEFT", "UP", "RIGHT"]
+  const qnArr = ["DOWN", "LEFT", "UP", "RIGHT"];
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
   const [ans, setAns] = useState("");
   const [response, setResponse] = useState(0);
+  const reqQuestions = [4,8,12];
+  const [achievment, setAchievment] = useState(false);
+
   const validateAns = (response) => {
     setResponse(response);
     setIsOptionDisabled(true);
@@ -45,41 +48,51 @@ const DsirectionTest = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      console.log("update called")
+      console.log("update called");
       await update();
     })();
   }, [count3Qstn]);
 
-  const update =async () => {
-    await axios.post('http://10.0.2.2:5000/update', {
-            data: {
-                countQstn: count3Qstn,
-                countScore: count3Score,
-                name: details.payload.name,
-                reqFields:["count3Qstn","count3Score"]
-            },
-            headers: { 'Content-Type': 'application/json' }
-        }).then((res) => {
-            console.log(res.data);
-        }).catch((err) => {
-            console.log(err);
-        })
-  }
-
+  const update = async () => {
+    await axios
+      .post("http://10.0.2.2:5000/update", {
+        data: {
+          countQstn: count3Qstn,
+          countScore: count3Score,
+          name: details.payload.name,
+          reqFields: ["count3Qstn", "count3Score"],
+        },
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const addScore = (response) => {
     setTimeout(() => {
-    if (response == qnArr[qN]) {
-      dispatch(setScore(score + 1))
-      dispatch(setcount3Score(count3Score + 1));
-      console.log(count3Score+"reach");
-    }
-    dispatch(setcount3Qstn(count3Qstn + 1));
-  },500)};
+      if (response == qnArr[qN]) {
+        dispatch(setScore(score + 1));
+        dispatch(setcount3Score(count3Score + 1));
+        console.log(count3Score + "reach");
+      }
+      dispatch(setcount3Qstn(count3Qstn + 1));
+    }, 500);
+  };
 
   const handlePress = () => {
     // setQN(qN + 1);
-    setQN([0,1,2,3].filter((item) => item != qN)[Math.floor(Math.random() * 3)]);
+    setQN(
+      [0, 1, 2, 3].filter((item) => item != qN)[Math.floor(Math.random() * 3)]
+    );
+    if (count == reqQuestions[levels-1] - 1) {
+      if(score/reqQuestions[levels-1]>=0.8){
+        setAchievment(true);
+      }
+    }
     setCount(count + 1);
     resetToDefault();
   };
@@ -89,11 +102,18 @@ const DsirectionTest = ({ navigation }) => {
     setAns(null);
     setIsOptionDisabled(false);
   };
+  let level = 3;
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    if (qN == count) {
+      setActive(!active);
+    }
+  }, []);
   return (
     <>
-      {count < 4 ? (
+      {count < reqQuestions[levels-1] ? (
         <SafeAreaView style={styles.container}>
-          <Text style={styles.mainTitle}>GUESS THE DIRECTION</Text>
+          <Text style={styles.mainTitle}>FIND DIRECTION OF THE BOX</Text>
           <View style={styles.questionBox}>
             <View style={styles.row1}>
               {qN == 2 ? (
@@ -110,7 +130,7 @@ const DsirectionTest = ({ navigation }) => {
                 <View style={styles.box}></View>
               )}
               <View style={styles.boy}>
-                <Image source={require("./child.png")} />
+                <Image source={require("./img/child.png")} />
               </View>
               {qN == 3 ? (
                 <View style={styles.boxU}></View>
@@ -162,21 +182,183 @@ const DsirectionTest = ({ navigation }) => {
             </TouchableOpacity>
           )}
         </SafeAreaView>
-      ) : <>
-        <SafeAreaView style={styles.containerL}>
-          <Text style={styles.mainTitle}>SCORE</Text>
-          <Text style={styles.mainTitle}>{score}</Text>
-          <Text style={styles.mainTitle}>GAME OVER</Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("testSelectionPage");
-            }}
-            style={styles.submitWrapperL}
-          >
-            <Text style={styles.submitTitle}>Back to Menu</Text>
-          </TouchableOpacity>
-        </SafeAreaView>
-      </>}
+      ) : (
+        <>
+          <SafeAreaView style={styles.containerL}>
+            {achievment && (
+              <View
+                style={{
+                  left: "8%",
+                  top: "22%",
+                  willChange: "transform",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  height: 450,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 350,
+                  borderRadius: 20,
+                  backgroundColor: "#1E1F3B",
+                  position: "absolute",
+                  zIndex: 99,
+                  shadowOffset: { width: -2, height: 4 },
+                  shadowColor: "#000",
+                  shadowOpacity: 2,
+                  shadowRadius: 10,
+                  elevation: 10,
+                }}
+              >
+                <TouchableOpacity
+                  style={{
+                    padding: 15,
+                    position: "absolute",
+                    left: "86%",
+                    top: 0,
+                    // backgroundColor: "#ffff",
+                  }}
+                  onPress={() => setAchievment(!achievment)}
+                >
+                  <Image source={require("./img/Cross.png")}></Image>
+                </TouchableOpacity>
+
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 24,
+                    fontWeight: "900",
+                  }}
+                >
+                  Achievements Unlocked
+                </Text>
+                <View
+                  style={{
+                    marginTop: 15,
+                    borderWidth: 2,
+                    borderRadius: 30,
+                    borderColor: "#FC6746",
+                  }}
+                >
+                  {level == 1 ? (
+                    <Image
+                      source={images.directions.level1.imgPath}
+                      style={{
+                        width: 100,
+                        height: 100,
+                      }}
+                    ></Image>
+                  ) : level == 2 ? (
+                    <Image
+                      source={images.directions.level2.imgPath}
+                      style={{
+                        width: 100,
+                        height: 100,
+                      }}
+                    ></Image>
+                  ) : level == 3 ? (
+                    <Image
+                      source={images.directions.level3.imgPath}
+                      style={{
+                        width: 100,
+                        height: 100,
+                      }}
+                    ></Image>
+                  ) : level == 4 ? (
+                    <Image
+                      source={images.directions.level4.imgPath}
+                      style={{
+                        width: 100,
+                        height: 100,
+                      }}
+                    ></Image>
+                  ) : (
+                    <></>
+                  )}
+                </View>
+                {level == 1 ? (
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 20,
+                      fontWeight: "700",
+                      paddingTop: 30,
+                    }}
+                  >
+                    {images.directions.level1.title}
+                  </Text>
+                ) : level == 2 ? (
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 20,
+                      fontWeight: "700",
+                      paddingTop: 30,
+                    }}
+                  >
+                    {images.directions.level2.title}
+                  </Text>
+                ) : level == 3 ? (
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 20,
+                      fontWeight: "700",
+                      paddingTop: 30,
+                    }}
+                  >
+                    {images.directions.level3.title}
+                  </Text>
+                ) : level == 4 ? (
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: 20,
+                      fontWeight: "700",
+                      paddingTop: 30,
+                    }}
+                  >
+                    {images.directions.level4.title}
+                  </Text>
+                ) : (
+                  <></>
+                )}
+
+                
+                <Text
+                  style={{
+                    fontSize: 24,
+                    fontWeight: "900",
+                    color: "#fff",
+                    paddingTop: 30,
+                    marginBottom: 15,
+                  }}
+                >
+                  CONGRATULATION
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setAchievment(!achievment);
+                  }}
+                  style={styles.submitWrapper}
+                >
+                  <Text style={styles.submitTitle}>Next</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            <Text style={styles.mainTitle}>SCORE</Text>
+            <Text style={styles.mainTitle}>{score}</Text>
+            <Text style={styles.mainTitle}>GAME OVER</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("testSelectionPage");
+              }}
+              style={styles.submitWrapperL}
+            >
+              <Text style={styles.submitTitle}>Back to Menu</Text>
+            </TouchableOpacity>
+            {/* {achievment && <Text style={styles.mainTitle}>Achievment</Text>} */}
+          </SafeAreaView>
+        </>
+      )}
     </>
   );
 };

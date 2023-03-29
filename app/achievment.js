@@ -11,12 +11,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "../store/detailsSlice";
-import Animated, { ZoomIn } from "react-native-reanimated";
+import { images } from "./data";
 
 const Achievement = ({ navigation }) => {
   const [active, setActive] = useState(false);
   const [data, setData] = useState([]);
-  const [index, setIndex] = useState();
   const modalData = {
     number: [],
     count: [],
@@ -24,14 +23,13 @@ const Achievement = ({ navigation }) => {
     color: [],
   };
   const handlePress = () => {
-    setIndex(1000);
     setActive(!active);
   };
+  const [achivedTitle, setAchivedTitle] = useState("");
   return (
     <SafeAreaView style={styles.container}>
       {active && (
         <View
-          entering={ZoomIn}
           style={{
             left: "8%",
             top: "20%",
@@ -45,7 +43,7 @@ const Achievement = ({ navigation }) => {
             borderRadius: 20,
             backgroundColor: "#1E1F3B",
             position: "absolute",
-            zIndex: index,
+            zIndex: 99,
             shadowOffset: { width: -2, height: 4 },
             shadowColor: "#000",
             shadowOpacity: 2,
@@ -54,10 +52,11 @@ const Achievement = ({ navigation }) => {
           }}
         >
           <TouchableOpacity style={styles.cross} onPress={() => handlePress()}>
-            <Image source={require("./Cross.png")}></Image>
+            <Image source={require("./img/Cross.png")}></Image>
           </TouchableOpacity>
           <Text style={styles.modalTitle}>Achievements Unlocked</Text>
-          <Text style={styles.achivedTitle}>Number master</Text>
+          
+          <Text style={styles.achivedTitle}>{achivedTitle}</Text>
           <View style={styles.progressContainer}>
             <View style={styles.progressBar}>
               <View style={styles.progressBarInner}></View>
@@ -70,83 +69,301 @@ const Achievement = ({ navigation }) => {
       )}
       <View style={styles.titleContainer}>
         <Text style={styles.mainTitle}>Achievements</Text>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+          <Text style={styles.columnTitle}>NUMERIC</Text>
           <View style={styles.column}>
             <TouchableOpacity
-              onPress={() => handlePress()}
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level1.title);
+              }}
               style={styles.button}
             >
               <Image
-                source={require("./numberA.png")}
+                source={images.numbers.level1.imgPath}
                 style={styles.image}
               ></Image>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 5,
+                }}
+              >
+                {images.numbers.level1.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => handlePress()}
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level3.title);
+              }}
               style={styles.button}
             >
               <Image
-                source={require("./countA.png")}
+                source={images.numbers.level1.imgPath}
                 style={styles.image}
               ></Image>
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {images.numbers.level3.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => handlePress()}
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level2.title);
+              }}
               style={styles.button}
             >
               <Image
-                source={require("./directionA.png")}
+                source={images.numbers.level1.imgPath}
                 style={styles.image}
               ></Image>
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {images.numbers.level2.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => handlePress()}
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level4.title);
+              }}
               style={styles.button}
             >
               <Image
-                source={require("./colorA.png")}
+                source={images.numbers.level1.imgPath}
                 style={styles.image}
               ></Image>
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {images.numbers.level4.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
             </TouchableOpacity>
           </View>
+          <Text style={styles.columnTitle}>COUNTING</Text>
+
           <View style={styles.column}>
             <TouchableOpacity
-              onPress={() => handlePress()}
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.counts.level1.title);
+              }}
               style={styles.button}
             >
               <Image
-                source={require("./numberA.png")}
+                source={images.counts.level1.imgPath}
                 style={styles.image}
               ></Image>
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {images.numbers.level1.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => handlePress()}
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level3.title);
+              }}
               style={styles.button}
             >
               <Image
-                source={require("./countA.png")}
+                source={images.counts.level1.imgPath}
                 style={styles.image}
               ></Image>
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {images.numbers.level3.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => handlePress()}
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level2.title);
+              }}
               style={styles.button}
             >
               <Image
-                source={require("./directionA.png")}
+                source={images.counts.level1.imgPath}
                 style={styles.image}
               ></Image>
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {images.numbers.level2.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => handlePress()}
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level4.title);
+              }}
               style={styles.button}
             >
               <Image
-                source={require("./colorA.png")}
+                source={images.counts.level1.imgPath}
                 style={styles.image}
               ></Image>
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {images.numbers.level4.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.columnTitle}>DIRECTIONS</Text>
+
+          <View style={styles.column}>
+            <TouchableOpacity
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.directions.level1.title);
+              }}
+              style={styles.button}
+            >
+              <Image
+                source={images.directions.level1.imgPath}
+                style={styles.image}
+              ></Image>
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {images.numbers.level1.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level3.title);
+              }}
+              style={styles.button}
+            >
+              <Image
+                source={images.directions.level1.imgPath}
+                style={styles.image}
+              ></Image>
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {images.numbers.level3.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level2.title);
+              }}
+              style={styles.button}
+            >
+              <Image
+                source={images.directions.level1.imgPath}
+                style={styles.image}
+              ></Image>
+              <View style={{ flexDirection: "row", marginTop: 5 }}>
+                {images.numbers.level2.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level4.title);
+              }}
+              style={styles.button}
+            >
+              <Image
+                source={images.directions.level1.imgPath}
+                style={styles.image}
+              ></Image>
+              <View style={{ flexDirection: "row", marginTop: 10 }}>
+                {images.numbers.level4.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.columnTitle}>COLORS</Text>
+
+          <View style={styles.column}>
+            <TouchableOpacity
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.colors.level1.title);
+              }}
+              style={styles.button}
+            >
+              <Image
+                source={images.colors.level1.imgPath}
+                style={styles.image}
+              ></Image>
+              <View style={{ flexDirection: "row", marginTop: 10 }}>
+                {images.numbers.level1.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level3.title);
+              }}
+              style={styles.button}
+            >
+              <Image
+                source={images.colors.level1.imgPath}
+                style={styles.image}
+              ></Image>
+              <View style={{ flexDirection: "row", marginTop: 10 }}>
+                {images.numbers.level3.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level2.title);
+              }}
+              style={styles.button}
+            >
+              <Image
+                source={images.colors.level1.imgPath}
+                style={styles.image}
+              ></Image>
+              <View style={{ flexDirection: "row", marginTop: 10 }}>
+                {images.numbers.level2.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                handlePress();
+                setAchivedTitle(images.numbers.level4.title);
+              }}
+              style={styles.button}
+            >
+              <Image
+                source={images.colors.level1.imgPath}
+                style={styles.image}
+              ></Image>
+              <View style={{ flexDirection: "row", marginTop: 10 }}>
+                {images.numbers.level4.startCount.map((i) => {
+                  return <Image source={require("./img/star.png")}></Image>;
+                })}
+              </View>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -247,20 +464,24 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 40,
   },
-  column: {
+  scroll: {
+    width: "100%",
     // backgroundColor: "#fff",
-    // width: "100%",
-    // padding: 20,
-    // margin: 90,
-    width: 400,
-    height: "25%",
     flexWrap: "wrap",
-    // flexDirection: "row",
-    // alignItems: "center",
-    paddingLeft: 50,
-    marginTop: 25,
-
-    // justifyContent: "space-between",
+  },
+  column: {
+    height: "15%",
+    flexWrap: "wrap",
+    alignItems: "center",
+    marginBottom: -70,
+  },
+  columnTitle: {
+    marginTop: 50,
+    marginBottom: 10,
+    alignSelf: "center",
+    color: "#fff",
+    fontWeight: "900",
+    fontSize: 24,
   },
   button: {
     alignItems: "center",

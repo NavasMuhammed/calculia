@@ -18,11 +18,11 @@ const ProgressSelectionPage = ({ navigation }) => {
         <Text style={styles.mainTitle}>Select Category</Text>
       </View>
       <TouchableOpacity
-        onPress={() => navigation.navigate("testPage")}
+        onPress={() => navigation.navigate("overall")}
         style={styles.ButtonContainer}
       >
         <ImageBackground
-          source={require("./stati.png")}
+          source={require("./img/stati.png")}
           style={styles.bgNImage}
         >
           <Text style={styles.buttonText}>STATISTICS</Text>
@@ -33,7 +33,7 @@ const ProgressSelectionPage = ({ navigation }) => {
         style={styles.ButtonContainer}
       >
         <ImageBackground
-          source={require("./achiv.png")}
+          source={require("./img/achiv.png")}
           style={styles.bgcImage}
         >
           <Text style={styles.buttonCText}>ACHIEVEMENTS</Text>

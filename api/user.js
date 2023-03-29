@@ -128,6 +128,26 @@ app.post('/update',async (req, res) => {
     console.log(req.body.data);
 })})})
 
+app.post('/updatelevel',async (req, res) => {
+  let levels = req.body.data.levels;
+  let name = req.body.data.name;
+  //insert into database
+  console.log("reached in update"+levels);
+  var citiesRef = db.collection('studentDetails');
+  var query = await citiesRef
+      .where('name', '==', name)
+      .get()
+      .then(snapshot => {
+          // console.log(snapshot)
+          snapshot.forEach(doc => {
+              console.log(doc.id, '=>', doc.data());
+              db.collection("studentDetails").doc(doc.id).update({
+                  level : levels
+              })
+
+  // console.log(req.body.data);
+})})})
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

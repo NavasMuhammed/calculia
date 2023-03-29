@@ -13,6 +13,8 @@ import { setcount2Qstn } from "../store/count2QstnSlice";
 import { setcount2Score } from "../store/count2ScoreSlice";
 import axios from "axios";
 import { setScore } from "../store/scoreSlice";
+import * as Progress from "react-native-progress";
+import { images } from "./data";
 // import a from './img/1.png'
 const data = [
   {
@@ -62,8 +64,7 @@ const data = [
   },
 ];
 
-const CountingTest = ({navigation}) => {
-
+const CountingTest = ({ navigation }) => {
   const details = useSelector((state) => state.details.value);
   const count2Qstn = useSelector((state) => state.count2Qstn.value);
   const count2Score = useSelector((state) => state.count2Score.value);
@@ -75,10 +76,14 @@ const CountingTest = ({navigation}) => {
   const [response, setResponse] = useState(0);
   const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const alreadyselected = [];
+  const reqQuestions = [6,12,18];
   let random = 1;
   const questions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const [achievment, setAchievment] = useState(false);
+
   const dispatch = useDispatch();
   const score = useSelector((state) => state.score.value);
+  const levels = useSelector((state) => state.levels.value);
 
   useEffect(() => {
     dispatch(setScore(0));
@@ -87,26 +92,29 @@ const CountingTest = ({navigation}) => {
 
   useEffect(() => {
     (async () => {
-      console.log("update called")
+      console.log("update called");
       await update();
     })();
   }, [count2Qstn]);
 
-  const update =async () => {
-    await axios.post('http://10.0.2.2:5000/update', {
-            data: {
-                countQstn: count2Qstn,
-                countScore: count2Score,
-                name: details.payload.name,
-                reqFields:["count2Qstn","count2Score"]
-            },
-            headers: { 'Content-Type': 'application/json' }
-        }).then((res) => {
-            console.log(res.data);
-        }).catch((err) => {
-            console.log(err);
-        })
-  }
+  const update = async () => {
+    await axios
+      .post("http://10.0.2.2:5000/update", {
+        data: {
+          countQstn: count2Qstn,
+          countScore: count2Score,
+          name: details.payload.name,
+          reqFields: ["count2Qstn", "count2Score"],
+        },
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const incrementQnNum = () => {
     setQnNum(qnNum + 1);
@@ -114,16 +122,17 @@ const CountingTest = ({navigation}) => {
   };
   const selectpic = () => {
     random = Math.floor(Math.random() * questions.length);
-    while (alreadyselected.includes(random)) {
-      random = Math.floor(Math.random() * questions.length);
-      console.log(random);
-    }
     setselectedqn(random);
-    alreadyselected.push(random);
+    // alreadyselected.push(random);
   };
 
   const handlePress = () => {
     incrementQnNum();
+    if (qnNum == reqQuestions[levels-1] - 1) {
+      if(score/reqQuestions[levels-1]>=0.8){
+        setAchievment(true);
+      }
+    }
     resetToDefault();
   };
 
@@ -142,80 +151,262 @@ const CountingTest = ({navigation}) => {
   };
   const addScore = (response) => {
     if (response == selectedqn + 1) {
-      dispatch(setScore(score + 1))
+      dispatch(setScore(score + 1));
       dispatch(setcount2Score(count2Score + 1));
-      console.log(count2Score+"reach");
+      console.log(count2Score + "reach");
     }
-    console.log("qn updated")
+    console.log("qn updated");
     dispatch(setcount2Qstn(count2Qstn + 1));
   };
-
+  // let level = 3;
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    if (qnNum < 9) {
+      setActive(!active);
+    }
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
-      {qnNum < 10 ? (<>
-      <View style={styles.titleContainer}>
-        <Text style={styles.mainTitle}>Question {qnNum}/10</Text>
-      </View>
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View style={styles.progressBarInner}></View>
-        </View>
-      </View>
+      {qnNum < reqQuestions[levels-1] ? (
+        <>
+          <View style={styles.progressContainer}>
+            <Progress.Bar
+              progress={qnNum / 10}
+              color="#FC6746"
+              unfilledColor={"#646577"}
+              borderRadius={50}
+              borderWidth={0}
+              height={20}
+              width={300}
+            />
+          </View>
+          <View style={styles.titleContainer}>
+            <Text style={styles.mainTitle}>Question {qnNum}/10</Text>
+          </View>
 
-      <View style={styles.questionContainer}>
-        <Text style={styles.question}>
-          <Text>How Many balls are in the image</Text>
-        </Text>
-      </View>
-      <View style={styles.imageContainer}>
-        <View style={styles.ballContainer}>
-          <Image style={styles.image} source={data[selectedqn].Image} />
-        </View>
-      </View>
-      <View style={styles.optionContainerBalls}>
-        {options.map((option) => (
-          <TouchableOpacity
-            style={{
-              width: 60,
-              height: 60,
-              backgroundColor: "#1E1F3B",
-              margin: 10,
-              borderRadius: 10,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor:
-                option == ans
-                  ? "#00FF19"
-                  : option == response
-                  ? "#FF0330"
-                  : "#1E1F3B",
-            }}
-            key={option}
-            onPress={() => validateAns(option)}
-          >
-            <Text style={styles.buttonTitle1}>{option}</Text>
-          </TouchableOpacity>
-        ))}
-        {/* {isOptionDisabled && <TouchableOpacity onPress={() => handlePress()
+          <View style={styles.questionContainer}>
+            <Text style={styles.question}>
+              <Text>How Many balls are in the image</Text>
+            </Text>
+          </View>
+          <View style={styles.imageContainer}>
+            <View style={styles.ballContainer}>
+              <Image style={styles.image} source={data[selectedqn].Image} />
+            </View>
+          </View>
+          <View style={styles.optionContainerBalls}>
+            {options.map((option) => (
+              <TouchableOpacity
+                style={{
+                  width: 60,
+                  height: 60,
+                  backgroundColor: "#1E1F3B",
+                  margin: 10,
+                  borderRadius: 10,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor:
+                    option == ans
+                      ? "#00FF19"
+                      : option == response
+                      ? "#FF0330"
+                      : "#1E1F3B",
+                }}
+                key={option}
+                onPress={() => validateAns(option)}
+              >
+                <Text style={styles.buttonTitle1}>{option}</Text>
+              </TouchableOpacity>
+            ))}
+            {/* {isOptionDisabled && <TouchableOpacity onPress={() => handlePress()
                 } style={styles.submitWrapper1}>
                     <Text style={styles.submitTitle1}>Next</Text>
                 </TouchableOpacity>
                 } */}
-      </View>
-      {isOptionDisabled && (
-        <TouchableOpacity
-          onPress={() => handlePress()}
-          style={styles.submitWrapper}
-        >
-          <Text style={styles.submitTitle}>Next</Text>
-        </TouchableOpacity>
-      )}</>)
-       :(
+          </View>
+          {isOptionDisabled && (
+            <TouchableOpacity
+              onPress={() => handlePress()}
+              style={styles.submitWrapper}
+            >
+              <Text style={styles.submitTitle}>Next</Text>
+            </TouchableOpacity>
+          )}
+        </>
+      ) : (
         <SafeAreaView style={styles.container}>
+          {achievment && (
+            <View
+              style={{
+                left: "8%",
+                top: "20%",
+                willChange: "transform",
+                marginLeft: "auto",
+                marginRight: "auto",
+                height: 450,
+                alignItems: "center",
+                justifyContent: "center",
+                width: 350,
+                borderRadius: 20,
+                backgroundColor: "#1E1F3B",
+                position: "absolute",
+                zIndex: 99,
+                shadowOffset: { width: -2, height: 4 },
+                shadowColor: "#000",
+                shadowOpacity: 2,
+                shadowRadius: 10,
+                elevation: 10,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  padding: 15,
+                  position: "absolute",
+                  left: "86%",
+                  top: 0,
+                  // backgroundColor: "#ffff",
+                }}
+                onPress={() => setAchievment(!achievment)}
+              >
+                <Image source={require("./img/Cross.png")}></Image>
+              </TouchableOpacity>
+
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 24,
+                  fontWeight: "900",
+                }}
+              >
+                Achievements Unlocked
+              </Text>
+              <View
+                style={{
+                  marginTop: 15,
+                  borderWidth: 2,
+                  borderRadius: 30,
+                  borderColor: "#FC6746",
+                }}
+              >
+                {level == 1 ? (
+                  <Image
+                    source={images.counts.level1.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : level == 2 ? (
+                  <Image
+                    source={images.counts.level2.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : level == 3 ? (
+                  <Image
+                    source={images.counts.level3.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : level == 4 ? (
+                  <Image
+                    source={images.counts.level4.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : (
+                  <></>
+                )}
+              </View>
+              {level == 1 ? (
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.counts.level1.title}
+                </Text>
+              ) : level == 2 ? (
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.counts.level2.title}
+                </Text>
+              ) : level == 3 ? (
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.counts.level3.title}
+                </Text>
+              ) : level == 4 ? (
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.counts.level4.title}
+                </Text>
+              ) : (
+                <></>
+              )}
+
+              <Text
+                style={{
+                  color: "#646577",
+                  fontWeight: "900",
+                  paddingTop: 10,
+                  fontSize: 16,
+                }}
+              >
+                Correct Answered 95/100
+              </Text>
+              <Text
+                style={{
+                  fontSize: 24,
+                  fontWeight: "900",
+                  color: "#fff",
+                  paddingTop: 40,
+                  marginBottom: 15,
+                }}
+              >
+                CONGRATULATION
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setAchievment(!achievment);
+                }}
+                style={styles.submitWrapper}
+              >
+                <Text style={styles.submitTitle}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <View style={styles.titleContainer}>
             <Text style={styles.mainTitle}>Score: {score}</Text>
+            <Text style={styles.mainTitle}>GAME OVER</Text>
           </View>
-          <Text style={styles.mainTitle}>GAME OVER</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("testSelectionPage");
@@ -224,6 +415,7 @@ const CountingTest = ({navigation}) => {
           >
             <Text style={styles.submitTitle}>Back to Menu</Text>
           </TouchableOpacity>
+          {achievment && <Text>Achievment Unlocked</Text>}
         </SafeAreaView>
       )}
     </SafeAreaView>
@@ -259,7 +451,7 @@ const styles = StyleSheet.create({
   image: {
     width: 150,
     height: 150,
-    resizeMode: "stretch",
+    resizeMode: "contain",
   },
   ballContainer: {
     alignSelf: "center",
@@ -292,8 +484,9 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     // paddingTop: 55,
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
+    padding: 20,
     // width: "100%",
     // height: "10%",
   },
@@ -315,9 +508,9 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   progressContainer: {
-    top: 30,
+    // top: -60,
     width: "100%",
-    // justifyContent: "flex-start",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   progressBar: {
