@@ -272,3 +272,109 @@ export const Options = {
     ["down", "up", "right", "left"],
   ],
 };
+export const images = {
+  numbers: {
+    level1: {
+      startCount: [1],
+      imgPath: require("./img/numberA.png"),
+      title: "Noob 👼",
+      details: "congratulations You have Completed level 1",
+    },
+    level2: {
+      startCount: [2, 2],
+      imgPath: require("./img/numberA.png"),
+      title: "Amateur 🔥",
+      details: "congratulations You have Completed level 2",
+    },
+    level3: {
+      startCount: [3, 3, 3],
+      imgPath: require("./img/numberA.png"),
+      title: "Pro ⚡",
+      details: "congratulations You have Completed level 3",
+    },
+    level4: {
+      startCount: [4, 4, 4, 4],
+      imgPath: require("./img/numberA.png"),
+      title: "Master 👑",
+      details: "congratulations You have Completed level 4",
+    },
+  },
+  counts: {
+    level1: {
+      startCount: [1],
+      imgPath: require("./img/countA.png"),
+      title: "Noob 👼",
+      details: "congratulations You have Completed level 1",
+    },
+    level2: {
+      startCount: [2, 2],
+      imgPath: require("./img/countA.png"),
+      title: "Amateur 🔥",
+      details: "congratulations You have Completed level 2",
+    },
+    level3: {
+      startCount: [3, 3, 3],
+      imgPath: require("./img/countA.png"),
+      title: "Pro ⚡",
+      details: "congratulations You have Completed level 3",
+    },
+    level4: {
+      startCount: [4, 4, 4, 4],
+      imgPath: require("./img/countA.png"),
+      title: "Master 👑",
+      details: "congratulations You have Completed level 4",
+    },
+  },
+  directions: {
+    level1: {
+      startCount: [1],
+      imgPath: require("./img/directionA.png"),
+      title: "Noob 👼",
+      details: "congratulations You have Completed level 1",
+    },
+    level2: {
+      startCount: [2, 2],
+      imgPath: require("./img/directionA.png"),
+      title: "Amateur 🔥",
+      details: "congratulations You have Completed level 2",
+    },
+    level3: {
+      startCount: [3, 3, 3],
+      imgPath: require("./img/directionA.png"),
+      title: "Pro ⚡",
+      details: "congratulations You have Completed level 3",
+    },
+    level4: {
+      startCount: [4, 4, 4, 4],
+      imgPath: require("./img/directionA.png"),
+      title: "Master 👑",
+      details: "congratulations You have Completed level 4",
+    },
+  },
+  colors: {
+    level1: {
+      startCount: [1],
+      imgPath: require("./img/colorA.png"),
+      title: "Noob 👼",
+      details: "congratulations You have Completed level 1",
+    },
+    level2: {
+      startCount: [2, 2],
+      imgPath: require("./img/colorA.png"),
+      title: "Amateur 🔥",
+      details: "congratulations You have Completed level 2",
+    },
+    level3: {
+      startCount: [3, 3, 3],
+      imgPath: require("./img/colorA.png"),
+      title: "Pro ⚡",
+      details: "congratulations You have Completed level 3",
+    },
+    level4: {
+      startCount: [4, 4, 4, 4],
+      imgPath: require("./img/colorA.png"),
+      title: "Master 👑",
+      details: "congratulations You have Completed level 4",
+    },
+  },
+};
