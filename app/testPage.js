@@ -264,7 +264,7 @@ const TestPage = ({ navigation }) => {
                   top: 0,
                   // backgroundColor: "#ffff",
                 }}
-                onPress={() => setActive(!active)}
+                onPress={() => setachievment(!achievment)}
               >
                 <Image source={require("./img/Cross.png")}></Image>
               </TouchableOpacity>
@@ -395,7 +395,7 @@ const TestPage = ({ navigation }) => {
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  setActive(!active);
+                  setachievment(!achievment);
                 }}
                 style={styles.submitWrapperN}
               >
