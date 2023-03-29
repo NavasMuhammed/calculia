@@ -19,6 +19,7 @@ const DsirectionTest = ({ navigation }) => {
   const score = useSelector((state) => state.score.value);
   const count3Qstn = useSelector((state) => state.count3Qstn.value);
   const count3Score = useSelector((state) => state.count3Score.value);
+  const levels = useSelector((state) => state.levels.value);
 
   const dispatch = useDispatch();
   const options = ["UP", "LEFT", "RIGHT", "DOWN"];
@@ -26,6 +27,9 @@ const DsirectionTest = ({ navigation }) => {
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
   const [ans, setAns] = useState("");
   const [response, setResponse] = useState(0);
+  const reqQuestions = [4,8,12];
+  const [achievment, setAchievment] = useState(false);
+
   const validateAns = (response) => {
     setResponse(response);
     setIsOptionDisabled(true);
@@ -83,6 +87,11 @@ const DsirectionTest = ({ navigation }) => {
     setQN(
       [0, 1, 2, 3].filter((item) => item != qN)[Math.floor(Math.random() * 3)]
     );
+    if (count == reqQuestions[levels-1] - 1) {
+      if(score/reqQuestions[levels-1]>=0.8){
+        setAchievment(true);
+      }
+    }
     setCount(count + 1);
     resetToDefault();
   };
@@ -94,7 +103,7 @@ const DsirectionTest = ({ navigation }) => {
   };
   return (
     <>
-      {count < 4 ? (
+      {count < reqQuestions[levels-1] ? (
         <SafeAreaView style={styles.container}>
           <Text style={styles.mainTitle}>FIND DIRECTION OF THE BOX</Text>
           <View style={styles.questionBox}>
@@ -179,6 +188,7 @@ const DsirectionTest = ({ navigation }) => {
             >
               <Text style={styles.submitTitle}>Back to Menu</Text>
             </TouchableOpacity>
+            {achievment && <Text style={styles.mainTitle}>Achievment</Text>}
           </SafeAreaView>
         </>
       )}

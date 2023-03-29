@@ -13,9 +13,12 @@ const DsirectionTest = ({ navigation }) => {
   const [qN, setQN] = useState(0);
   const [qNarray, setQNarray] = useState([]);
   const [count, setCount] = useState(0);
+  const levels = useSelector((state) => state.levels.value);
+
   useEffect(() => {
     setQN(Math.floor(Math.random() *5));
     // setQNarray([...qNarray, qN]);
+    console.log(levels);
     dispatch(setScore(0));
   }, []);
   const score = useSelector((state) => state.score.value);
@@ -25,6 +28,8 @@ const DsirectionTest = ({ navigation }) => {
   const [ans, setAns] = useState("");
   const qnArr = ["YELLOW", "WHITE", "GREEN", "BLACK", "BLUE", "RED"];
   const [response, setResponse] = useState(0);
+  const reqQuestions = [5, 10, 15];
+  const [achievment, setAchievment] = useState(false);
 
   const details = useSelector((state) => state.details.value);
   // const score = useSelector((state) => state.score.value);
@@ -59,6 +64,11 @@ const DsirectionTest = ({ navigation }) => {
 
   const validateAns = (response) => {
     setResponse(response);
+    if(count==reqQuestions[levels-1]-1){
+      if(score/reqQuestions[levels-1]>=0.8){
+        setAchievment(true);
+      }
+    }
     setIsOptionDisabled(true);
     if (qN == 0) {
       setAns("YELLOW");
@@ -104,7 +114,7 @@ const DsirectionTest = ({ navigation }) => {
   };
   return (
     <>
-      {count <= 5 ? (
+      {count <= reqQuestions[levels-1] ? (
         <SafeAreaView style={styles.container}>
           <Text style={styles.mainTitle}>GUESS THE COLOUR</Text>
           <View style={styles.questionBox}>
@@ -179,6 +189,7 @@ const DsirectionTest = ({ navigation }) => {
           >
             <Text style={styles.submitTitle}>Back to Menu</Text>
           </TouchableOpacity>
+          {achievment && <Text style={styles.mainTitle}>Achievment Unlocked</Text>}
         </SafeAreaView>
       )}
     </>

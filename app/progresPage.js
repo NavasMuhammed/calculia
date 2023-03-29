@@ -19,6 +19,7 @@ import { setcount3Qstn } from '../store/count3QstnSlice';
 import { setcount3Score } from '../store/count3ScoreSlice';
 import { setcount4Qstn } from '../store/count4QstnSlice';
 import { setcount4Score } from '../store/count4ScoreSlice';
+import { setLevels } from "../store/levelsSlice";
 
 
 const ProgressPage = ({ navigation }) => {
@@ -27,6 +28,7 @@ const ProgressPage = ({ navigation }) => {
   const [progress, setprogress] = useState(0);
   const email = useSelector((state) => state.color.value);
   const details = useSelector((state) => state.details.value);
+
   const dispatch = useDispatch();
 
   function addDetails({ id }) {
@@ -72,6 +74,7 @@ const ProgressPage = ({ navigation }) => {
                 dispatch(setcount3Score(res.data.count3Score))
                 dispatch(setcount4Qstn(res.data.count4Qstn))
                 dispatch(setcount4Score(res.data.count4Score))
+                dispatch(setLevels(res.data.level))
                 console.log(details.payload)
             })
             .catch(err => {

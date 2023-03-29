@@ -10,6 +10,7 @@ import count3QstnSlice from "./count3QstnSlice";
 import count3ScoreSlice from "./count3ScoreSlice";
 import count4QstnSlice from "./count4QstnSlice";
 import count4ScoreSlice from "./count4ScoreSlice";
+import levelsSlice from "./levelsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -24,5 +25,6 @@ export const store = configureStore({
     count3Score:count3ScoreSlice,
     count4Qstn:count4QstnSlice,
     count4Score:count4ScoreSlice,
+    levels:levelsSlice,
   },
 });

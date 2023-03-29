@@ -75,10 +75,14 @@ const CountingTest = ({ navigation }) => {
   const [response, setResponse] = useState(0);
   const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const alreadyselected = [];
+  const reqQuestions = [6,12,18];
   let random = 1;
   const questions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const [achievment, setAchievment] = useState(false);
+
   const dispatch = useDispatch();
   const score = useSelector((state) => state.score.value);
+  const levels = useSelector((state) => state.levels.value);
 
   useEffect(() => {
     dispatch(setScore(0));
@@ -117,16 +121,17 @@ const CountingTest = ({ navigation }) => {
   };
   const selectpic = () => {
     random = Math.floor(Math.random() * questions.length);
-    while (alreadyselected.includes(random)) {
-      random = Math.floor(Math.random() * questions.length);
-      console.log(random);
-    }
     setselectedqn(random);
-    alreadyselected.push(random);
+    // alreadyselected.push(random);
   };
 
   const handlePress = () => {
     incrementQnNum();
+    if (qnNum == reqQuestions[levels-1] - 1) {
+      if(score/reqQuestions[levels-1]>=0.8){
+        setAchievment(true);
+      }
+    }
     resetToDefault();
   };
 
@@ -155,10 +160,10 @@ const CountingTest = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {qnNum < 10 ? (
+      {qnNum < reqQuestions[levels-1] ? (
         <>
           <View style={styles.titleContainer}>
-            <Text style={styles.mainTitle}>Question {qnNum}/10</Text>
+            <Text style={styles.mainTitle}>Question {qnNum+1}/{reqQuestions[levels-1]}</Text>
           </View>
           <View style={styles.progressContainer}>
             <Progress.Bar
@@ -235,6 +240,7 @@ const CountingTest = ({ navigation }) => {
           >
             <Text style={styles.submitTitle}>Back to Menu</Text>
           </TouchableOpacity>
+          {achievment && <Text>Achievment Unlocked</Text>}
         </SafeAreaView>
       )}
     </SafeAreaView>

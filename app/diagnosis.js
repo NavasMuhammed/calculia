@@ -1,11 +1,20 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { setScore } from "../store/scoreSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Questions, Answers, Options } from "./data";
+import { setLevels } from "../store/levelsSlice";
+import axios from "axios";
+// import { setScore} from "../store/detailsSlice";
+
+
 const Diagnosis = ({ navigation }) => {
-  const [level, setLevel] = useState(3);
+
+  const details = useSelector((state) => state.details.value);
+  const [level, setLevel] = useState(details.payload.level);
+  const levels = useSelector((state) => state.levels.value);
+
   const questions =
     level == 0
       ? Questions.level1
@@ -46,16 +55,53 @@ const Diagnosis = ({ navigation }) => {
   };
 
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
-  const correctAnswer = (questionNumt, levelt) => {
+  const correctAnswer = (questionNumt, levelt, response) => {
     if (level == levelt && questionNum == questionNumt) {
       setAns(answers[levelt][questionNumt]);
     }
+    if(answers[levelt][questionNumt] == response){
+      dispatch(setScore(score + 1));
+      console.log(score);
+    }
   };
+
   const validateAns = async (response) => {
     setResponse(response);
     setIsOptionDisabled(true);
-    correctAnswer(questionNum, level);
-    dispatch(setScore(score + 1));
+    correctAnswer(questionNum, level,response);
+    console.log(score);
+  };
+
+  const setlevels = async ()=>{
+    // console.log(levels);
+    if(score>10){
+      dispatch(setLevels(1));
+      update(1)
+    }
+    else if(score>5){
+      dispatch(setLevels(2));
+      update(2)
+    }
+    else {
+      dispatch(setLevels(3));
+      update(3)
+    }
+  }
+
+  const update = async (levels) => {
+    await axios.post("http://10.0.2.2:5000/updatelevel", {
+        data: {
+          levels:levels,
+          name: details.payload.name,
+        },
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const resetToDefault = () => {
@@ -63,6 +109,7 @@ const Diagnosis = ({ navigation }) => {
     setAns(null);
     setIsOptionDisabled(false);
   };
+
   const [range, setRange] = useState(0);
   useEffect(() => {
     questionNum < 5
@@ -172,16 +219,19 @@ const Diagnosis = ({ navigation }) => {
         <>
           <View>
             <Text style={styles.mainTitle}>Your results</Text>
+            <Text style={styles.mainTitle}>Score: {score}</Text>
           </View>
           <View>
             <TouchableOpacity
               style={styles.submitWrapper}
               onPress={() => {
-                setQuestionNum(0);
-                setLevel(level + 1);
+                //call a function without maximum call stack exceeded
+                setlevels();
+                // console.log(levels);
+                navigation.navigate("progressPage");
               }}
             >
-              <Text style={styles.submitTitle}>Next</Text>
+              <Text style={styles.submitTitle}>Return</Text>
             </TouchableOpacity>
           </View>
         </>
@@ -273,14 +323,3 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
 });
-
-// flexDirection: "row",
-//  borderRadius: 15,
-//  alignItems: 'center',
-//  justifyContent: 'center',
-// //  backgroundColor: option == ans ? '#00FF19' : option == response ? "#FF0330" : "#1E1F3B",
-//  padding: 20,
-//  width: "70%",
-//  paddingRight: 90,
-//  paddingLeft: 90,
-//  marginTop: 30,

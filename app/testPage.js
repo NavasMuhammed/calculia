@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "../store/detailsSlice";
@@ -14,6 +15,7 @@ import { setcountQstn, setCountQstn } from "../store/countQstnSlice";
 import { setcountScore } from "../store/countScoreSlice";
 import axios from "axios";
 import * as Progress from "react-native-progress";
+
 const TestPage = ({ navigation }) => {
   let data = [];
   let singleData = [];
@@ -34,6 +36,7 @@ const TestPage = ({ navigation }) => {
   // let timeouttime = false
   const [timeouttime, settimeouttime] = useState(false);
   const [QNcount, setQNcount] = useState(0);
+  const [achievment, setachievment] = useState(false);
   //   function addScore({ id }){
   //     dispatch(setScore(score + 1));
   // }
@@ -43,6 +46,7 @@ const TestPage = ({ navigation }) => {
   const score = useSelector((state) => state.score.value);
   const countQstn = useSelector((state) => state.countQstn.value);
   const countScore = useSelector((state) => state.countScore.value);
+  const levels = useSelector((state) => state.levels.value);
 
   let time = 1000;
   const getquestion = async () => {
@@ -61,6 +65,9 @@ const TestPage = ({ navigation }) => {
       console.log(data1);
       console.log(singleData1);
     } else {
+      if(score/QNcount > 0.8){
+        setachievment(true);
+      }
       console.log("executed");
       setFinished(false);
     }
@@ -70,7 +77,7 @@ const TestPage = ({ navigation }) => {
     await axios
       .get("http://10.0.2.2:5000/question", {
         params: {
-          level: details.payload.level,
+          level: levels,
         },
         headers: { "Content-Type": "application/json" },
       })
@@ -224,6 +231,7 @@ const TestPage = ({ navigation }) => {
             <Text style={styles.mainTitle}>GAME OVER</Text>
             <Text style={styles.mainTitle}>Score: {score}</Text>
           </View>
+          {achievment && (<Text style={styles.mainTitle}>Achievment Unlocked</Text>  )        }
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("testSelectionPage");
