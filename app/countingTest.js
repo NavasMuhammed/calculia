@@ -14,6 +14,7 @@ import { setcount2Score } from "../store/count2ScoreSlice";
 import axios from "axios";
 import { setScore } from "../store/scoreSlice";
 import * as Progress from "react-native-progress";
+import { images } from "./data";
 // import a from './img/1.png'
 const data = [
   {
@@ -157,7 +158,13 @@ const CountingTest = ({ navigation }) => {
     console.log("qn updated");
     dispatch(setcount2Qstn(count2Qstn + 1));
   };
-
+  let level = 3;
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    if (qnNum < 9) {
+      setActive(!active);
+    }
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       {qnNum < reqQuestions[levels-1] ? (
@@ -228,6 +235,174 @@ const CountingTest = ({ navigation }) => {
         </>
       ) : (
         <SafeAreaView style={styles.container}>
+          {active && (
+            <View
+              style={{
+                left: "8%",
+                top: "20%",
+                willChange: "transform",
+                marginLeft: "auto",
+                marginRight: "auto",
+                height: 450,
+                alignItems: "center",
+                justifyContent: "center",
+                width: 350,
+                borderRadius: 20,
+                backgroundColor: "#1E1F3B",
+                position: "absolute",
+                zIndex: 99,
+                shadowOffset: { width: -2, height: 4 },
+                shadowColor: "#000",
+                shadowOpacity: 2,
+                shadowRadius: 10,
+                elevation: 10,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  padding: 15,
+                  position: "absolute",
+                  left: "86%",
+                  top: 0,
+                  // backgroundColor: "#ffff",
+                }}
+                onPress={() => setActive(!active)}
+              >
+                <Image source={require("./img/Cross.png")}></Image>
+              </TouchableOpacity>
+
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 24,
+                  fontWeight: "900",
+                }}
+              >
+                Achievements Unlocked
+              </Text>
+              <View
+                style={{
+                  marginTop: 15,
+                  borderWidth: 2,
+                  borderRadius: 30,
+                  borderColor: "#FC6746",
+                }}
+              >
+                {level == 1 ? (
+                  <Image
+                    source={images.counts.level1.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : level == 2 ? (
+                  <Image
+                    source={images.counts.level2.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : level == 3 ? (
+                  <Image
+                    source={images.counts.level3.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : level == 4 ? (
+                  <Image
+                    source={images.counts.level4.imgPath}
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  ></Image>
+                ) : (
+                  <></>
+                )}
+              </View>
+              {level == 1 ? (
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.counts.level1.title}
+                </Text>
+              ) : level == 2 ? (
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.counts.level2.title}
+                </Text>
+              ) : level == 3 ? (
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.counts.level3.title}
+                </Text>
+              ) : level == 4 ? (
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 20,
+                    fontWeight: "700",
+                    paddingTop: 30,
+                  }}
+                >
+                  {images.counts.level4.title}
+                </Text>
+              ) : (
+                <></>
+              )}
+
+              <Text
+                style={{
+                  color: "#646577",
+                  fontWeight: "900",
+                  paddingTop: 10,
+                  fontSize: 16,
+                }}
+              >
+                Correct Answered 95/100
+              </Text>
+              <Text
+                style={{
+                  fontSize: 24,
+                  fontWeight: "900",
+                  color: "#fff",
+                  paddingTop: 40,
+                  marginBottom: 15,
+                }}
+              >
+                CONGRATULATION
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setActive(!active);
+                }}
+                style={styles.submitWrapper}
+              >
+                <Text style={styles.submitTitle}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <View style={styles.titleContainer}>
             <Text style={styles.mainTitle}>Score: {score}</Text>
             <Text style={styles.mainTitle}>GAME OVER</Text>
