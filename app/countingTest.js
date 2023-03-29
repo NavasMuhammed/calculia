@@ -158,7 +158,7 @@ const CountingTest = ({ navigation }) => {
     console.log("qn updated");
     dispatch(setcount2Qstn(count2Qstn + 1));
   };
-  let level = 3;
+  // let level = 3;
   const [active, setActive] = useState(false);
   useEffect(() => {
     if (qnNum < 9) {
@@ -235,7 +235,7 @@ const CountingTest = ({ navigation }) => {
         </>
       ) : (
         <SafeAreaView style={styles.container}>
-          {active && (
+          {achievment && (
             <View
               style={{
                 left: "8%",

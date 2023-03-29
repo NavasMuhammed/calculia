@@ -185,7 +185,7 @@ const DsirectionTest = ({ navigation }) => {
       ) : (
         <>
           <SafeAreaView style={styles.containerL}>
-            {active && (
+            {achievment && (
               <View
                 style={{
                   left: "8%",
@@ -216,7 +216,7 @@ const DsirectionTest = ({ navigation }) => {
                     top: 0,
                     // backgroundColor: "#ffff",
                   }}
-                  onPress={() => setActive(!active)}
+                  onPress={() => setAchievment(!achievment)}
                 >
                   <Image source={require("./img/Cross.png")}></Image>
                 </TouchableOpacity>
@@ -322,16 +322,7 @@ const DsirectionTest = ({ navigation }) => {
                   <></>
                 )}
 
-                <Text
-                  style={{
-                    color: "#646577",
-                    fontWeight: "900",
-                    paddingTop: 10,
-                    fontSize: 16,
-                  }}
-                >
-                  Correct Answered 95/100
-                </Text>
+                
                 <Text
                   style={{
                     fontSize: 24,
@@ -345,7 +336,7 @@ const DsirectionTest = ({ navigation }) => {
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
-                    setActive(!active);
+                    setAchievment(!achievment);
                   }}
                   style={styles.submitWrapper}
                 >
@@ -364,7 +355,7 @@ const DsirectionTest = ({ navigation }) => {
             >
               <Text style={styles.submitTitle}>Back to Menu</Text>
             </TouchableOpacity>
-            {achievment && <Text style={styles.mainTitle}>Achievment</Text>}
+            {/* {achievment && <Text style={styles.mainTitle}>Achievment</Text>} */}
           </SafeAreaView>
         </>
       )}

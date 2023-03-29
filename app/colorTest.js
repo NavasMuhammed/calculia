@@ -185,7 +185,7 @@ const DsirectionTest = ({ navigation }) => {
         </SafeAreaView>
       ) : (
         <SafeAreaView style={styles.containerL}>
-          {active && (
+          {achievment && (
             <View
               style={{
                 left: "8%",
