@@ -216,7 +216,7 @@ const DsirectionTest = ({ navigation }) => {
                   top: 0,
                   // backgroundColor: "#ffff",
                 }}
-                onPress={() => setActive(!active)}
+                onPress={() => setAchievment(!achievment)}
               >
                 <Image source={require("./img/Cross.png")}></Image>
               </TouchableOpacity>
@@ -345,7 +345,7 @@ const DsirectionTest = ({ navigation }) => {
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  setActive(!active);
+                  setAchievment(!achievment);
                 }}
                 style={styles.submitWrapper}
               >

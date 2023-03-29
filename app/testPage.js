@@ -48,7 +48,7 @@ const TestPage = ({ navigation }) => {
   const countScore = useSelector((state) => state.countScore.value);
   const levels = useSelector((state) => state.levels.value);
 
-  let time = 1000;
+  let time = 3000;
   const getquestion = async () => {
     if (!timeouttime) {
       setTimeout(() => {
